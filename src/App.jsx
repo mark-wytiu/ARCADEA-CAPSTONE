@@ -1,20 +1,23 @@
-import logo from './logo.svg';
 import './App.scss';
 import Header from './Components/Header/Header';
 import React, { useState } from 'react';
+import HomePage from './Pages/HomePage/HomePage';
+import {
+  BrowserRouter, Routes, Route,
+} from 'react-router-dom';
 
 function App() {
-
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-
-  function toggleSidebar() {
-    setSidebarOpen(!sidebarOpen);
-  }
 
 
   return (
     <div className="App">
-      <Header isOpen={sidebarOpen} onClose={toggleSidebar} />
+      <BrowserRouter>
+        <Header />
+        <Routes>
+          <Route path="/home" element={<HomePage />} />
+          
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }

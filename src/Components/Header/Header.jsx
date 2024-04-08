@@ -1,14 +1,16 @@
-import React from 'react';
+
 
 function Header() {
     return (
-        <div className={`sidebar ${isOpen ? 'open' : ''}`}>
-            <button onClick={onClose}>Close</button>
-            <ul>
-                <li>About</li>
-                <li>Forum</li>
-                <li>Login</li>
-            </ul>
+        <div className='Header'>
+            <header>
+                <ul className="Header-list">
+                    <li className="Header-list_item">Home</li>
+                    <li className="Header-list_item">About</li>
+                    <li className="Header-list_item">Forum</li>
+                    <li className="Header-list_item">Login</li>
+                </ul>
+            </header>
         </div>
     )
 }
