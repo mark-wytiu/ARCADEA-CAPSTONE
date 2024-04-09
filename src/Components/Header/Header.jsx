@@ -14,6 +14,7 @@ import MenuItem from '@mui/material/MenuItem';
 import { createSvgIcon } from '@mui/material/utils';
 import "./Header.scss"
 
+
 const pages = ['Games', 'Blog'];
 const settings = ['Profile'];
 const HomeIcon = createSvgIcon(

@@ -6,13 +6,15 @@ import Typography from '@mui/material/Typography';
 import gameData from "../../Data/Allgames.json";
 import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
+import Grid from '@mui/material/Grid'
 
 
-export default function GameCard(props) {
+export default function GameCard() {
     const firstGames = gameData.slice(0, 15);
     return (
-        <div> {/* Added a container to hold the generated cards */}
+        <> {/* Added a container to hold the generated cards */}
             {firstGames.map((game, index) => (
+                <Grid item xs={3}>
                 <Card key={index} sx={{
                     maxWidth: 200,
                     height: 300,
@@ -37,8 +39,9 @@ export default function GameCard(props) {
 
                     </CardContent>
                 </Card>
+                </Grid>
             ))}
-        </div>
+        </>
         // <Card sx={{
         //     maxWidth: 200,
         //     height: 300, marginTop: "100px",
