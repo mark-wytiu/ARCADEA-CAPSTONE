@@ -12,8 +12,9 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import { createSvgIcon } from '@mui/material/utils';
+import "./Header.scss"
 
-const pages = ['Products', 'Blog'];
+const pages = ['Games', 'Blog'];
 const settings = ['Profile'];
 const HomeIcon = createSvgIcon(
     <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />,
@@ -88,7 +89,7 @@ function ResponsiveAppBar() {
                             open={Boolean(anchorElNav)}
                             onClose={handleCloseNavMenu}
                             sx={{
-                                display: { xs: 'block', md: 'none' },
+                                display: { xs: 'block', md: 'none' }, color: 'black'
                             }}
                         >
                             {pages.map((page) => (
@@ -129,14 +130,14 @@ function ResponsiveAppBar() {
                         ))}
                     </Box>
 
-                    <Box sx={{ flexGrow: 0}}>
+                    <Box sx={{ flexGrow: 0 }}>
                         <Tooltip title="">
-                            <IconButton onClick={handleOpenUserMenu} sx={{ p: 0}}>
-                                <Avatar alt="Mark Wy Tiu" src="/static/images/avatar/2.jpg" sx={{ bgcolor:'#2d6a4f'}}/>
+                            <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                                <Avatar alt="Mark Wy Tiu" src="/static/images/avatar/2.jpg" sx={{ bgcolor: '#5e60ce'}} />
                             </IconButton>
                         </Tooltip>
                         <Menu
-                            sx={{ mt: '45px' }}
+                            sx={{ mt: '45px'}}
                             id="menu-appbar"
                             anchorEl={anchorElUser}
                             anchorOrigin={{
