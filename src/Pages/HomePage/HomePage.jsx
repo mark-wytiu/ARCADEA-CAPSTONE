@@ -10,12 +10,12 @@ function HomePage() {
 
 
         <Box sx={{ width: '100%', backgroundImage:`url(${bgImg})`, backgroundRepeat: "no-repeat",
-        backgroundSize: "cover", height:'50rem' }}>
+        backgroundSize: "cover", height:'80rem' }}>
             <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3  }}>
                 <Grid xs={2}>
                     <GameCard />
                 </Grid>
-                <Grid xs={2}>
+                {/* <Grid xs={2}>
                     <GameCard />
                 </Grid>
                 <Grid xs={2}>
@@ -23,7 +23,7 @@ function HomePage() {
                 </Grid>
                 <Grid xs={2}>
                     <GameCard />
-                </Grid>
+                </Grid> */}
             </Grid>
         </Box>
     )

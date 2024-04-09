@@ -41,7 +41,7 @@ function ResponsiveAppBar() {
     };
 
     return (
-        <AppBar position="static">
+        <AppBar position="fixed">
             <Container maxWidth="xxl" sx={{ bgcolor: "#90e0ef" }}>
                 <Toolbar disableGutters>
                     <HomeIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1, }} />
