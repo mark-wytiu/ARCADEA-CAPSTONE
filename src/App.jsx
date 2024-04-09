@@ -6,6 +6,7 @@ import {
   BrowserRouter, Routes, Route,
 } from 'react-router-dom';
 import GamePage from './Pages/GamePage/GamePage';
+import Footer from './Components/Footer/Footer';
 
 function App() {
 
@@ -18,6 +19,7 @@ function App() {
           <Route path="" element={<HomePage />} />
           <Route path="/game" element={<GamePage />} />
         </Routes>
+        <Footer />
       </BrowserRouter>
     </div>
   );
