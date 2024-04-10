@@ -1,6 +1,8 @@
 import "./GamePageDetails.scss"
 
-function GamePageDetails () {
+function GamePageDetails ({gameID}) {
+
+    
 
 }
 

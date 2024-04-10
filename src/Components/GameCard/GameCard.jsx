@@ -10,6 +10,7 @@ import Grid from '@mui/material/Grid'
 import { useNavigate } from 'react-router-dom';
 
 export default function GameCard() {
+    const navigate = useNavigate();
     const firstGames = gameData.slice(0, 15);
     const displayGamePage = (id) => {
         navigate(`/game/:${id}`)

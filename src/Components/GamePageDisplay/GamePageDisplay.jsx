@@ -1,8 +1,8 @@
-import "./GamePageDsiplay.scss"
+// import "./GamePageDsiplay.scss"
 
 
 
-function GamePageDsiplay () {
+function GamePageDsiplay (props) {
 
 }
 
