@@ -19,13 +19,16 @@ export default function GameCard() {
                     maxWidth: 200,
                     height: 300,
                     marginTop: "100px",
-                    marginLeft: "2rem"
+                    marginLeft: "2rem",
+                    flexWrap:'wrap',
+                    textAlign:'center'
                 }}>
                     <CardMedia
                         component="img"
                         alt={game.title}
-                        height="50"
+                        height="100"
                         image={game.image}
+                        sx={{  objectFit: "contain" }}
                     />
                     <CardContent>
                         <Typography gutterBottom variant="h5" component="div">
@@ -33,7 +36,7 @@ export default function GameCard() {
                         </Typography>
                         
                             <Stack direction="column" spacing={2}>
-                                <Chip label={game.genre}color="primary" />
+                                <Chip label={game.genre}color="primary" sx={{width:'7rem'}} />
                             </Stack>
                             
 

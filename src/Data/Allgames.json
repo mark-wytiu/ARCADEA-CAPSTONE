@@ -2,7 +2,7 @@
 	{
 		"title": "Half-Life: Alyx",
 		"genre": "VR Action-Adventure",
-		"image": "./Game-Images/the-witcher-3-logo.png",
+		"image": "./Game-Images/Alyx.png",
 		"releaseDate": "2020-03-23",
 		"price": "59.99",
 		"developer": "Valve",
@@ -22,6 +22,7 @@
 	{
 		"title": "Red Dead Redemption 2",
 		"genre": "Action-Adventure",
+		"image": "./Game-Images/rdr2.png",
 		"releaseDate": "2018-10-26",
 		"price": "59.99",
 		"developer": "Rockstar Games",
@@ -31,6 +32,7 @@
 	{
 		"title": "Among Us",
 		"genre": "Social Deduction",
+		"image": "./Game-Images/amongus.png",
 		"releaseDate": "2018-06-15",
 		"price": "4.99",
 		"developer": "Innersloth",
@@ -40,6 +42,7 @@
 	{
 		"title": "Cyberpunk 2077",
 		"genre": "Action RPG",
+		"image": "./Game-Images/cyberpunk.png",
 		"releaseDate": "2020-12-10",
 		"price": "59.99",
 		"developer": "CD Projekt Red",
@@ -49,6 +52,7 @@
 	{
 		"title": "Fortnite",
 		"genre": "Battle Royale",
+		"image": "./Game-Images/fortnite.png",
 		"releaseDate": "2017-07-25",
 		"price": "Free-to-play",
 		"developer": "Epic Games",
@@ -58,6 +62,7 @@
 	{
 		"title": "Minecraft",
 		"genre": "Sandbox",
+		"image": "./Game-Images/minecraft.png",
 		"releaseDate": "2011-11-18",
 		"price": "26.95",
 		"developer": "Mojang Studios",
@@ -67,6 +72,7 @@
 	{
 		"title": "The Elder Scrolls V: Skyrim",
 		"genre": "Action RPG",
+		"image": "./Game-Images/skyrim.png",
 		"releaseDate": "2011-11-11",
 		"price": "39.99",
 		"developer": "Bethesda Game Studios",
@@ -76,6 +82,7 @@
 	{
 		"title": "Grand Theft Auto V",
 		"genre": "Action-Adventure",
+		"image": "./Game-Images/gta5.png",
 		"releaseDate": "2013-09-17",
 		"price": "29.99",
 		"developer": "Rockstar North",
@@ -85,6 +92,7 @@
 	{
 		"title": "Rocket League",
 		"genre": "Sports",
+		"image": "./Game-Images/rocketleague.png",
 		"releaseDate": "2015-07-07",
 		"price": "19.99",
 		"developer": "Psyonix",
@@ -94,6 +102,7 @@
 	{
 		"title": "Overwatch",
 		"genre": "Hero Shooter",
+		"image": "./Game-Images/overwatch.png",
 		"releaseDate": "2016-05-24",
 		"price": "39.99",
 		"developer": "Blizzard Entertainment",
@@ -103,6 +112,7 @@
 	{
 		"title": "Rainbow Six Siege",
 		"genre": "Tactical Shooter",
+		"image": "./Game-Images/siege.png",
 		"releaseDate": "2015-12-01",
 		"price": "19.99",
 		"developer": "Ubisoft Montreal",
@@ -112,6 +122,7 @@
 	{
 		"title": "The Legend of Zelda: Breath of the Wild",
 		"genre": "Action-Adventure",
+		"image": "./Game-Images/zelda.png",
 		"releaseDate": "2017-03-03",
 		"price": "59.99",
 		"developer": "Nintendo EPD",
@@ -121,6 +132,7 @@
 	{
 		"title": "Super Mario Odyssey",
 		"genre": "Platformer",
+		"image": "./Game-Images/marioodyssey.png",
 		"releaseDate": "2017-10-27",
 		"price": "59.99",
 		"developer": "Nintendo EPD",
@@ -130,6 +142,7 @@
 	{
 		"title": "Death Stranding",
 		"genre": "Action-Adventure",
+		"image": "./Game-Images/deathstranding.png",
 		"releaseDate": "2019-11-08",
 		"price": "39.99",
 		"developer": "Kojima Productions",
