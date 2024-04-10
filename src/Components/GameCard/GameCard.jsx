@@ -7,10 +7,16 @@ import gameData from "../../Data/Allgames.json";
 import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
 import Grid from '@mui/material/Grid'
-
+import { useNavigate } from 'react-router-dom';
 
 export default function GameCard() {
     const firstGames = gameData.slice(0, 15);
+    const displayGamePage = (id) => {
+        navigate(`/game/:${id}`)
+    }
+
+
+
     return (
         <> {/* Added a container to hold the generated cards */}
             {firstGames.map((game, index) => (
@@ -24,6 +30,7 @@ export default function GameCard() {
                     textAlign:'center'
                 }}>
                     <CardMedia
+                        onClick={() => displayGamePage(game.id)}
                         component="img"
                         alt={game.title}
                         height="100"
