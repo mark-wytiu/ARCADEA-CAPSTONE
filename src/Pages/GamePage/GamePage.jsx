@@ -10,7 +10,6 @@ function GamePage() {
 
     const foundId = Number(gameId.id)
     const foundGame = gameData.find((game) => game.id === foundId 
-
     )
 
     return (

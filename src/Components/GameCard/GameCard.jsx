@@ -8,6 +8,7 @@ import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
 import Grid from '@mui/material/Grid'
 import { useNavigate } from 'react-router-dom';
+import "./GameCard.scss"
 
 export default function GameCard() {
     const navigate = useNavigate();
@@ -19,16 +20,17 @@ export default function GameCard() {
 
 
     return (
-        <> {/* Added a container to hold the generated cards */}
+        <> 
             {firstGames.map((game,) => (
-                <Grid item xs={3}>
+                <Grid item xs={3} >
                 <Card key={game.id} sx={{
                     maxWidth: 200,
                     height: 300,
                     marginTop: "100px",
                     marginLeft: "2rem",
                     flexWrap:'wrap',
-                    textAlign:'center'
+                    textAlign:'center',
+                    borderRadius: "20px",
                 }}>
                     <CardMedia
                         onClick={() => displayGamePage(game.id)}
@@ -43,8 +45,9 @@ export default function GameCard() {
                             {game.title}
                         </Typography>
                         
-                            <Stack direction="column" spacing={2}>
+                            <Stack direction="column" spacing={2} sx={{ justifyContent:'center'}}>
                                 <Chip label={game.genre}color="primary" sx={{width:'7rem'}} />
+                                <Chip label={game.developer}color="primary" sx={{width:'7rem'}} />
                             </Stack>
                             
 
@@ -53,27 +56,5 @@ export default function GameCard() {
                 </Grid>
             ))}
         </>
-        // <Card sx={{
-        //     maxWidth: 200,
-        //     height: 300, marginTop: "100px",
-        //     marginLeft: "2rem"
-        // }}>
-        //     <CardMedia
-        //         component="img"
-        //         alt="Game Title"
-        //         height="50"
-        //         image="/static/images/cards/contemplative-reptile.jpg"
-        //     />
-        //     <CardContent>
-        //         <Typography gutterBottom variant="h5" component="div">
-        //             Lizard
-        //         </Typography>
-        //         <Typography variant="body2" color="text.secondary">
-        //             Lizards are a widespread group of squamate reptiles, with over 6,000
-        //             species, ranging across all continents except Antarctica
-        //         </Typography>
-        //     </CardContent>
-
-        // </Card>
     );
 }

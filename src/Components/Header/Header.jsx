@@ -12,6 +12,7 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import { createSvgIcon } from '@mui/material/utils';
+import { Link } from 'react-router-dom';
 import "./Header.scss"
 
 
@@ -45,7 +46,10 @@ function ResponsiveAppBar() {
         <AppBar position="fixed">
             <Container maxWidth="xxl" sx={{ bgcolor: "#90e0ef" }}>
                 <Toolbar disableGutters>
-                    <HomeIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1, }} />
+                    <Link to="/">
+                        <HomeIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1, color:'white'}} />
+                        {/* <img className='cap-logo' src={CapLogo} alt="logo" /> */}
+                    </Link>
                     <Typography
                         variant="h6"
                         noWrap
@@ -134,11 +138,11 @@ function ResponsiveAppBar() {
                     <Box sx={{ flexGrow: 0 }}>
                         <Tooltip title="">
                             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                <Avatar alt="Mark Wy Tiu" src="/static/images/avatar/2.jpg" sx={{ bgcolor: '#5e60ce'}} />
+                                <Avatar alt="Mark Wy Tiu" src="/static/images/avatar/2.jpg" sx={{ bgcolor: '#5e60ce' }} />
                             </IconButton>
                         </Tooltip>
                         <Menu
-                            sx={{ mt: '45px'}}
+                            sx={{ mt: '45px' }}
                             id="menu-appbar"
                             anchorEl={anchorElUser}
                             anchorOrigin={{
