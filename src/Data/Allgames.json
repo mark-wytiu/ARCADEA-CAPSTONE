@@ -3,7 +3,7 @@
 		"id": 1,
 		"title": "Half-Life: Alyx",
 		"genre": "VR Action-Adventure",
-		"image": "./Game-Images/Alyx.png",
+		"image": "/Users/markwytiu/Downloads/ARCADEA-CAPSTONE-frontend/arcadea-frotend/src/Assets/Images/Alyx.png",
 		"releaseDate": "2020-03-23",
 		"price": "59.99",
 		"developer": "Valve",

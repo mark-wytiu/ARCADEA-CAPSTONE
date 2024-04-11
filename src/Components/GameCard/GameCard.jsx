@@ -13,16 +13,16 @@ export default function GameCard() {
     const navigate = useNavigate();
     const firstGames = gameData.slice(0, 15);
     const displayGamePage = (id) => {
-        navigate(`/game/:${id}`)
+        navigate(`/game/${id}`)
     }
 
 
 
     return (
         <> {/* Added a container to hold the generated cards */}
-            {firstGames.map((game, index) => (
+            {firstGames.map((game,) => (
                 <Grid item xs={3}>
-                <Card key={index} sx={{
+                <Card key={game.id} sx={{
                     maxWidth: 200,
                     height: 300,
                     marginTop: "100px",
