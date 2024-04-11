@@ -2,6 +2,7 @@ import { useParams } from 'react-router-dom';
 import GamePageDsiplay from '../../Components/GamePageDisplay/GamePageDisplay';
 import GamePageDetails from '../../Components/GamePageDetails/GamePageDetails';
 import gameData from "../../Data/Allgames.json";
+import "./GamePage.scss"
 
 
 function GamePage() {
