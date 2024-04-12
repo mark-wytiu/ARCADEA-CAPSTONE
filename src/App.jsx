@@ -7,6 +7,7 @@ import {
 } from 'react-router-dom';
 import GamePage from './Pages/GamePage/GamePage';
 import Footer from './Components/Footer/Footer';
+import AddGame from './Pages/AddGame/AddGame';
 
 function App() {
 
@@ -18,6 +19,7 @@ function App() {
         <Routes>
           <Route path="" element={<HomePage />} />
           <Route path="/game/:id" element={<GamePage />} />
+          <Route path="/add-game" element={<AddGame />} />
         </Routes>
         <Footer />
       </BrowserRouter>
