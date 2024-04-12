@@ -1,31 +1,52 @@
 import "./AddGame.scss"
+import axios from "axios";
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function AddGame() {
-    // const handleSubmit = (event) => {
-    //     event.preventDefault();
-    //     const formData = new FormData(event.target);
-    //     setTitle(formData.get('title'));
-    //     setGenre(formData.get('genre'));
-    //     setPlatforms(formData.get('platforms'));
-    //     setDescription(formData.get('description'));4
-    // }
+    const navigate = useNavigate();
+    const handleBackClick = () => {
+        navigate('/')
+    }
+
+    const baseUrl2 = process.env.REACT_APP_BASE_REACT_URL;
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        console.log(event.target)
+        const form = event.target;
+        console.log(form.title.value);
+        const game = {
+            title: form.title.value,
+            genre: form.genre.value,
+            releaseDate: form.releaseDate.value
+        }
+        console.log(game)
+
+        try {
+            const response = await axios.post(`${baseUrl2}/games`, game);
+            console.log(response.data);
+        } catch (error) {
+            console.error(error);
+        }
+    }
 
     return (
         <div class="add-game">
-            <form id="add-game_form" action="" method="post" >
+            <form id="add-game_form" action="" method="post" onSubmit={handleSubmit} >
                 <h3>Add Game</h3>
                 <h4>    </h4>
                 <fieldset>
-                    <input placeholder="Title" name="title" type="text" tabindex="1" required autofocus />
+                    <input placeholder="Title" name="title" type="text" tabindex="1" required autoFocus />
                 </fieldset>
                 <fieldset>
                     <input placeholder="Genre" name="genre" type="text" tabindex="2" required />
                 </fieldset>
                 <fieldset>
-                    <input placeholder="Platforms" name="platorms" type="text" tabindex="3" required />
+                    <input placeholder="Release Date" name="releaseDate" type="text" tabindex="3" required />
                 </fieldset>
                 <fieldset>
-                    <button name="submit" type="submit" id="add-game-submit" data-submit="...Sending">Submit</button>
+                    <button name="submit" type="submit" id="add-game-submit" data-submit="...Sending" onClick={handleBackClick}>Submit</button>
                 </fieldset>
             </form>
         </div>

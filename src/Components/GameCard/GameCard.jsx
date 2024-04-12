@@ -17,12 +17,11 @@ export default function GameCard({games}) {
         navigate(`/game/${id}`)
     }
 
-    const oneGame = games.slice(0,15);
-    
+    const oneGame = games.slice(0,14);
 
     return (
         <>
-            {oneGame.map((game,) => (
+            {oneGame.map((game) => (
                 <Grid item xs={3} >
                     <Card key={game.id} sx={{
                         maxWidth: 200,
@@ -33,7 +32,7 @@ export default function GameCard({games}) {
                         textAlign: 'center',
                         borderRadius: "20px",
                     }}>
-                        <CardMedia
+                        <CardMedia 
                             onClick={() => displayGamePage(game.id)}
                             component="img"
                             alt={game.title}

@@ -1,4 +1,4 @@
-@import url(https://fonts.googleapis.com/css?family=Open+Sans:400italic,400,300,600);
+// @import url(https://fonts.googleapis.com/css?family=Open+Sans:400italic,400,300,600);
 
 * {
 	margin:0;
@@ -22,9 +22,10 @@ body {
 }
 
 .add-game {
-	max-width:400px;
+	max-width:500px;
 	width:100%;
-	margin:0 auto;
+	margin: 5rem auto;
+	height: 80vh;
 	position:relative;
 }
 

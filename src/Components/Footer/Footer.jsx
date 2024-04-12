@@ -8,8 +8,8 @@ function Footer() {
     return (
         <section className="footer">
             <hr />
-            <section>
-                <a href="/">Social</a>
+            <section className="footer-p">
+                <h1>Social</h1>
             </section>
             <section className="footer-info">
                 <section className="footer-info_left">

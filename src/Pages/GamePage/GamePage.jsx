@@ -8,15 +8,11 @@ import "./GamePage.scss"
 
 function GamePage() {
     const gameId = useParams();
-
-    // const foundId = Number(gameId.id)
 	const baseUrl2 = process.env.REACT_APP_BASE_REACT_URL;
-
 
     const [selectedGame, setSelectedGame] = useState({});
     console.log(gameId)
     useEffect(() => {
-
 
         const gameData = async () => {
             console.log(gameId.id);
@@ -25,9 +21,7 @@ function GamePage() {
             setSelectedGame(response.data);
         };
         gameData();
-
     }, []);
-    
 
     return (
         <div className='GamePage'>
