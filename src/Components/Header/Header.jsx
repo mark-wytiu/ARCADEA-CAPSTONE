@@ -18,7 +18,7 @@ import { useNavigate } from 'react-router-dom';
 import "./Header.scss"
 
 
-const pages = ['Games', 'Blog'];
+const pages = ['Add Games', 'Blog'];
 const settings = ['Profile'];
 const HomeIcon = createSvgIcon(
     <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />,
@@ -105,7 +105,7 @@ function ResponsiveAppBar() {
                             }}
                         >
                             {pages.map((page) => (
-                                
+
                                 <MenuItem key={page} >
                                     <Typography textAlign="center">{page}</Typography>
                                 </MenuItem>
@@ -163,7 +163,7 @@ function ResponsiveAppBar() {
                                 horizontal: 'right',
                             }}
                             open={Boolean(anchorElUser)}
-                            
+
                         >
                             {settings.map((setting) => (
                                 <MenuItem key={setting} >
