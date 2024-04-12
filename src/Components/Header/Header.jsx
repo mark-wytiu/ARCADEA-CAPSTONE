@@ -13,6 +13,8 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import { createSvgIcon } from '@mui/material/utils';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+
 import "./Header.scss"
 
 
@@ -42,13 +44,19 @@ function ResponsiveAppBar() {
         setAnchorElUser(null);
     };
 
+    const navigate = useNavigate();
+    const handleAddGamesClick = () => {
+        navigate('/add-game')
+    }
+
+
+
     return (
         <AppBar position="fixed">
             <Container maxWidth="xxl" sx={{ bgcolor: "#90e0ef" }}>
                 <Toolbar disableGutters>
                     <Link to="/">
-                        <HomeIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1, color:'white'}} />
-                        {/* <img className='cap-logo' src={CapLogo} alt="logo" /> */}
+                        <HomeIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1, color: 'white' }} />
                     </Link>
                     <Typography
                         variant="h6"
@@ -65,7 +73,6 @@ function ResponsiveAppBar() {
                             textDecoration: 'none',
                         }}
                     >
-                        {/* LOGO */}
                     </Typography>
 
                     <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -98,7 +105,8 @@ function ResponsiveAppBar() {
                             }}
                         >
                             {pages.map((page) => (
-                                <MenuItem key={page} onClick={handleCloseNavMenu}>
+                                
+                                <MenuItem key={page} >
                                     <Typography textAlign="center">{page}</Typography>
                                 </MenuItem>
                             ))}
@@ -127,8 +135,8 @@ function ResponsiveAppBar() {
                         {pages.map((page) => (
                             <Button
                                 key={page}
-                                onClick={handleCloseNavMenu}
                                 sx={{ my: 2, color: 'white', display: 'block' }}
+                                onClick={handleAddGamesClick}
                             >
                                 {page}
                             </Button>
@@ -137,7 +145,7 @@ function ResponsiveAppBar() {
 
                     <Box sx={{ flexGrow: 0 }}>
                         <Tooltip title="">
-                            <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                            <IconButton sx={{ p: 0 }}>
                                 <Avatar alt="Mark Wy Tiu" src="/static/images/avatar/2.jpg" sx={{ bgcolor: '#5e60ce' }} />
                             </IconButton>
                         </Tooltip>
@@ -155,10 +163,10 @@ function ResponsiveAppBar() {
                                 horizontal: 'right',
                             }}
                             open={Boolean(anchorElUser)}
-                            onClose={handleCloseUserMenu}
+                            
                         >
                             {settings.map((setting) => (
-                                <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                                <MenuItem key={setting} >
                                     <Typography textAlign="center">{setting}</Typography>
                                 </MenuItem>
                             ))}
