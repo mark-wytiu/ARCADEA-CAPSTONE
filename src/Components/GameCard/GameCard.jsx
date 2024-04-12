@@ -45,13 +45,10 @@ export default function GameCard({games}) {
                             <Typography gutterBottom variant="h5" component="div">
                                 {game.title}
                             </Typography>
-
                             <Stack direction="column" spacing={2} sx={{ justifyContent: 'center' }}>
                                 <Chip label={game.genre} color="primary" sx={{ width: '7rem' }} />
                                 <Chip label={game.developer} color="primary" sx={{ width: '7rem' }} />
                             </Stack>
-
-
                         </CardContent>
                     </Card>
                 </Grid>

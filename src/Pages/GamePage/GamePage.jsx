@@ -23,14 +23,7 @@ function GamePage() {
             console.log(baseUrl2);
             const response = await axios.get(`${baseUrl2}/games/${gameId.id}`);
             setSelectedGame(response.data);
-            
         };
-
-        // if (gameId) {
-        // 	gameData(gameId);
-        // } else {
-        // 	videoData(defaultId);
-        // }
         gameData();
 
     }, []);
