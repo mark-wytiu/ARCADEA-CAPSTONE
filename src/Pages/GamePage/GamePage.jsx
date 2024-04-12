@@ -1,21 +1,45 @@
 import { useParams } from 'react-router-dom';
 import GamePageDsiplay from '../../Components/GamePageDisplay/GamePageDisplay';
 import GamePageDetails from '../../Components/GamePageDetails/GamePageDetails';
-import gameData from "../../Data/Allgames.json";
+import  axios  from "axios";
+import { useState, useEffect } from "react";
 import "./GamePage.scss"
 
 
 function GamePage() {
     const gameId = useParams();
 
-    const foundId = Number(gameId.id)
-    const foundGame = gameData.find((game) => game.id === foundId 
-    )
+    // const foundId = Number(gameId.id)
+	const baseUrl2 = process.env.REACT_APP_BASE_REACT_URL;
+
+
+    const [selectedGame, setSelectedGame] = useState({});
+    console.log(gameId)
+    useEffect(() => {
+
+
+        const gameData = async () => {
+            console.log(gameId.id);
+            console.log(baseUrl2);
+            const response = await axios.get(`${baseUrl2}/games/${gameId.id}`);
+            setSelectedGame(response.data);
+            
+        };
+
+        // if (gameId) {
+        // 	gameData(gameId);
+        // } else {
+        // 	videoData(defaultId);
+        // }
+        gameData();
+
+    }, []);
+    
 
     return (
         <div className='GamePage'>
-            <GamePageDsiplay foundGame={foundGame}/>
-            <GamePageDetails foundGame={foundGame}/>
+            <GamePageDsiplay foundGame={selectedGame}/>
+            <GamePageDetails foundGame={selectedGame}/>
         </div>
 
     )
