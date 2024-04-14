@@ -6,7 +6,6 @@ import { useNavigate } from "react-router-dom";
 
 function AddGame() {
     const navigate = useNavigate();
-
     const baseUrl2 = process.env.REACT_APP_BASE_REACT_URL;
     const handleSubmit = async (event) => {
         console.log("fafsadfas")
@@ -34,7 +33,7 @@ function AddGame() {
         <div class="add-game">
             <form id="add-game_form" method="post" onSubmit={handleSubmit} >
                 <h3>Add Game</h3>
-                <h4>    </h4>
+                <hr />
                 <fieldset>
                     <input placeholder="Title" name="title" type="text" tabindex="1" required autoFocus />
                 </fieldset>

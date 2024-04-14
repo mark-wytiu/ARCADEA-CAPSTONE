@@ -9,7 +9,6 @@ import "./GamePage.scss"
 function GamePage() {
     const gameId = useParams();
 	const baseUrl2 = process.env.REACT_APP_BASE_REACT_URL;
-
     const [selectedGame, setSelectedGame] = useState({});
     console.log(gameId)
     useEffect(() => {
@@ -28,7 +27,6 @@ function GamePage() {
             <GamePageDsiplay foundGame={selectedGame}/>
             <GamePageDetails foundGame={selectedGame}/>
         </div>
-
     )
 }
 export default GamePage;
