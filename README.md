@@ -1,70 +1,96 @@
-# Getting Started with Create React App
+# Project Title
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+ARCADEA
 
-## Available Scripts
+## Overview
 
-In the project directory, you can run:
+Arcadea is a game library app designed for passionate gamers who crave variety and organization, encompassing the entire spectrum of gaming - from the latest AAA releases to beloved indie gems and timeless classics.
 
-### `npm start`
+### Problem
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Gamers often end up with games scattered across multiple platforms and launchers (Steam, Epic, consoles, etc.). This makes it hard to keep track of your entire collection, discover what you already own, and decide what to play next. Arcadea solves this by being an all-in-one hub.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Decision Paralysis: "What should I play tonight?" Arcadea's curated recommendation system and powerful filters combat that overwhelming feeling.
+Losing Track of Your Backlog: Arcadea's custom tagging and filtering systems let you effectively manage that ever-growing list of games you want to try.
 
-### `npm test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### User Profile
 
-### `npm run build`
+Target Users:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Passionate Gamers: People who own multiple platforms (PC, consoles) and have substantial game libraries. These are gamers frustrated with fragmentation.
+Game Explorers: Players who enjoy diverse genres, aren't solely focused on new releases, and actively seek out new experiences.
+Retro Enthusiasts: Gamers with a fondness for classic titles and a willingness to utilize emulators alongside modern platforms.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+How They Will Use Arcadea:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Organization: Creating a centralized, visually appealing library of all their games, regardless of the original platform.
+Decision-Making: Utilizing the "Wishlist Machine" and filters to efficiently choose which game to play based on mood, available time, etc.
+Tracking: Viewing playtime statistics, achievements, and personal insights to better understand their gaming habits.
+Discovery: Finding new titles that align with their tastes, both within their existing library and through recommendations.
 
-### `npm run eject`
+### Features
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Database search of game titles
+User can filter games through like: release date, genre, rating, and emotional tags.
+Manual entry (title, platform, etc.)
+Customizable Showcase: Various display options (arcades, cover art, lists)
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## Implementation
 
-## Learn More
+### Tech Stack
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+List technologies that will be used in your app, including any libraries to save time or provide more functionality. Be sure to research any potential limitations.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
 
-### Code Splitting
+- React
+- TypeScript/Javascript
+- MySQL
+- Express
+- react
+- react-router
+- axios
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
 
-### Analyzing the Bundle Size
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+### APIs
 
-### Making a Progressive Web App
+No external apis
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+### Sitemap
 
-### Advanced Configuration
+- Home Page
+- Games List
+- Register
+- Login
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
 
-### Deployment
+### Endpoints
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
 
-### `npm run build` fails to minify
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## Roadmap
+
+
+Phase 1: Minimum Viable Product (MVP)
+
+Core Library Architecture: Design a database to store game data (title, platform, cover art, release date, genres, etc.).
+Manual Game Input: Create a simple form to add games with basic details.
+Visual Library Display: Choose a primary display mode (cover art grid, list, or arcade cabinets) and implement sorting options (title, platform, release date).
+Basic Filtering: Start with filters for genre and platform.
+
+
+Phase 2:  Enhanced Functionality
+
+Personal Ratings & Notes: Allow users to rate games and add their own notes.
+
+
+## Nice-to-haves
+
+"Wishlist Machine" Refinement Incorporate user ratings, tags, and external review scores (if possible) to improve recommendations.
+Achievement Tracking: Explore integration with APIs for platforms that support it.
+Social Features (Optional): Consider a basic friends system and simple review sharing features.
+Theme Support: Add customizable themes and UI color schemes.
+Potentially: Storefront integration (Steam, etc.)
