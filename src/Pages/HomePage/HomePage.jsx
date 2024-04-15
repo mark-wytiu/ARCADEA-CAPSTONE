@@ -33,7 +33,7 @@ function HomePage() {
             width: '100%', backgroundImage: `url(${bgImg})`, backgroundRepeat: "no-repeat",
             backgroundSize: "cover", height: '80rem'
         }}>
-            <Grid container rowSpacing={1} columnSpacing={{ xs: 1 }} sx={{
+            <Grid container spacing={2} sx={{
                 width:{}
                 
             }}>

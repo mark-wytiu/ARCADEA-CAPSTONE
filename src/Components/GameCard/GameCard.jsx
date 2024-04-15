@@ -11,13 +11,13 @@ import { useNavigate } from 'react-router-dom';
 import "./GameCard.scss"
 
 
-export default function GameCard({games}) {
+export default function GameCard({ games }) {
     const navigate = useNavigate();
     const displayGamePage = (id) => {
         navigate(`/game/${id}`)
     }
 
-    const oneGame = games.slice(0,14);
+    const oneGame = games.slice(0, 14);
 
     return (
         <>
@@ -31,8 +31,9 @@ export default function GameCard({games}) {
                         flexWrap: 'wrap',
                         textAlign: 'center',
                         borderRadius: "20px",
+                        boxShadow: "0 8px 20px 0 rgba(0, 0, 0, 1)"
                     }}>
-                        <CardMedia 
+                        <CardMedia
                             onClick={() => displayGamePage(game.id)}
                             component="img"
                             alt={game.title}

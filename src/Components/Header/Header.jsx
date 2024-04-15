@@ -53,7 +53,7 @@ function ResponsiveAppBar() {
 
     return (
         <AppBar position="fixed">
-            <Container maxWidth="xxl" sx={{ bgcolor: "#90e0ef" }}>
+            <Container maxWidth="xxl" sx={{ bgcolor: "#a2d2ff", boxShadow: "0 8px 16px 0 rgba(0, 0, 0, 0.9)"}}>
                 <Toolbar disableGutters>
                     <Link to="/">
                         <HomeIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1, color: 'white' }} />

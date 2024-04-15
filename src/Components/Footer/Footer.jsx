@@ -9,7 +9,7 @@ function Footer() {
         <section className="footer">
             <hr />
             <section className="footer-p">
-                <h1>Social</h1>
+                Social
             </section>
             <section className="footer-info">
                 <section className="footer-info_left">
@@ -17,10 +17,10 @@ function Footer() {
                 </section>
 
                 <section className="footer-info_right">
-                    <img src={fbIcon} alt="" />
-                    <img src={linkedinIcon} alt="" />
-                    <img src={xIcon} alt="" />
-                    <img src={igIcon} alt="" />
+                    <img className="footer-info_right_icon" src={fbIcon} alt="" />
+                    <img className="footer-info_right_icon" src={linkedinIcon} alt="" />
+                    <img className="footer-info_right_icon" src={xIcon} alt="" />
+                    <img className="footer-info_right_icon" src={igIcon} alt="" />
                 </section>
 
             </section>
