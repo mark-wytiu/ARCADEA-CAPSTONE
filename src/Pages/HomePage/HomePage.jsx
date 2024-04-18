@@ -19,6 +19,9 @@ function HomePage() {
 		const getGames = async () => {
 			const response = await axios.get(`${baseUrl2}/games`);
 			const allGames = response.data;
+            const lastGames = allGames.reverse()
+            
+            console.log(lastGames);
 			setGames(allGames);
 		};
 		getGames();

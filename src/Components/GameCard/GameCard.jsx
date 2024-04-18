@@ -8,6 +8,7 @@ import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
 import Grid from '@mui/material/Grid'
 import { useNavigate } from 'react-router-dom';
+import gameImg from "../../Assets/1784571.png"
 import "./GameCard.scss"
 
 
@@ -17,7 +18,7 @@ export default function GameCard({ games }) {
         navigate(`/game/${id}`)
     }
 
-    const oneGame = games.slice(0, 14);
+    const oneGame = games.slice(0, 14); 
 
     return (
         <>
@@ -38,7 +39,7 @@ export default function GameCard({ games }) {
                             component="img"
                             alt={game.title}
                             height="100"
-                            image={game.image}
+                            image={game.image || gameImg}
                             sx={{ objectFit: "contain" }}
                         />
                         <CardContent>

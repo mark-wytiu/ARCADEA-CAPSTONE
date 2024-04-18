@@ -4,19 +4,17 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
+
 function AddGame() {
     const navigate = useNavigate();
     const baseUrl2 = process.env.REACT_APP_BASE_REACT_URL;
     const handleSubmit = async (event) => {
-        console.log("fafsadfas")
         event.preventDefault();
-        console.log(event.target)
         const form = event.target;
-        console.log(form.title.value);
         const game = {
             title: form.title.value,
             genre: form.genre.value,
-            releaseDate: form.releaseDate.value
+            releaseDate: form.releaseDate.value,
         }
         console.log(game)
 
