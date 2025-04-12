@@ -16,7 +16,6 @@ import {
     InputLabel,
     Button,
     Chip,
-    Divider,
     Fade,
     Pagination,
     CircularProgress,
@@ -183,14 +182,22 @@ function HomePage() {
         }} className="home-page-container">
             <Container maxWidth="xl">
                 {/* Header Section */}
-                <Box sx={{ textAlign: 'center', mb: 4 }}>
+                <Box sx={{
+                    textAlign: 'center',
+                    mb: 5,
+                    mt: 2,
+                    position: 'relative',
+                    zIndex: 1
+                }}>
                     <Typography
-                        variant="h2"
+                        variant="h1"
                         component="h1"
                         sx={{
                             color: 'white',
-                            textShadow: '2px 2px 4px rgba(0,0,0,0.7)',
-                            fontWeight: 'bold',
+                            textShadow: '2px 2px 8px rgba(0,0,0,0.7)',
+                            fontWeight: 800,
+                            fontSize: { xs: '3rem', sm: '4rem', md: '5rem' },
+                            letterSpacing: '0.05em',
                             mb: 2
                         }}
                     >
@@ -200,8 +207,11 @@ function HomePage() {
                         variant="h5"
                         sx={{
                             color: 'white',
-                            textShadow: '1px 1px 3px rgba(0,0,0,0.5)',
-                            mb: 4
+                            textShadow: '1px 1px 4px rgba(0,0,0,0.5)',
+                            mb: 4,
+                            fontSize: { xs: '1.2rem', sm: '1.5rem' },
+                            fontWeight: 300,
+                            letterSpacing: '0.02em'
                         }}
                     >
                         Discover Your Next Gaming Adventure
@@ -381,18 +391,50 @@ function HomePage() {
                 ) : (
                     <>
                         {/* Results count and sorting info */}
-                        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }} className="game-count">
-                            <Typography variant="body1" sx={{ color: 'white', textShadow: '1px 1px 2px rgba(0,0,0,0.7)' }}>
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                alignItems: 'center',
+                                mb: 3,
+                                mt: 4,
+                                px: 2
+                            }}
+                            className="game-count"
+                        >
+                            <Typography
+                                variant="body1"
+                                sx={{
+                                    color: 'white',
+                                    textShadow: '1px 1px 2px rgba(0,0,0,0.7)',
+                                    fontWeight: 500,
+                                    fontSize: '1rem'
+                                }}
+                            >
                                 Showing {currentPageGames.length} of {filteredGames.length} games
                             </Typography>
-                            <Typography variant="body2" sx={{ color: 'white', textShadow: '1px 1px 2px rgba(0,0,0,0.7)' }}>
+                            <Typography
+                                variant="body2"
+                                sx={{
+                                    color: 'white',
+                                    textShadow: '1px 1px 2px rgba(0,0,0,0.7)',
+                                    fontWeight: 400
+                                }}
+                            >
                                 Sorted by: {sortBy} ({sortOrder === 'asc' ? 'ascending' : 'descending'})
                             </Typography>
                         </Box>
 
                         {/* Games Grid */}
                         <Fade in={!loading}>
-                            <Grid container spacing={3} sx={{ justifyContent: 'center' }}>
+                            <Grid
+                                container
+                                spacing={3}
+                                sx={{
+                                    justifyContent: 'flex-start',
+                                    px: 1
+                                }}
+                            >
                                 <GameCard games={currentPageGames} />
                             </Grid>
                         </Fade>
