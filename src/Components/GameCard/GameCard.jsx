@@ -16,18 +16,16 @@ export default function GameCard({ games }) {
         navigate(`/game/${id}`);
     }
 
-    const displayedGames = games.slice(0, 14);
-
     return (
         <>
-            {displayedGames.map((game) => (
-                <Grid item xs={12} sm={6} md={4} lg={3} key={game.id}>
+            {games.map((game) => (
+                <Grid item xs={12} sm={6} md={3} lg={3} key={game.id}>
                     <Card
                         className="game-card"
                         onClick={() => displayGamePage(game.id)}
                         sx={{
-                            height: 380,
-                            margin: "20px",
+                            height: 350,
+                            width: '100%',
                             borderRadius: "12px",
                             transition: "transform 0.3s ease, box-shadow 0.3s ease",
                             "&:hover": {
@@ -36,18 +34,19 @@ export default function GameCard({ games }) {
                             },
                             cursor: "pointer",
                             display: "flex",
-                            flexDirection: "column"
+                            flexDirection: "column",
+                            overflow: "hidden"
                         }}
                     >
                         <CardMedia
                             component="img"
                             alt={game.title}
-                            height="180"
+                            height="200"
                             image={game.image || gameImg}
                             sx={{
-                                objectFit: "cover",
-                                borderTopLeftRadius: "12px",
-                                borderTopRightRadius: "12px"
+                                objectFit: "contain",
+                                backgroundColor: '#f5f5f5',
+                                padding: '10px'
                             }}
                         />
                         <CardContent sx={{
@@ -55,7 +54,8 @@ export default function GameCard({ games }) {
                             display: "flex",
                             flexDirection: "column",
                             justifyContent: "space-between",
-                            padding: "16px"
+                            padding: "16px",
+                            backgroundColor: 'white'
                         }}>
                             <Typography
                                 gutterBottom
@@ -69,30 +69,34 @@ export default function GameCard({ games }) {
                                     display: "-webkit-box",
                                     WebkitLineClamp: 2,
                                     WebkitBoxOrient: "vertical",
-                                    height: "50px",
-                                    marginBottom: "16px"
+                                    height: "48px",
+                                    marginBottom: 1.5
                                 }}
                             >
                                 {game.title}
                             </Typography>
                             <Stack spacing={1} sx={{ marginTop: "auto" }}>
                                 <Chip
-                                    label={game.genre}
+                                    label={game.genre || "Genre Unknown"}
                                     color="primary"
                                     size="small"
                                     sx={{
                                         borderRadius: "4px",
                                         marginBottom: "8px",
-                                        fontWeight: "medium"
+                                        fontWeight: "medium",
+                                        textAlign: "center",
+                                        width: 'fit-content'
                                     }}
                                 />
                                 <Chip
-                                    label={game.developer}
+                                    label={game.developer || "Developer Unknown"}
                                     color="secondary"
                                     size="small"
                                     sx={{
                                         borderRadius: "4px",
-                                        fontWeight: "medium"
+                                        fontWeight: "medium",
+                                        textAlign: "center",
+                                        width: 'fit-content'
                                     }}
                                 />
                             </Stack>
