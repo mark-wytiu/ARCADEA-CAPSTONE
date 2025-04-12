@@ -19,9 +19,9 @@ import {
     Rating,
     Divider,
     Chip,
-    Stack
+    Stack,
+    CircularProgress
 } from '@mui/material';
-import LoadingButton from '@mui/lab/LoadingButton';
 import { styled } from '@mui/material/styles';
 
 // Custom styled components
@@ -357,14 +357,15 @@ function AddGame() {
                                 >
                                     Cancel
                                 </Button>
-                                <LoadingButton
+                                <Button
                                     type="submit"
                                     variant="contained"
-                                    loading={loading}
+                                    disabled={loading}
                                     sx={{ minWidth: '120px' }}
+                                    startIcon={loading ? <CircularProgress size={20} /> : null}
                                 >
-                                    Add Game
-                                </LoadingButton>
+                                    {loading ? 'Adding...' : 'Add Game'}
+                                </Button>
                             </Stack>
                         </Grid>
                     </Grid>
