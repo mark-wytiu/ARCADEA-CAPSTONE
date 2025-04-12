@@ -69,8 +69,8 @@ fieldset {
 	margin: 0 0 5px;
 	padding: 10px;
 	border-radius: 9px;
-	margin-top: .7rem;
-	margin-bottom: .7rem;
+	margin-top: 0.7rem;
+	margin-bottom: 0.7rem;
 }
 
 #add-game_form input[type="text"]:hover,
@@ -127,4 +127,40 @@ fieldset {
 }
 :-ms-input-placeholder {
 	color: #888;
+}
+
+.add-game-container {
+	background-color: rgba(255, 255, 255, 0.05);
+	backdrop-filter: blur(10px);
+
+	.MuiPaper-root {
+		transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+		&:hover {
+			transform: translateY(-5px);
+			box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+		}
+	}
+
+	.MuiRating-root {
+		margin-top: 8px;
+		color: #f5b400;
+	}
+
+	.MuiChip-root {
+		font-weight: 500;
+	}
+
+	.MuiDivider-root {
+		margin-bottom: 24px;
+	}
+
+	.MuiTextField-root,
+	.MuiFormControl-root {
+		margin-bottom: 8px;
+	}
+
+	.form-buttons {
+		margin-top: 16px;
+	}
 }
