@@ -1,0 +1,21 @@
+.game-card {
+	box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+	background-color: #ffffff;
+}
+
+.css-17z3bv4-MuiChip-root {
+	justify-content: center;
+	align-items: center;
+}
+
+.MuiStack-root {
+	justify-content: center;
+	align-items: center;
+}
+
+/* Media query for smaller screens */
+@media (max-width: 600px) {
+	.game-card {
+		height: auto !important;
+	}
+}
