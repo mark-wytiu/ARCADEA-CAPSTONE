@@ -7,15 +7,12 @@ NC='\033[0m' # No Color
 
 echo -e "${YELLOW}Starting ARCADEA Development Environment...${NC}"
 
-# Get the current directory name
-CURRENT_DIR=$(basename "$PWD")
-
 # Check if backend repo exists
 if [ ! -d "../ARCADEA-CAPSTONE-backend" ]; then
   echo -e "${YELLOW}Backend repository not found. Cloning it now...${NC}"
   cd ..
   git clone https://github.com/mark-wytiu/ARCADEA-CAPSTONE-backend.git
-  cd "$CURRENT_DIR"
+  cd ARCADEA-CAPSTONE-frontend
 fi
 
 # Start backend in a new terminal window
