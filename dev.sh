@@ -24,4 +24,5 @@ sleep 2
 
 # Start frontend in current terminal
 echo -e "${GREEN}Starting frontend development server...${NC}"
+npm install
 npm start 
