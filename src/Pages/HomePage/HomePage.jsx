@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { gameAPI } from "../../services/api";
 import GameCard from "../../Components/GameCard/GameCard";
 import {
@@ -34,25 +34,39 @@ const GAMES_PER_PAGE = 8;
 
 function HomePage() {
     const navigate = useNavigate();
+    const [searchParams, setSearchParams] = useSearchParams();
     const [games, setGames] = useState([]);
     const [filteredGames, setFilteredGames] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
     // Search and filter states
-    const [searchTerm, setSearchTerm] = useState('');
-    const [selectedGenre, setSelectedGenre] = useState('All');
-    const [selectedPlatform, setSelectedPlatform] = useState('All');
-    const [sortBy, setSortBy] = useState('title');
-    const [sortOrder, setSortOrder] = useState('asc');
+    const [searchTerm, setSearchTerm] = useState(searchParams.get('search') || '');
+    const [selectedGenre, setSelectedGenre] = useState(searchParams.get('genre') || 'All');
+    const [selectedPlatform, setSelectedPlatform] = useState(searchParams.get('platform') || 'All');
+    const [sortBy, setSortBy] = useState(searchParams.get('sortBy') || 'title');
+    const [sortOrder, setSortOrder] = useState(searchParams.get('sortOrder') || 'asc');
 
     // Pagination
-    const [page, setPage] = useState(1);
+    const [page, setPage] = useState(parseInt(searchParams.get('page')) || 1);
     const [totalPages, setTotalPages] = useState(1);
 
     // Unique genres and platforms for filters
     const [genres, setGenres] = useState(['All']);
     const [platforms, setPlatforms] = useState(['All']);
+
+    // Helper function to update URL parameters
+    const updateURLParams = (updates) => {
+        const newSearchParams = new URLSearchParams(searchParams);
+        Object.entries(updates).forEach(([key, value]) => {
+            if (value === '' || value === 'All') {
+                newSearchParams.delete(key);
+            } else {
+                newSearchParams.set(key, value.toString());
+            }
+        });
+        setSearchParams(newSearchParams);
+    };
 
     useEffect(() => {
         const fetchGames = async () => {
@@ -123,8 +137,13 @@ function HomePage() {
 
         setFilteredGames(result);
         setTotalPages(Math.ceil(result.length / GAMES_PER_PAGE));
-        setPage(1); // Reset to first page when filters change
-    }, [games, searchTerm, selectedGenre, selectedPlatform, sortBy, sortOrder]);
+        
+        // Only reset to page 1 if the current page would be out of bounds
+        const newTotalPages = Math.ceil(result.length / GAMES_PER_PAGE);
+        if (page > newTotalPages && newTotalPages > 0) {
+            setPage(1);
+        }
+    }, [games, searchTerm, selectedGenre, selectedPlatform, sortBy, sortOrder, page]);
 
     // Calculate current page games
     const currentPageGames = filteredGames.slice(
@@ -134,28 +153,40 @@ function HomePage() {
 
     const handlePageChange = (event, value) => {
         setPage(value);
+        
+        // Update URL parameters
+        const newSearchParams = new URLSearchParams(searchParams);
+        newSearchParams.set('page', value.toString());
+        setSearchParams(newSearchParams);
+        
         // Scroll to top when changing pages
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
     const handleSortChange = (event) => {
         setSortBy(event.target.value);
+        updateURLParams({ sortBy: event.target.value });
     };
 
     const toggleSortOrder = () => {
-        setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+        const newOrder = sortOrder === 'asc' ? 'desc' : 'asc';
+        setSortOrder(newOrder);
+        updateURLParams({ sortOrder: newOrder });
     };
 
     const handleGenreChange = (event) => {
         setSelectedGenre(event.target.value);
+        updateURLParams({ genre: event.target.value, page: 1 });
     };
 
     const handlePlatformChange = (event) => {
         setSelectedPlatform(event.target.value);
+        updateURLParams({ platform: event.target.value, page: 1 });
     };
 
     const handleSearchChange = (event) => {
         setSearchTerm(event.target.value);
+        updateURLParams({ search: event.target.value, page: 1 });
     };
 
     const clearFilters = () => {
@@ -164,6 +195,8 @@ function HomePage() {
         setSelectedPlatform('All');
         setSortBy('title');
         setSortOrder('asc');
+        setPage(1);
+        setSearchParams(new URLSearchParams()); // Clear all URL parameters
     };
 
     const navigateToAddGame = () => {
