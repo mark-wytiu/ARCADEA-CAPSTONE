@@ -17,8 +17,7 @@ export const useGameSubmission = () => {
             setSuccess(true);
 
             // Navigate to home after successful submission
-            setTimeout(() => {
-                navigate('/');
+            setTimeout(() => {            navigate('/');
             }, 1500);
 
         } catch (error) {

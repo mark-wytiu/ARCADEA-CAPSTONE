@@ -5,22 +5,18 @@ import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
-import Grid from '@mui/material/Grid';
 import { useNavigate } from 'react-router-dom';
 import gameImg from "../../Assets/1784571.png";
 import "./GameCard.css";
 
-export default function GameCard({ games }) {
+export default function GameCard({ game }) {
     const navigate = useNavigate();
     const displayGamePage = (id) => {
         navigate(`/game/${id}`);
     }
 
     return (
-        <>
-            {games.map((game) => (
-                <Grid item xs={12} sm={6} md={3} lg={3} key={game.id}>
-                    <Card
+        <Card
                         className="game-card"
                         onClick={() => displayGamePage(game.id)}
                         sx={{
@@ -102,8 +98,5 @@ export default function GameCard({ games }) {
                             </Stack>
                         </CardContent>
                     </Card>
-                </Grid>
-            ))}
-        </>
     );
 }
