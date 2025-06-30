@@ -1,107 +1,96 @@
-# ARCADEA - Game Library App
+# Project Title
 
-ARCADEA is a game library app designed for passionate gamers who crave variety and organization.
+ARCADEA
 
-## Getting Started
+## Overview
 
-### Prerequisites
+Arcadea is a game library app designed for passionate gamers who crave variety and organization, encompassing the entire spectrum of gaming - from the latest AAA releases to beloved indie gems and timeless classics.
 
--   Node.js (v14 or newer)
--   npm or yarn
--   Git
+### Problem
 
-### Installation and Setup
+Gamers often end up with games scattered across multiple platforms and launchers (Steam, Epic, consoles, etc.). This makes it hard to keep track of your entire collection, discover what you already own, and decide what to play next. Arcadea solves this by being an all-in-one hub.
 
-1. Clone the frontend repository:
+Decision Paralysis: "What should I play tonight?" Arcadea's curated recommendation system and powerful filters combat that overwhelming feeling.
+Losing Track of Your Backlog: Arcadea's custom tagging and filtering systems let you effectively manage that ever-growing list of games you want to try.
 
-```
-git clone https://github.com/mark-wytiu/ARCADEA-CAPSTONE-frontend.git
-cd ARCADEA-CAPSTONE-frontend
-```
 
-2. Install dependencies:
+### User Profile
 
-```
-npm install
-```
+Target Users:
 
-3. Create a `.env` file in the root directory with:
+Passionate Gamers: People who own multiple platforms (PC, consoles) and have substantial game libraries. These are gamers frustrated with fragmentation.
+Game Explorers: Players who enjoy diverse genres, aren't solely focused on new releases, and actively seek out new experiences.
+Retro Enthusiasts: Gamers with a fondness for classic titles and a willingness to utilize emulators alongside modern platforms.
 
-```
-REACT_APP_API_BASE_URL=http://localhost:5050
-```
+How They Will Use Arcadea:
 
-### Running the Application
+Organization: Creating a centralized, visually appealing library of all their games, regardless of the original platform.
+Decision-Making: Utilizing the "Wishlist Machine" and filters to efficiently choose which game to play based on mood, available time, etc.
+Tracking: Viewing playtime statistics, achievements, and personal insights to better understand their gaming habits.
+Discovery: Finding new titles that align with their tastes, both within their existing library and through recommendations.
 
-#### Option 1: Run Frontend and Backend Separately
+### Features
 
-**To run the backend:**
+Database search of game titles
+User can filter games through like: release date, genre, rating, and emotional tags.
+Manual entry (title, platform, etc.)
+Customizable Showcase: Various display options (arcades, cover art, lists)
 
-```
-git clone https://github.com/mark-wytiu/ARCADEA-CAPSTONE-backend.git
-cd ARCADEA-CAPSTONE-backend
-npm install
-npm start
-```
 
-**To run the frontend:**
 
-```
-cd ARCADEA-CAPSTONE-frontend
-npm start
-```
+## Implementation
 
-#### Option 2: Using the Development Script (macOS)
+### Tech Stack
 
-We've included a convenient script that launches both frontend and backend servers at once:
+List technologies that will be used in your app, including any libraries to save time or provide more functionality. Be sure to research any potential limitations.
 
-1. Make the script executable:
 
-```
-chmod +x dev.sh
-```
+- React
+- TypeScript/Javascript
+- MySQL
+- Express
+- react
+- react-router
+- axios
 
-2. Run the script:
 
-```
-./dev.sh
-```
 
-This will:
+### APIs
 
--   Clone the backend repository if it doesn't exist
--   Start the backend server in a separate terminal window
--   Start the frontend development server in the current terminal
+No external apis
 
-### Accessing the App
+### Sitemap
 
-Once both servers are running:
+- Home Page
+- Games List
+- Register
+- Login
 
--   The frontend will be available at: http://localhost:3000
--   The backend API will be available at: http://localhost:5050
 
-## Features
+### Endpoints
 
--   Browse and search for games
--   View game details
--   Add new games to the library
--   Modern, responsive user interface
 
-## Tech Stack
 
--   React.js
--   Material UI
--   Express.js
--   MySQL
--   Axios
+## Roadmap
 
-## Project Structure
 
--   `/src/components`: React components
--   `/src/pages`: Page components
--   `/src/services`: API service layer
--   `/src/assets`: Static assets (images, styles)
+Phase 1: Minimum Viable Product (MVP)
 
-## Contact
+Core Library Architecture: Design a database to store game data (title, platform, cover art, release date, genres, etc.).
+Manual Game Input: Create a simple form to add games with basic details.
+Visual Library Display: Choose a primary display mode (cover art grid, list, or arcade cabinets) and implement sorting options (title, platform, release date).
+Basic Filtering: Start with filters for genre and platform.
 
-Mark Wytiu - [GitHub](https://github.com/mark-wytiu)
+
+Phase 2:  Enhanced Functionality
+
+Personal Ratings & Notes: Allow users to rate games and add their own notes.
+
+
+## Nice-to-haves
+
+"Wishlist Machine" Refinement Incorporate user ratings, tags, and external review scores (if possible) to improve recommendations.
+Achievement Tracking: Explore integration with APIs for platforms that support it.
+Social Features (Optional): Consider a basic friends system and simple review sharing features.
+Theme Support: Add customizable themes and UI color schemes.
+Potentially: Storefront integration (Steam, etc.)

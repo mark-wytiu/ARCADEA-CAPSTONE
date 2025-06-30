@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
@@ -9,11 +9,18 @@ import Grid from '@mui/material/Grid';
 import { useNavigate } from 'react-router-dom';
 import gameImg from "../../Assets/1784571.png";
 import "./GameCard.css";
+import { Rating, Skeleton } from '@mui/material';
 
 export default function GameCard({ games }) {
     const navigate = useNavigate();
+    const [imageLoaded, setImageLoaded] = useState(false);
+
     const displayGamePage = (id) => {
         navigate(`/game/${id}`);
+    }
+
+    const handleImageLoad = () => {
+        setImageLoaded(true);
     }
 
     return (
@@ -24,6 +31,7 @@ export default function GameCard({ games }) {
                         className="game-card"
                         onClick={() => displayGamePage(game.id)}
                         sx={{
+                            position: 'relative',
                             height: 350,
                             width: '100%',
                             borderRadius: "12px",
@@ -38,12 +46,23 @@ export default function GameCard({ games }) {
                             overflow: "hidden"
                         }}
                     >
+                        {!imageLoaded && (
+                            <Skeleton
+                                variant="rectangular"
+                                width="100%"
+                                height={200}
+                                animation="wave"
+                            />
+                        )}
                         <CardMedia
                             component="img"
                             alt={game.title}
                             height="200"
                             image={game.image || gameImg}
+                            loading="lazy"
+                            onLoad={handleImageLoad}
                             sx={{
+                                display: imageLoaded ? 'block' : 'none',
                                 objectFit: "contain",
                                 backgroundColor: '#f5f5f5',
                                 padding: '10px'
@@ -100,6 +119,23 @@ export default function GameCard({ games }) {
                                     }}
                                 />
                             </Stack>
+                            <Rating
+                                value={game.rating || 0}
+                                readOnly
+                                precision={0.5}
+                                size="small"
+                            />
+                            <Typography
+                                variant="body2"
+                                color="text.secondary"
+                                sx={{
+                                    position: 'absolute',
+                                    bottom: 8,
+                                    right: 8
+                                }}
+                            >
+                                {game.price ? `$${game.price}` : 'Free'}
+                            </Typography>
                         </CardContent>
                     </Card>
                 </Grid>

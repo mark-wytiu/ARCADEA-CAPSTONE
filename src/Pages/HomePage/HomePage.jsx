@@ -1,7 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { gameAPI } from "../../services/api";
 import GameCard from "../../Components/GameCard/GameCard";
+// import SteamImport from "../../Components/SteamImport/SteamImport";
 import {
     Box,
     Typography,
@@ -26,6 +27,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import SortIcon from '@mui/icons-material/Sort';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
+import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 import bgImg from "../../Assets/Images/carl-raw-m3hn2Kn5Bns-unsplash.jpg";
 import "./HomePage.scss";
 
@@ -38,6 +40,9 @@ function HomePage() {
     const [filteredGames, setFilteredGames] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    
+    // Steam Import state
+    const [openSteamImport, setOpenSteamImport] = useState(false);
 
     // Search and filter states
     const [searchTerm, setSearchTerm] = useState('');
@@ -50,9 +55,50 @@ function HomePage() {
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
 
-    // Unique genres and platforms for filters
-    const [genres, setGenres] = useState(['All']);
-    const [platforms, setPlatforms] = useState(['All']);
+    // Memoize filter and sort functions
+    const filterGames = useCallback((games, searchTerm, genre, platform) => {
+        return games.filter(game => {
+            const matchesSearch = !searchTerm ||
+                game.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                game.developer?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                game.description?.toLowerCase().includes(searchTerm.toLowerCase());
+
+            const matchesGenre = genre === 'All' || game.genre === genre;
+            const matchesPlatform = platform === 'All' || game.platform === platform;
+
+            return matchesSearch && matchesGenre && matchesPlatform;
+        });
+    }, []);
+
+    const sortGames = useCallback((games, sortBy, sortOrder) => {
+        return [...games].sort((a, b) => {
+            let aValue = a[sortBy] || '';
+            let bValue = b[sortBy] || '';
+
+            if (sortBy === 'rating' || sortBy === 'price') {
+                aValue = Number(aValue) || 0;
+                bValue = Number(bValue) || 0;
+            }
+
+            return sortOrder === 'asc'
+                ? (aValue > bValue ? 1 : -1)
+                : (aValue < bValue ? 1 : -1);
+        });
+    }, []);
+
+    // Memoize filtered and sorted games
+    const processedGames = useMemo(() => {
+        const filtered = filterGames(games, searchTerm, selectedGenre, selectedPlatform);
+        return sortGames(filtered, sortBy, sortOrder);
+    }, [games, searchTerm, selectedGenre, selectedPlatform, sortBy, sortOrder, filterGames, sortGames]);
+
+    // Memoize unique genres and platforms
+    const { uniqueGenres, uniquePlatforms } = useMemo(() => {
+        return {
+            uniqueGenres: ['All', ...new Set(games.map(game => game.genre).filter(Boolean))],
+            uniquePlatforms: ['All', ...new Set(games.map(game => game.platform).filter(Boolean))]
+        };
+    }, [games]);
 
     useEffect(() => {
         const fetchGames = async () => {
@@ -60,14 +106,6 @@ function HomePage() {
                 setLoading(true);
                 const allGames = await gameAPI.getAllGames();
                 setGames(allGames);
-                setFilteredGames(allGames);
-
-                // Extract unique genres and platforms
-                const uniqueGenres = ['All', ...new Set(allGames.map(game => game.genre).filter(Boolean))];
-                const uniquePlatforms = ['All', ...new Set(allGames.map(game => game.platform).filter(Boolean))];
-
-                setGenres(uniqueGenres);
-                setPlatforms(uniquePlatforms);
                 setError(null);
             } catch (error) {
                 console.error("Error fetching games:", error);
@@ -80,57 +118,20 @@ function HomePage() {
         fetchGames();
     }, []);
 
-    // Apply filtering and sorting to games
+    // Update filtered games and pagination when filters change
     useEffect(() => {
-        let result = [...games];
+        setFilteredGames(processedGames);
+        setTotalPages(Math.ceil(processedGames.length / GAMES_PER_PAGE));
+        setPage(1);
+    }, [processedGames]);
 
-        // Apply search filter
-        if (searchTerm) {
-            result = result.filter(game =>
-                game.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                game.developer?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                game.description?.toLowerCase().includes(searchTerm.toLowerCase())
-            );
-        }
-
-        // Apply genre filter
-        if (selectedGenre !== 'All') {
-            result = result.filter(game => game.genre === selectedGenre);
-        }
-
-        // Apply platform filter
-        if (selectedPlatform !== 'All') {
-            result = result.filter(game => game.platform === selectedPlatform);
-        }
-
-        // Apply sorting
-        result.sort((a, b) => {
-            let aValue = a[sortBy] || '';
-            let bValue = b[sortBy] || '';
-
-            // Handle numeric values
-            if (sortBy === 'rating' || sortBy === 'price') {
-                aValue = Number(aValue) || 0;
-                bValue = Number(bValue) || 0;
-            }
-
-            if (sortOrder === 'asc') {
-                return aValue > bValue ? 1 : -1;
-            } else {
-                return aValue < bValue ? 1 : -1;
-            }
-        });
-
-        setFilteredGames(result);
-        setTotalPages(Math.ceil(result.length / GAMES_PER_PAGE));
-        setPage(1); // Reset to first page when filters change
-    }, [games, searchTerm, selectedGenre, selectedPlatform, sortBy, sortOrder]);
-
-    // Calculate current page games
-    const currentPageGames = filteredGames.slice(
-        (page - 1) * GAMES_PER_PAGE,
-        page * GAMES_PER_PAGE
-    );
+    // Memoize current page games
+    const currentPageGames = useMemo(() => {
+        return processedGames.slice(
+            (page - 1) * GAMES_PER_PAGE,
+            page * GAMES_PER_PAGE
+        );
+    }, [processedGames, page]);
 
     const handlePageChange = (event, value) => {
         setPage(value);
@@ -168,6 +169,33 @@ function HomePage() {
 
     const navigateToAddGame = () => {
         navigate('/add-game');
+    };
+    
+    const handleSteamImportOpen = () => {
+        setOpenSteamImport(true);
+    };
+    
+    const handleSteamImportClose = () => {
+        setOpenSteamImport(false);
+    };
+    
+    const handleSteamImportComplete = (totalImported) => {
+        console.log(`${totalImported} games imported from Steam`);
+        // Refresh the games list after import
+        const fetchGames = async () => {
+            try {
+                setLoading(true);
+                const allGames = await gameAPI.getAllGames();
+                setGames(allGames);
+                setError(null);
+            } catch (error) {
+                console.error("Error fetching games:", error);
+                setError("Failed to load games. Please try again later.");
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchGames();
     };
 
     return (
@@ -249,7 +277,7 @@ function HomePage() {
                                     label="Genre"
                                     onChange={handleGenreChange}
                                 >
-                                    {genres.map((genre) => (
+                                    {uniqueGenres.map((genre) => (
                                         <MenuItem key={genre} value={genre}>
                                             {genre}
                                         </MenuItem>
@@ -267,7 +295,7 @@ function HomePage() {
                                     label="Platform"
                                     onChange={handlePlatformChange}
                                 >
-                                    {platforms.map((platform) => (
+                                    {uniquePlatforms.map((platform) => (
                                         <MenuItem key={platform} value={platform}>
                                             {platform}
                                         </MenuItem>
@@ -307,12 +335,12 @@ function HomePage() {
                         </Grid>
 
                         {/* Control Buttons */}
-                        <Grid item xs={12} sm={6} md={2} sx={{ display: 'flex', gap: 1 }}>
+                        <Grid item xs={12} sm={6} md={3} sx={{ display: 'flex', gap: 1 }}>
                             <Button
                                 variant="outlined"
                                 startIcon={<FilterListIcon />}
                                 onClick={clearFilters}
-                                fullWidth
+                                sx={{ flex: 1 }}
                             >
                                 Clear
                             </Button>
@@ -325,6 +353,17 @@ function HomePage() {
                                     className="add-button"
                                 >
                                     <AddCircleIcon />
+                                </Button>
+                            </Tooltip>
+                            <Tooltip title="Import from Steam">
+                                <Button
+                                    variant="outlined"
+                                    startIcon={<CloudDownloadIcon />}
+                                    onClick={handleSteamImportOpen}
+                                    sx={{ minWidth: '100px' }}
+                                    color="secondary"
+                                >
+                                    Steam
                                 </Button>
                             </Tooltip>
                         </Grid>
@@ -458,6 +497,13 @@ function HomePage() {
                     </>
                 )}
             </Container>
+            
+            {/* Steam Import Dialog */}
+            {/* <SteamImport
+                open={openSteamImport}
+                onClose={handleSteamImportClose}
+                onImportComplete={handleSteamImportComplete}
+            /> */}
         </Box>
     );
 }
