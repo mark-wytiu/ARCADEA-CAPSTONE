@@ -1,11 +1,13 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 const GAMES_PER_PAGE = 8;
 
 export const useGamePagination = (filteredGames) => {
     const [searchParams, setSearchParams] = useSearchParams();
-    const [page, setPage] = useState(parseInt(searchParams.get('page')) || 1);
+    
+    // Always get page from URL, don't store in local state
+    const currentPage = parseInt(searchParams.get('page')) || 1;
 
     const totalPages = useMemo(() => {
         const total = Math.ceil(filteredGames.length / GAMES_PER_PAGE);
@@ -13,26 +15,27 @@ export const useGamePagination = (filteredGames) => {
     }, [filteredGames]);
 
     useEffect(() => {
-        // Reset to page 1 if current page is out of bounds
-        if (page > totalPages) {
-            setPage(1);
-            // URL param is updated to reflect page 1 (or its absence)
+        // Reset to page 1 if current page is out of bounds due to filtering
+        if (currentPage > totalPages && totalPages > 0 && filteredGames.length > 0) {
+            const newPage = Math.min(currentPage, totalPages);
             const newSearchParams = new URLSearchParams(searchParams);
-            newSearchParams.delete('page');
+            if (newPage === 1) {
+                newSearchParams.delete('page');
+            } else {
+                newSearchParams.set('page', newPage.toString());
+            }
             setSearchParams(newSearchParams);
         }
-    }, [totalPages, page, searchParams, setSearchParams]);
+    }, [totalPages, currentPage, setSearchParams, filteredGames.length, searchParams]);
 
     const currentPageGames = useMemo(() => 
         filteredGames.slice(
-            (page - 1) * GAMES_PER_PAGE,
-            page * GAMES_PER_PAGE
+            (currentPage - 1) * GAMES_PER_PAGE,
+            currentPage * GAMES_PER_PAGE
         ),
-    [filteredGames, page]);
+    [filteredGames, currentPage]);
 
     const handlePageChange = (event, value) => {
-        setPage(value);
-        
         const newSearchParams = new URLSearchParams(searchParams);
         if (value === 1) {
             newSearchParams.delete('page');
@@ -44,5 +47,5 @@ export const useGamePagination = (filteredGames) => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
-    return { page, totalPages, currentPageGames, handlePageChange };
+    return { page: currentPage, totalPages, currentPageGames, handlePageChange };
 }; 

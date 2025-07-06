@@ -4,11 +4,20 @@ import { useSearchParams } from 'react-router-dom';
 export const useGameFiltering = (games) => {
     const [searchParams, setSearchParams] = useSearchParams();
 
-    const [searchTerm, setSearchTerm] = useState(searchParams.get('search') || '');
-    const [selectedGenre, setSelectedGenre] = useState(searchParams.get('genre') || 'All');
-    const [selectedPlatform, setSelectedPlatform] = useState(searchParams.get('platform') || 'All');
-    const [sortBy, setSortBy] = useState(searchParams.get('sortBy') || 'title');
-    const [sortOrder, setSortOrder] = useState(searchParams.get('sortOrder') || 'asc');
+    const [searchTerm, setSearchTerm] = useState(() => searchParams.get('search') || '');
+    const [selectedGenre, setSelectedGenre] = useState(() => searchParams.get('genre') || 'All');
+    const [selectedPlatform, setSelectedPlatform] = useState(() => searchParams.get('platform') || 'All');
+    const [sortBy, setSortBy] = useState(() => searchParams.get('sortBy') || 'title');
+    const [sortOrder, setSortOrder] = useState(() => searchParams.get('sortOrder') || 'asc');
+    
+    // Sync filter states with URL parameters
+    useEffect(() => {
+        setSearchTerm(searchParams.get('search') || '');
+        setSelectedGenre(searchParams.get('genre') || 'All');
+        setSelectedPlatform(searchParams.get('platform') || 'All');
+        setSortBy(searchParams.get('sortBy') || 'title');
+        setSortOrder(searchParams.get('sortOrder') || 'asc');
+    }, [searchParams]);
 
     const updateURLParams = (updates) => {
         const newSearchParams = new URLSearchParams(searchParams);
@@ -75,19 +84,19 @@ export const useGameFiltering = (games) => {
     const handleGenreChange = (event) => {
         const newGenre = event.target.value;
         setSelectedGenre(newGenre);
-        updateURLParams({ genre: newGenre, page: 1 });
+        updateURLParams({ genre: newGenre });
     };
 
     const handlePlatformChange = (event) => {
         const newPlatform = event.target.value;
         setSelectedPlatform(newPlatform);
-        updateURLParams({ platform: newPlatform, page: 1 });
+        updateURLParams({ platform: newPlatform });
     };
 
     const handleSearchChange = (event) => {
         const newSearchTerm = event.target.value;
         setSearchTerm(newSearchTerm);
-        updateURLParams({ search: newSearchTerm, page: 1 });
+        updateURLParams({ search: newSearchTerm });
     };
 
     const clearFilters = () => {
