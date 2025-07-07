@@ -1,1 +1,406 @@
-import React, { useState } from 'react';\nimport {\n    Dialog,\n    DialogTitle,\n    DialogContent,\n    DialogActions,\n    TextField,\n    Button,\n    Typography,\n    Box,\n    Alert,\n    CircularProgress,\n    Stepper,\n    Step,\n    StepLabel,\n    List,\n    ListItem,\n    ListItemText,\n    ListItemAvatar,\n    Avatar,\n    Chip,\n    LinearProgress,\n    Divider,\n    IconButton,\n    Tooltip\n} from '@mui/material';\nimport {\n    SteamIcon,\n    InfoIcon,\n    CheckCircleIcon,\n    GamesIcon,\n    PersonIcon,\n    CloseIcon\n} from '@mui/icons-material';\nimport { importSteamLibrary, extractSteamIdFromUrl, isValidSteamId } from '../../services/steamService';\nimport { gameAPI } from '../../services/api';\nimport './SteamImport.scss';\n\nconst steps = ['Enter Steam ID', 'Import Games', 'Review & Save'];\n\nfunction SteamImport({ open, onClose, onImportComplete }) {\n    const [activeStep, setActiveStep] = useState(0);\n    const [steamInput, setSteamInput] = useState('');\n    const [loading, setLoading] = useState(false);\n    const [error, setError] = useState(null);\n    const [importData, setImportData] = useState(null);\n    const [selectedGames, setSelectedGames] = useState([]);\n    const [importProgress, setImportProgress] = useState(0);\n\n    const resetDialog = () => {\n        setActiveStep(0);\n        setSteamInput('');\n        setLoading(false);\n        setError(null);\n        setImportData(null);\n        setSelectedGames([]);\n        setImportProgress(0);\n    };\n\n    const handleClose = () => {\n        resetDialog();\n        onClose();\n    };\n\n    const handleSteamInputChange = (event) => {\n        const value = event.target.value;\n        setSteamInput(value);\n        \n        // Try to extract Steam ID from URL if user pasted a profile URL\n        const extractedId = extractSteamIdFromUrl(value);\n        if (extractedId) {\n            setSteamInput(extractedId);\n        }\n    };\n\n    const validateSteamInput = () => {\n        if (!steamInput.trim()) {\n            setError('Please enter a Steam ID or profile URL');\n            return false;\n        }\n        \n        // Check if it's a valid Steam ID (17 digits) or looks like a vanity URL\n        if (!isValidSteamId(steamInput) && !/^[a-zA-Z0-9_-]+$/.test(steamInput)) {\n            setError('Please enter a valid Steam ID or vanity URL');\n            return false;\n        }\n        \n        return true;\n    };\n\n    const handleImportSteamLibrary = async () => {\n        if (!validateSteamInput()) {\n            return;\n        }\n\n        try {\n            setLoading(true);\n            setError(null);\n            \n            const result = await importSteamLibrary(steamInput);\n            setImportData(result);\n            setSelectedGames(result.games); // Select all games by default\n            setActiveStep(1);\n        } catch (error) {\n            console.error('Import error:', error);\n            setError('Failed to import Steam library. Please check your Steam ID and make sure your profile is public.');\n        } finally {\n            setLoading(false);\n        }\n    };\n\n    const handleGameSelection = (gameIndex) => {\n        setSelectedGames(prev => {\n            const isSelected = prev.some(game => game.steamAppId === importData.games[gameIndex].steamAppId);\n            \n            if (isSelected) {\n                return prev.filter(game => game.steamAppId !== importData.games[gameIndex].steamAppId);\n            } else {\n                return [...prev, importData.games[gameIndex]];\n            }\n        });\n    };\n\n    const selectAllGames = () => {\n        setSelectedGames(importData.games);\n    };\n\n    const deselectAllGames = () => {\n        setSelectedGames([]);\n    };\n\n    const handleSaveGames = async () => {\n        if (selectedGames.length === 0) {\n            setError('Please select at least one game to import');\n            return;\n        }\n\n        try {\n            setLoading(true);\n            setError(null);\n            setImportProgress(0);\n            \n            // Save games one by one with progress tracking\n            for (let i = 0; i < selectedGames.length; i++) {\n                const game = selectedGames[i];\n                try {\n                    await gameAPI.addGame(game);\n                } catch (gameError) {\n                    console.warn(`Failed to save game: ${game.title}`, gameError);\n                }\n                setImportProgress(((i + 1) / selectedGames.length) * 100);\n            }\n            \n            setActiveStep(2);\n            \n            // Notify parent component about successful import\n            if (onImportComplete) {\n                onImportComplete(selectedGames.length);\n            }\n            \n            // Auto-close after showing success\n            setTimeout(() => {\n                handleClose();\n            }, 2000);\n            \n        } catch (error) {\n            console.error('Save error:', error);\n            setError('Failed to save some games. Please try again.');\n        } finally {\n            setLoading(false);\n        }\n    };\n\n    const renderStepContent = () => {\n        switch (activeStep) {\n            case 0:\n                return (\n                    <Box>\n                        <Typography variant=\"body1\" sx={{ mb: 3 }}>\n                            Enter your Steam ID, vanity URL, or paste your Steam profile URL to import your game library.\n                        </Typography>\n                        \n                        <Alert severity=\"info\" sx={{ mb: 3 }}>\n                            <Typography variant=\"body2\">\n                                <strong>Note:</strong> Your Steam profile must be set to public for this to work. \n                                You can find your Steam ID in your profile URL or use your custom vanity URL.\n                            </Typography>\n                        </Alert>\n                        \n                        <TextField\n                            fullWidth\n                            label=\"Steam ID or Profile URL\"\n                            placeholder=\"e.g., 76561198000000000 or your_username\"\n                            value={steamInput}\n                            onChange={handleSteamInputChange}\n                            variant=\"outlined\"\n                            sx={{ mb: 2 }}\n                        />\n                        \n                        <Typography variant=\"caption\" color=\"text.secondary\">\n                            Examples:\n                            <br />• Steam ID: 76561198000000000\n                            <br />• Vanity URL: your_username\n                            <br />• Profile URL: https://steamcommunity.com/id/your_username\n                        </Typography>\n                    </Box>\n                );\n                \n            case 1:\n                return (\n                    <Box>\n                        {importData && (\n                            <>\n                                <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>\n                                    <Avatar \n                                        src={importData.playerInfo.avatarmedium} \n                                        sx={{ width: 48, height: 48, mr: 2 }}\n                                    />\n                                    <Box>\n                                        <Typography variant=\"h6\">\n                                            {importData.playerInfo.personaname}\n                                        </Typography>\n                                        <Typography variant=\"body2\" color=\"text.secondary\">\n                                            {importData.totalGames} total games • {importData.importedGames} available for import\n                                        </Typography>\n                                    </Box>\n                                </Box>\n                                \n                                <Divider sx={{ mb: 2 }} />\n                                \n                                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>\n                                    <Typography variant=\"h6\">\n                                        Select Games to Import ({selectedGames.length} selected)\n                                    </Typography>\n                                    <Box>\n                                        <Button size=\"small\" onClick={selectAllGames} sx={{ mr: 1 }}>\n                                            Select All\n                                        </Button>\n                                        <Button size=\"small\" onClick={deselectAllGames}>\n                                            Deselect All\n                                        </Button>\n                                    </Box>\n                                </Box>\n                                \n                                <List sx={{ maxHeight: 400, overflow: 'auto' }}>\n                                    {importData.games.map((game, index) => {\n                                        const isSelected = selectedGames.some(selected => selected.steamAppId === game.steamAppId);\n                                        return (\n                                            <ListItem \n                                                key={game.steamAppId}\n                                                button\n                                                onClick={() => handleGameSelection(index)}\n                                                sx={{ \n                                                    bgcolor: isSelected ? 'action.selected' : 'transparent',\n                                                    borderRadius: 1,\n                                                    mb: 1\n                                                }}\n                                            >\n                                                <ListItemAvatar>\n                                                    <Avatar src={game.image} variant=\"square\" />\n                                                </ListItemAvatar>\n                                                <ListItemText\n                                                    primary={game.title}\n                                                    secondary={\n                                                        <Box sx={{ display: 'flex', gap: 1, mt: 0.5 }}>\n                                                            <Chip size=\"small\" label={game.platform} />\n                                                            {game.playtimeForever > 0 && (\n                                                                <Chip \n                                                                    size=\"small\" \n                                                                    label={`${Math.round(game.playtimeForever / 60)}h played`}\n                                                                    variant=\"outlined\"\n                                                                />\n                                                            )}\n                                                        </Box>\n                                                    }\n                                                />\n                                                {isSelected && (\n                                                    <CheckCircleIcon color=\"primary\" />\n                                                )}\n                                            </ListItem>\n                                        );\n                                    })}\n                                </List>\n                            </>\n                        )}\n                    </Box>\n                );\n                \n            case 2:\n                return (\n                    <Box sx={{ textAlign: 'center', py: 4 }}>\n                        <CheckCircleIcon color=\"success\" sx={{ fontSize: 64, mb: 2 }} />\n                        <Typography variant=\"h5\" sx={{ mb: 2 }}>\n                            Import Successful!\n                        </Typography>\n                        <Typography variant=\"body1\" color=\"text.secondary\">\n                            Successfully imported {selectedGames.length} games from your Steam library.\n                        </Typography>\n                    </Box>\n                );\n                \n            default:\n                return null;\n        }\n    };\n\n    return (\n        <Dialog \n            open={open} \n            onClose={handleClose} \n            maxWidth=\"md\" \n            fullWidth\n            PaperProps={{ sx: { minHeight: '500px' } }}\n        >\n            <DialogTitle sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>\n                <Box sx={{ display: 'flex', alignItems: 'center' }}>\n                    <Avatar sx={{ bgcolor: 'primary.main', mr: 2 }}>\n                        {/* Steam icon placeholder - you might want to add a proper Steam icon */}\n                        <GamesIcon />\n                    </Avatar>\n                    Import from Steam\n                </Box>\n                <IconButton onClick={handleClose}>\n                    <CloseIcon />\n                </IconButton>\n            </DialogTitle>\n            \n            <DialogContent>\n                <Stepper activeStep={activeStep} sx={{ mb: 4 }}>\n                    {steps.map((label) => (\n                        <Step key={label}>\n                            <StepLabel>{label}</StepLabel>\n                        </Step>\n                    ))}\n                </Stepper>\n                \n                {loading && activeStep === 1 && (\n                    <Box sx={{ mb: 3 }}>\n                        <Typography variant=\"body2\" sx={{ mb: 1 }}>\n                            Saving games... ({Math.round(importProgress)}%)\n                        </Typography>\n                        <LinearProgress variant=\"determinate\" value={importProgress} />\n                    </Box>\n                )}\n                \n                {error && (\n                    <Alert severity=\"error\" sx={{ mb: 3 }}>\n                        {error}\n                    </Alert>\n                )}\n                \n                {renderStepContent()}\n            </DialogContent>\n            \n            <DialogActions>\n                <Button onClick={handleClose} disabled={loading}>\n                    Cancel\n                </Button>\n                \n                {activeStep === 0 && (\n                    <Button \n                        variant=\"contained\" \n                        onClick={handleImportSteamLibrary}\n                        disabled={loading || !steamInput.trim()}\n                        startIcon={loading ? <CircularProgress size={20} /> : null}\n                    >\n                        {loading ? 'Importing...' : 'Import Library'}\n                    </Button>\n                )}\n                \n                {activeStep === 1 && (\n                    <Button \n                        variant=\"contained\" \n                        onClick={handleSaveGames}\n                        disabled={loading || selectedGames.length === 0}\n                        startIcon={loading ? <CircularProgress size={20} /> : null}\n                    >\n                        {loading ? 'Saving...' : `Save ${selectedGames.length} Games`}\n                    </Button>\n                )}\n            </DialogActions>\n        </Dialog>\n    );\n}\n\nexport default SteamImport;
+import React, { useState } from 'react';
+import {
+    Dialog,
+    DialogTitle,
+    DialogContent,
+    DialogActions,
+    TextField,
+    Button,
+    Typography,
+    Box,
+    Alert,
+    CircularProgress,
+    Stepper,
+    Step,
+    StepLabel,
+    List,
+    ListItem,
+    ListItemText,
+    ListItemAvatar,
+    Avatar,
+    Chip,
+    LinearProgress,
+    Divider,
+    IconButton,
+    Tooltip
+} from '@mui/material';
+import {
+    Info as InfoIcon,
+    CheckCircle as CheckCircleIcon,
+    SportsEsports as GamesIcon,
+    Person as PersonIcon,
+    Close as CloseIcon,
+    Help as HelpIcon
+} from '@mui/icons-material';
+import { importSteamLibrary, extractSteamIdFromUrl, isValidSteamId } from '../../services/steamService';
+import { gameAPI } from '../../services/api';
+import SteamSetupGuide from './SteamSetupGuide';
+import './SteamImport.scss';
+
+const steps = ['Enter Steam ID', 'Import Games', 'Review & Save'];
+
+function SteamImport({ open, onClose, onImportComplete }) {
+    const [activeStep, setActiveStep] = useState(0);
+    const [steamInput, setSteamInput] = useState('');
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+    const [importData, setImportData] = useState(null);
+    const [selectedGames, setSelectedGames] = useState([]);
+    const [importProgress, setImportProgress] = useState(0);
+    const [showSetupGuide, setShowSetupGuide] = useState(false);
+
+    const resetDialog = () => {
+        setActiveStep(0);
+        setSteamInput('');
+        setLoading(false);
+        setError(null);
+        setImportData(null);
+        setSelectedGames([]);
+        setImportProgress(0);
+    };
+
+    const handleClose = () => {
+        resetDialog();
+        onClose();
+    };
+
+    const handleSteamInputChange = (event) => {
+        const value = event.target.value;
+        setSteamInput(value);
+        
+        // Try to extract Steam ID from URL if user pasted a profile URL
+        const extractedId = extractSteamIdFromUrl(value);
+        if (extractedId) {
+            setSteamInput(extractedId);
+        }
+    };
+
+    const validateSteamInput = () => {
+        if (!steamInput.trim()) {
+            setError('Please enter a Steam ID or profile URL');
+            return false;
+        }
+        
+        // Check if it's a valid Steam ID (17 digits) or looks like a vanity URL
+        if (!isValidSteamId(steamInput) && !/^[a-zA-Z0-9_-]+$/.test(steamInput)) {
+            setError('Please enter a valid Steam ID or vanity URL');
+            return false;
+        }
+        
+        return true;
+    };
+
+    const handleImportSteamLibrary = async () => {
+        if (!validateSteamInput()) {
+            return;
+        }
+
+        try {
+            setLoading(true);
+            setError(null);
+            
+            const result = await importSteamLibrary(steamInput);
+            setImportData(result);
+            setSelectedGames(result.games); // Select all games by default
+            setActiveStep(1);
+        } catch (error) {
+            console.error('Import error:', error);
+            setError('Failed to import Steam library. Please check your Steam ID and make sure your profile is public.');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleGameSelection = (gameIndex) => {
+        setSelectedGames(prev => {
+            const isSelected = prev.some(game => game.steamAppId === importData.games[gameIndex].steamAppId);
+            
+            if (isSelected) {
+                return prev.filter(game => game.steamAppId !== importData.games[gameIndex].steamAppId);
+            } else {
+                return [...prev, importData.games[gameIndex]];
+            }
+        });
+    };
+
+    const selectAllGames = () => {
+        setSelectedGames(importData.games);
+    };
+
+    const deselectAllGames = () => {
+        setSelectedGames([]);
+    };
+
+    const handleSaveGames = async () => {
+        if (selectedGames.length === 0) {
+            setError('Please select at least one game to import');
+            return;
+        }
+
+        try {
+            setLoading(true);
+            setError(null);
+            setImportProgress(0);
+            
+            // Save games one by one with progress tracking
+            for (let i = 0; i < selectedGames.length; i++) {
+                const game = selectedGames[i];
+                try {
+                    await gameAPI.addGame(game);
+                } catch (gameError) {
+                    console.warn(`Failed to save game: ${game.title}`, gameError);
+                }
+                setImportProgress(((i + 1) / selectedGames.length) * 100);
+            }
+            
+            setActiveStep(2);
+            
+            // Notify parent component about successful import
+            if (onImportComplete) {
+                onImportComplete(selectedGames.length);
+            }
+            
+            // Auto-close after showing success
+            setTimeout(() => {
+                handleClose();
+            }, 2000);
+            
+        } catch (error) {
+            console.error('Save error:', error);
+            setError('Failed to save some games. Please try again.');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const renderStepContent = () => {
+        switch (activeStep) {
+            case 0:
+                return (
+                    <Box>
+                        <Typography variant="body1" sx={{ mb: 3 }}>
+                            Enter your Steam ID, vanity URL, or paste your Steam profile URL to import your game library.
+                        </Typography>
+                        
+                        <Alert severity="info" sx={{ mb: 3 }}>
+                            <Typography variant="body2">
+                                <strong>Note:</strong> Your Steam profile must be set to public for this to work. 
+                                You can find your Steam ID in your profile URL or use your custom vanity URL.
+                            </Typography>
+                        </Alert>
+                        
+                        <Alert severity="success" sx={{ mb: 3 }}>
+                            <Typography variant="body2">
+                                <strong>Try Demo Mode:</strong> Enter "demo" as your Steam ID to see how this works with sample data!
+                            </Typography>
+                        </Alert>
+                        
+                        <TextField
+                            fullWidth
+                            label="Steam ID or Profile URL"
+                            placeholder="e.g., 76561198000000000 or your_username"
+                            value={steamInput}
+                            onChange={handleSteamInputChange}
+                            variant="outlined"
+                            sx={{ mb: 2 }}
+                        />
+                        
+                        <Typography variant="caption" color="text.secondary">
+                            Examples:
+                            <br />• Steam ID: 76561198000000000
+                            <br />• Vanity URL: your_username
+                            <br />• Profile URL: https://steamcommunity.com/id/your_username
+                        </Typography>
+                    </Box>
+                );
+                
+            case 1:
+                return (
+                    <Box>
+                        {importData && (
+                            <>
+                                <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
+                                    <Avatar 
+                                        src={importData.playerInfo.avatarmedium} 
+                                        sx={{ width: 48, height: 48, mr: 2 }}
+                                    />
+                                    <Box>
+                                        <Typography variant="h6">
+                                            {importData.playerInfo.personaname}
+                                        </Typography>
+                                        <Typography variant="body2" color="text.secondary">
+                                            {importData.totalGames} total games • {importData.importedGames} available for import
+                                        </Typography>
+                                    </Box>
+                                </Box>
+                                
+                                <Divider sx={{ mb: 2 }} />
+                                
+                                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+                                    <Typography variant="h6">
+                                        Select Games to Import ({selectedGames.length} selected)
+                                    </Typography>
+                                    <Box>
+                                        <Button size="small" onClick={selectAllGames} sx={{ mr: 1 }}>
+                                            Select All
+                                        </Button>
+                                        <Button size="small" onClick={deselectAllGames}>
+                                            Deselect All
+                                        </Button>
+                                    </Box>
+                                </Box>
+                                
+                                <List sx={{ maxHeight: 400, overflow: 'auto' }}>
+                                    {importData.games.map((game, index) => {
+                                        const isSelected = selectedGames.some(selected => selected.steamAppId === game.steamAppId);
+                                        return (
+                                            <ListItem 
+                                                key={game.steamAppId}
+                                                button
+                                                onClick={() => handleGameSelection(index)}
+                                                sx={{ 
+                                                    bgcolor: isSelected ? 'action.selected' : 'transparent',
+                                                    borderRadius: 1,
+                                                    mb: 1
+                                                }}
+                                            >
+                                                <ListItemAvatar>
+                                                    <Avatar src={game.image} variant="square" />
+                                                </ListItemAvatar>
+                                                <ListItemText
+                                                    primary={game.title}
+                                                    secondary={
+                                                        <Box sx={{ display: 'flex', gap: 1, mt: 0.5 }}>
+                                                            <Chip size="small" label={game.platform} />
+                                                            {game.playtimeForever > 0 && (
+                                                                <Chip 
+                                                                    size="small" 
+                                                                    label={`${Math.round(game.playtimeForever / 60)}h played`}
+                                                                    variant="outlined"
+                                                                />
+                                                            )}
+                                                        </Box>
+                                                    }
+                                                />
+                                                {isSelected && (
+                                                    <CheckCircleIcon color="primary" />
+                                                )}
+                                            </ListItem>
+                                        );
+                                    })}
+                                </List>
+                            </>
+                        )}
+                    </Box>
+                );
+                
+            case 2:
+                return (
+                    <Box sx={{ textAlign: 'center', py: 4 }}>
+                        <CheckCircleIcon color="success" sx={{ fontSize: 64, mb: 2 }} />
+                        <Typography variant="h5" sx={{ mb: 2 }}>
+                            Import Successful!
+                        </Typography>
+                        <Typography variant="body1" color="text.secondary">
+                            Successfully imported {selectedGames.length} games from your Steam library.
+                        </Typography>
+                    </Box>
+                );
+                
+            default:
+                return null;
+        }
+    };
+
+    return (
+        <Dialog 
+            open={open} 
+            onClose={handleClose} 
+            maxWidth="md" 
+            fullWidth
+            PaperProps={{ sx: { minHeight: '500px' } }}
+        >
+            <DialogTitle sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                    <Avatar sx={{ bgcolor: 'primary.main', mr: 2 }}>
+                        <GamesIcon />
+                    </Avatar>
+                    Import from Steam
+                </Box>
+                <Box>
+                    <Tooltip title="Setup Help">
+                        <IconButton onClick={() => setShowSetupGuide(true)}>
+                            <HelpIcon />
+                        </IconButton>
+                    </Tooltip>
+                    <IconButton onClick={handleClose}>
+                        <CloseIcon />
+                    </IconButton>
+                </Box>
+            </DialogTitle>
+            
+            <DialogContent>
+                <Stepper activeStep={activeStep} sx={{ mb: 4 }}>
+                    {steps.map((label) => (
+                        <Step key={label}>
+                            <StepLabel>{label}</StepLabel>
+                        </Step>
+                    ))}
+                </Stepper>
+                
+                {loading && activeStep === 1 && (
+                    <Box sx={{ mb: 3 }}>
+                        <Typography variant="body2" sx={{ mb: 1 }}>
+                            Saving games... ({Math.round(importProgress)}%)
+                        </Typography>
+                        <LinearProgress variant="determinate" value={importProgress} />
+                    </Box>
+                )}
+                
+                {error && (
+                    <Alert severity="error" sx={{ mb: 3 }}>
+                        {error}
+                    </Alert>
+                )}
+                
+                {renderStepContent()}
+            </DialogContent>
+            
+            <DialogActions>
+                <Button onClick={handleClose} disabled={loading}>
+                    Cancel
+                </Button>
+                
+                {activeStep === 0 && (
+                    <Button 
+                        variant="contained" 
+                        onClick={handleImportSteamLibrary}
+                        disabled={loading || !steamInput.trim()}
+                        startIcon={loading ? <CircularProgress size={20} /> : null}
+                    >
+                        {loading ? 'Importing...' : 'Import Library'}
+                    </Button>
+                )}
+                
+                {activeStep === 1 && (
+                    <Button 
+                        variant="contained" 
+                        onClick={handleSaveGames}
+                        disabled={loading || selectedGames.length === 0}
+                        startIcon={loading ? <CircularProgress size={20} /> : null}
+                    >
+                        {loading ? 'Saving...' : `Save ${selectedGames.length} Games`}
+                    </Button>
+                )}
+            </DialogActions>
+            
+            {/* Setup Guide Dialog */}
+            <SteamSetupGuide
+                open={showSetupGuide}
+                onClose={() => setShowSetupGuide(false)}
+            />
+        </Dialog>
+    );
+}
+
+export default SteamImport;

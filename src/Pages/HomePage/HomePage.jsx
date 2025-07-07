@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { gameAPI } from "../../services/api";
 import GameCard from "../../Components/GameCard/GameCard";
-// import SteamImport from "../../Components/SteamImport/SteamImport";
+import SteamImport from "../../Components/SteamImport/SteamImport";
 import {
     Box,
     Typography,
@@ -499,11 +499,11 @@ function HomePage() {
             </Container>
             
             {/* Steam Import Dialog */}
-            {/* <SteamImport
+            <SteamImport
                 open={openSteamImport}
                 onClose={handleSteamImportClose}
                 onImportComplete={handleSteamImportComplete}
-            /> */}
+            />
         </Box>
     );
 }

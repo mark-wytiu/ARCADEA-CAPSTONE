@@ -160,9 +160,72 @@ export const convertSteamGameToAppFormat = (steamGame, gameDetails = null) => {
     return baseGame;
 };
 
+// Demo data for testing without Steam API
+const getDemoSteamData = () => {
+    const demoPlayerInfo = {
+        steamid: '76561198000000000',
+        personaname: 'Demo Player',
+        avatarmedium: 'https://avatars.steamstatic.com/b5bd56c1aa4644a474a2e4972be27ef9e82e517e_medium.jpg',
+        profileurl: 'https://steamcommunity.com/profiles/76561198000000000/',
+        personastate: 1
+    };
+    
+    const demoGames = [
+        {
+            appid: 730,
+            name: "Counter-Strike 2",
+            playtime_forever: 1250,
+            img_icon_url: "69f7ebe2735c366c65c0b33dae00e12dc40edbe4"
+        },
+        {
+            appid: 570,
+            name: "Dota 2",
+            playtime_forever: 890,
+            img_icon_url: "0bbb630d63262dd66d2fdd0f7d37e8661a410075"
+        },
+        {
+            appid: 440,
+            name: "Team Fortress 2",
+            playtime_forever: 567,
+            img_icon_url: "e3f595a92552da3d664ad00277fad2107345f743"
+        },
+        {
+            appid: 271590,
+            name: "Grand Theft Auto V",
+            playtime_forever: 234,
+            img_icon_url: "cfa928ab25d6b2cdomains/GTA5_icon.jpg"
+        },
+        {
+            appid: 1172470,
+            name: "Apex Legends",
+            playtime_forever: 189,
+            img_icon_url: "f54ace6d7b01d0bff0b62dba5f49c80a0e0aed90"
+        }
+    ];
+    
+    const convertedGames = demoGames.map(game => convertSteamGameToAppFormat(game));
+    
+    return {
+        playerInfo: demoPlayerInfo,
+        games: convertedGames,
+        totalGames: demoGames.length,
+        importedGames: convertedGames.length
+    };
+};
+
 // Main function to import Steam library
 export const importSteamLibrary = async (steamIdOrVanity) => {
     try {
+        // Check if we're in demo mode (no API key or demo input)
+        if (!STEAM_API_KEY || steamIdOrVanity.toLowerCase() === 'demo' || steamIdOrVanity === 'demo_user') {
+            console.log('Running in demo mode - using sample data');
+            return new Promise(resolve => {
+                setTimeout(() => {
+                    resolve(getDemoSteamData());
+                }, 1500); // Simulate API delay
+            });
+        }
+        
         let steamId = steamIdOrVanity;
         
         // Check if it's a vanity URL (contains non-numeric characters)
