@@ -19,9 +19,10 @@ import SearchIcon from '@mui/icons-material/Search';
 import SortIcon from '@mui/icons-material/Sort';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
+import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 import { useNavigate } from 'react-router-dom';
 
-const FilterControls = ({ controls, genres, platforms }) => {
+const FilterControls = ({ controls, genres, platforms, onSteamImportOpen }) => {
     const {
         searchTerm,
         setSearchTerm,
@@ -129,12 +130,12 @@ const FilterControls = ({ controls, genres, platforms }) => {
                     </FormControl>
                 </Grid>
 
-                <Grid item xs={12} sm={6} md={2} sx={{ display: 'flex', gap: 1 }}>
+                <Grid item xs={12} sm={6} md={3} sx={{ display: 'flex', gap: 1 }}>
                     <Button
                         variant="outlined"
                         startIcon={<FilterListIcon />}
                         onClick={clearFilters}
-                        fullWidth
+                        sx={{ flex: 1 }}
                     >
                         Clear
                     </Button>
@@ -147,6 +148,17 @@ const FilterControls = ({ controls, genres, platforms }) => {
                             className="add-button"
                         >
                             <AddCircleIcon />
+                        </Button>
+                    </Tooltip>
+                    <Tooltip title="Import from Steam">
+                        <Button
+                            variant="outlined"
+                            startIcon={<CloudDownloadIcon />}
+                            onClick={onSteamImportOpen}
+                            sx={{ minWidth: '100px' }}
+                            color="secondary"
+                        >
+                            Steam
                         </Button>
                     </Tooltip>
                 </Grid>

@@ -12,17 +12,20 @@ import "./HomePage.scss";
 import { useGamesData } from "./hooks/useGamesData";
 import { useGameFiltering } from "./hooks/useGameFiltering";
 import { useGamePagination } from "./hooks/useGamePagination";
+import { useSteamImport } from "./hooks/useSteamImport";
 
 // Components
 import HeroSection from "./components/HeroSection";
 import FilterControls from "../../Components/FilterControls/FilterControls";
 import GameResultsStats from "../../Components/GameResultsStats/GameResultsStats";
 import GameGrid from "../../Components/GameGrid/GameGrid";
+import SteamImport from "../../Components/SteamImport/SteamImport";
 
 function HomePage() {
-    const { games, loading, error, genres, platforms } = useGamesData();
+    const { games, loading, error, genres, platforms, refetchGames } = useGamesData();
     const { filteredGames, controls } = useGameFiltering(games);
     const { page, totalPages, currentPageGames, handlePageChange } = useGamePagination(filteredGames);
+    const steamImport = useSteamImport(refetchGames);
 
     const renderContent = () => {
         if (loading) {
@@ -79,9 +82,17 @@ function HomePage() {
                     controls={controls}
                     genres={genres}
                     platforms={platforms}
+                    onSteamImportOpen={steamImport.handleSteamImportOpen}
                 />
                 {renderContent()}
             </Container>
+            
+            {/* Steam Import Dialog */}
+            <SteamImport
+                open={steamImport.openSteamImport}
+                onClose={steamImport.handleSteamImportClose}
+                onImportComplete={steamImport.handleSteamImportComplete}
+            />
         </Box>
     );
 }
