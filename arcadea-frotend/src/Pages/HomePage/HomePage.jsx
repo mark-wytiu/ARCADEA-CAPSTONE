@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { gameAPI } from "../../services/api";
 import GameCard from "../../Components/GameCard/GameCard";
+import SteamImport from "../../Components/SteamImport/SteamImport";
 import {
     Box,
     Typography,
@@ -26,6 +27,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import SortIcon from '@mui/icons-material/Sort';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
+import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 import bgImg from "../../Assets/Images/carl-raw-m3hn2Kn5Bns-unsplash.jpg";
 import "./HomePage.scss";
 
@@ -38,6 +40,9 @@ function HomePage() {
     const [filteredGames, setFilteredGames] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    
+    // Steam Import state
+    const [openSteamImport, setOpenSteamImport] = useState(false);
 
     // Search and filter states
     const [searchTerm, setSearchTerm] = useState('');
@@ -164,6 +169,33 @@ function HomePage() {
 
     const navigateToAddGame = () => {
         navigate('/add-game');
+    };
+    
+    const handleSteamImportOpen = () => {
+        setOpenSteamImport(true);
+    };
+    
+    const handleSteamImportClose = () => {
+        setOpenSteamImport(false);
+    };
+    
+    const handleSteamImportComplete = (totalImported) => {
+        console.log(`${totalImported} games imported from Steam`);
+        // Refresh the games list after import
+        const fetchGames = async () => {
+            try {
+                setLoading(true);
+                const allGames = await gameAPI.getAllGames();
+                setGames(allGames);
+                setError(null);
+            } catch (error) {
+                console.error("Error fetching games:", error);
+                setError("Failed to load games. Please try again later.");
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchGames();
     };
 
     return (
@@ -303,12 +335,12 @@ function HomePage() {
                         </Grid>
 
                         {/* Control Buttons */}
-                        <Grid item xs={12} sm={6} md={2} sx={{ display: 'flex', gap: 1 }}>
+                        <Grid item xs={12} sm={6} md={3} sx={{ display: 'flex', gap: 1 }}>
                             <Button
                                 variant="outlined"
                                 startIcon={<FilterListIcon />}
                                 onClick={clearFilters}
-                                fullWidth
+                                sx={{ flex: 1 }}
                             >
                                 Clear
                             </Button>
@@ -321,6 +353,17 @@ function HomePage() {
                                     className="add-button"
                                 >
                                     <AddCircleIcon />
+                                </Button>
+                            </Tooltip>
+                            <Tooltip title="Import from Steam">
+                                <Button
+                                    variant="outlined"
+                                    startIcon={<CloudDownloadIcon />}
+                                    onClick={handleSteamImportOpen}
+                                    sx={{ minWidth: '100px' }}
+                                    color="secondary"
+                                >
+                                    Steam
                                 </Button>
                             </Tooltip>
                         </Grid>
@@ -454,6 +497,13 @@ function HomePage() {
                     </>
                 )}
             </Container>
+            
+            {/* Steam Import Dialog */}
+            <SteamImport
+                open={openSteamImport}
+                onClose={handleSteamImportClose}
+                onImportComplete={handleSteamImportComplete}
+            />
         </Box>
     );
 }
