@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import gameImg from "../../Assets/1784571.png";
 import "./GameCard.css";
 
-export default function GameCard({ game }) {
+const GameCard = React.memo(({ game }) => {
     const navigate = useNavigate();
     const displayGamePage = (id) => {
         navigate(`/game/${id}`);
@@ -39,6 +39,7 @@ export default function GameCard({ game }) {
                             alt={game.title}
                             height="200"
                             image={game.image || gameImg}
+                            loading="lazy"
                             sx={{
                                 objectFit: "contain",
                                 backgroundColor: '#f5f5f5',
@@ -99,4 +100,6 @@ export default function GameCard({ game }) {
                         </CardContent>
                     </Card>
     );
-}
+});
+
+export default GameCard;
