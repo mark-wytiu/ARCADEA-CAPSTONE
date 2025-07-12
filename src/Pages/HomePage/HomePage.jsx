@@ -5,12 +5,12 @@ import {
     Typography,
     CircularProgress,
 } from '@mui/material';
+import { useState, useCallback } from 'react';
 import bgImg from "../../Assets/Images/carl-raw-m3hn2Kn5Bns-unsplash.jpg";
 import "./HomePage.scss";
 
 // Custom Hooks
 import { useGamesData } from "./hooks/useGamesData";
-import { useGameFiltering } from "./hooks/useGameFiltering";
 import { useGamePagination } from "./hooks/useGamePagination";
 import { useSteamImport } from "./hooks/useSteamImport";
 
@@ -23,9 +23,16 @@ import SteamImport from "../../Components/SteamImport/SteamImport";
 
 function HomePage() {
     const { games, loading, error, genres, platforms, refetchGames } = useGamesData();
-    const { filteredGames, controls } = useGameFiltering(games);
+    const [filteredGames, setFilteredGames] = useState([]);
+    const [sortInfo, setSortInfo] = useState({ sortBy: 'title', sortOrder: 'asc' });
     const { page, totalPages, currentPageGames, handlePageChange } = useGamePagination(filteredGames);
     const steamImport = useSteamImport(refetchGames);
+
+    // Handle filter changes from FilterControls
+    const handleFiltersChange = useCallback((filtered, sortData) => {
+        setFilteredGames(filtered);
+        setSortInfo(sortData);
+    }, []);
 
     const renderContent = () => {
         if (loading) {
@@ -49,15 +56,14 @@ function HomePage() {
                 <GameResultsStats
                     currentPageGames={currentPageGames}
                     totalFilteredGames={filteredGames.length}
-                    sortBy={controls.sortBy}
-                    sortOrder={controls.sortOrder}
+                    sortBy={sortInfo.sortBy}
+                    sortOrder={sortInfo.sortOrder}
                 />
                 <GameGrid
                     games={currentPageGames}
                     page={page}
                     totalPages={totalPages}
                     onPageChange={handlePageChange}
-                    onClearFilters={controls.clearFilters}
                 />
             </>
         );
@@ -79,10 +85,11 @@ function HomePage() {
             <Container maxWidth="xl">
                 <HeroSection />
                 <FilterControls
-                    controls={controls}
+                    games={games}
                     genres={genres}
                     platforms={platforms}
                     onSteamImportOpen={steamImport.handleSteamImportOpen}
+                    onFiltersChange={handleFiltersChange}
                 />
                 {renderContent()}
             </Container>
