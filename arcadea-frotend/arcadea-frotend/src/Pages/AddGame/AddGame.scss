@@ -1,0 +1,166 @@
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-font-smoothing: antialiased;
+	-moz-font-smoothing: antialiased;
+	-o-font-smoothing: antialiased;
+	text-rendering: optimizeLegibility;
+}
+
+// body {
+// 	font-family: "Open Sans", Helvetica, Arial, sans-serif;
+// 	font-weight: 300;
+// 	font-size: 12px;
+// 	line-height: 30px;
+// 	color: #777;
+// 	background: #0cf;
+// }
+
+.add-game {
+	max-width: 500px;
+	width: 100%;
+	margin: 5rem auto;
+	height: 80vh;
+	position: relative;
+}
+
+// #add-game_form input[type="text"], #add-game_form input[type="text"], #add-game_form input[type="text], #add-game_form button[type="submit"], { font:400 12px/16px "Open Sans", Helvetica, Arial, sans-serif };
+
+#add-game_form {
+	height: 25rem;
+	background: #f9f9f9;
+	padding: 25px;
+	margin: 50px 0;
+}
+
+#add-game_form h3 {
+	margin-bottom: 1.5rem;
+	color: #f96;
+	display: block;
+	font-size: 30px;
+	font-weight: 400;
+	text-align: center;
+}
+
+#vh4 {
+	margin: 5px 0 15px;
+	display: block;
+	font-size: 13px;
+}
+
+fieldset {
+	border: medium none !important;
+	margin: 0 0 10px;
+	min-width: 100%;
+	padding: 0;
+	width: 100%;
+}
+
+#add-game_form input[type="text"],
+#add-game_form input[type="text"],
+#add-game_form input[type="text"],
+#add-game_form textarea {
+	width: 100%;
+	border: 1px solid #ccc;
+	background: #fff;
+	margin: 0 0 5px;
+	padding: 10px;
+	border-radius: 9px;
+	margin-top: 0.7rem;
+	margin-bottom: 0.7rem;
+}
+
+#add-game_form input[type="text"]:hover,
+#add-game_form input[type="text"]:hover,
+#add-game_form input[type="text"]:hover,
+#add-game_form textarea:hover {
+	-webkit-transition: border-color 0.3s ease-in-out;
+	-moz-transition: border-color 0.3s ease-in-out;
+	transition: border-color 0.3s ease-in-out;
+	border: 1px solid #aaa;
+}
+
+#add-game_form textarea {
+	height: 100px;
+	max-width: 100%;
+	resize: none;
+}
+
+#add-game_form button[type="submit"] {
+	cursor: pointer;
+	width: 100%;
+	border: none;
+	background: #0cf;
+	color: #fff;
+	margin: 0 0 5px;
+	padding: 10px;
+	font-size: 15px;
+}
+
+#add-game_form button[type="submit"]:hover {
+	background: #09c;
+	-webkit-transition: background 0.3s ease-in-out;
+	-moz-transition: background 0.3s ease-in-out;
+	transition: background-color 0.3s ease-in-out;
+}
+
+#add-game_form button[type="submit"]:active {
+	box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+#add-game_form input:focus,
+#add-game_form textarea:focus {
+	outline: 0;
+	border: 1px solid #999;
+}
+::-webkit-input-placeholder {
+	color: #888;
+}
+:-moz-placeholder {
+	color: #888;
+}
+::-moz-placeholder {
+	color: #888;
+}
+:-ms-input-placeholder {
+	color: #888;
+}
+
+.add-game-container {
+	background-color: rgba(255, 255, 255, 0.05);
+	backdrop-filter: blur(10px);
+
+	.MuiPaper-root {
+		transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+		&:hover {
+			transform: translateY(-5px);
+			box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+		}
+	}
+
+	.MuiRating-root {
+		margin-top: 8px;
+		color: #f5b400;
+	}
+
+	.MuiChip-root {
+		font-weight: 500;
+	}
+
+	.MuiDivider-root {
+		margin-bottom: 24px;
+	}
+
+	.MuiTextField-root,
+	.MuiFormControl-root {
+		margin-bottom: 8px;
+	}
+
+	.form-buttons {
+		margin-top: 16px;
+	}
+}

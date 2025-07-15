@@ -28,12 +28,6 @@ import {
     CheckCircle as CheckIcon
 } from '@mui/icons-material';
 
-const setupSteps = [
-    'Get Steam API Key',
-    'Make Profile Public', 
-    'Find Your Steam ID',
-    'Configure ARCADEA'
-];
 
 function SteamSetupGuide({ open, onClose }) {
     const [activeStep, setActiveStep] = React.useState(0);

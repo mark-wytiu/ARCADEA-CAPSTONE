@@ -1,5 +1,13 @@
+// Test basic styling first
 body {
-	background-image: url("./Assets/Images/carl-raw-m3hn2Kn5Bns-unsplash.jpg");
-	background-repeat: no-repeat;
-	background-size: cover;
+	background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #2a2a2a 100%);
+	color: #ffffff;
+	min-height: 100vh;
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+	margin: 0;
+	padding: 0;
+}
+
+.App {
+	min-height: 100vh;
 }

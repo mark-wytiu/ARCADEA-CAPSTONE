@@ -9,7 +9,11 @@ import AddGame from "./Pages/AddGame/AddGame";
 
 function App() {
   return (
-    <div className="App">
+    <div className="App" style={{
+      background: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #2a2a2a 100%)',
+      color: '#ffffff',
+      minHeight: '100vh'
+    }}>
       <BrowserRouter>
         <Header />
         <Routes>

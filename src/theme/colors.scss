@@ -1,0 +1,52 @@
+// ARCADEA Gaming Theme - Color Palette
+
+// Primary Colors
+$primary-dark: #0a0a0a;
+$primary-darker: #000000;
+$primary-light: #1a1a1a;
+$primary-lighter: #2a2a2a;
+
+// Gaming Accent Colors
+$neon-blue: #00d4ff;
+$neon-purple: #8b5cf6;
+$neon-green: #00ff88;
+$neon-pink: #ff0080;
+$neon-orange: #ff6b00;
+
+// Secondary Colors
+$secondary-dark: #161b22;
+$secondary-light: #21262d;
+$secondary-lighter: #30363d;
+
+// Background Colors
+$bg-primary: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #2a2a2a 100%);
+$bg-secondary: linear-gradient(45deg, #161b22 0%, #21262d 100%);
+$bg-card: rgba(26, 26, 26, 0.9);
+$bg-card-hover: rgba(42, 42, 42, 0.9);
+
+// Text Colors
+$text-primary: #ffffff;
+$text-secondary: #e6e6e6;
+$text-muted: #a0a0a0;
+$text-accent: $neon-blue;
+
+// Border Colors
+$border-primary: rgba(255, 255, 255, 0.1);
+$border-accent: rgba(0, 212, 255, 0.3);
+$border-hover: rgba(0, 212, 255, 0.6);
+
+// Status Colors
+$success: #00ff88;
+$warning: #ff6b00;
+$error: #ff0080;
+$info: #00d4ff;
+
+// Shadow Colors
+$shadow-primary: rgba(0, 0, 0, 0.3);
+$shadow-accent: rgba(0, 212, 255, 0.2);
+$shadow-hover: rgba(0, 212, 255, 0.4);
+
+// Gaming specific colors
+$gaming-gold: #ffd700;
+$gaming-silver: #c0c0c0;
+$gaming-bronze: #cd7f32;
