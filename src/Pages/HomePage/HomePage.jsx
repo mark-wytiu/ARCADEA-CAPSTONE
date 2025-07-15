@@ -91,10 +91,9 @@ function HomePage() {
                 backgroundRepeat: "no-repeat",
                 backgroundSize: "cover",
                 backgroundAttachment: "fixed",
-                minHeight: '100vh',
-                paddingY: 4
+                minHeight: '100vh'
             }}
-            className="home-page-container"
+            className="home-page-container main-content"
         >
             <Container maxWidth="xl">
                 <HeroSection />
