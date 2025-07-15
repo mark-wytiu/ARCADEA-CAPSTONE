@@ -16,7 +16,7 @@ export const useGamesData = () => {
 
             // Extract unique genres and platforms
             const uniqueGenres = ['All', ...new Set(allGames.map(game => game.genre).filter(Boolean))];
-            const uniquePlatforms = ['All', ...new Set(allGames.map(game => game.platform).filter(Boolean))];
+            const uniquePlatforms = ['All', ...new Set(allGames.flatMap(game => game.platforms || []).filter(Boolean))];
 
             setGenres(uniqueGenres);
             setPlatforms(uniquePlatforms);

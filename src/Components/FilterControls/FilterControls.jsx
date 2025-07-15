@@ -70,7 +70,7 @@ const useLocalFilters = (games, onFiltersChange) => {
         }
 
         if (selectedPlatform !== 'All') {
-            result = result.filter(game => game.platform === selectedPlatform);
+            result = result.filter(game => game.platforms && game.platforms.includes(selectedPlatform));
         }
 
         result.sort((a, b) => {

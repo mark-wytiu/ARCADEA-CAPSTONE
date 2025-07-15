@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { gameAPI } from '../../../services/api';
 
 export const useSteamImport = (onImportComplete) => {
     const [openSteamImport, setOpenSteamImport] = useState(false);
