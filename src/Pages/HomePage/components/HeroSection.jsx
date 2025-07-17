@@ -4,22 +4,26 @@ import { Box, Typography } from '@mui/material';
 const HeroSection = () => {
     return (
         <Box sx={{
-            textAlign: 'center',
-            mb: 5,
-            mt: 2,
-            position: 'relative',
-            zIndex: 1
-        }}>
+                textAlign: 'center',
+                mb: 5,
+                mt: 2,
+                position: 'relative',
+                zIndex: 1
+            }}>
             <Typography
                 variant="h1"
                 component="h1"
                 sx={{
-                    color: 'white',
-                    textShadow: '2px 2px 8px rgba(0,0,0,0.7)',
+                    background: 'linear-gradient(135deg, #6c5ce7 0%, #00b9ff 100%)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    backgroundClip: 'text',
+                    textShadow: '0 0 20px rgba(108, 92, 231, 0.3)',
                     fontWeight: 800,
                     fontSize: { xs: '3rem', sm: '4rem', md: '5rem' },
                     letterSpacing: '0.05em',
-                    mb: 2
+                    mb: 2,
+                    filter: 'drop-shadow(0 0 10px rgba(108, 92, 231, 0.3))'
                 }}
             >
                 ARCADEA
@@ -27,7 +31,7 @@ const HeroSection = () => {
             <Typography
                 variant="h5"
                 sx={{
-                    color: 'white',
+                    color: '#b2bac2',
                     textShadow: '1px 1px 4px rgba(0,0,0,0.5)',
                     mb: 4,
                     fontSize: { xs: '1.2rem', sm: '1.5rem' },
@@ -41,4 +45,4 @@ const HeroSection = () => {
     );
 };
 
-export default HeroSection; 
+export default HeroSection;
