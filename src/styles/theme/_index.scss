@@ -1,0 +1,38 @@
+// ARCADEA Theme Index
+// Single import point for all theme files
+
+@import './colors';
+@import './mixins';
+
+// Export a theme map for use in JavaScript if needed
+$theme: (
+  // Colors
+  'colors': (
+    'primary': $brand-primary,
+    'secondary': $brand-secondary,
+    'success': $success,
+    'warning': $warning,
+    'error': $error,
+    'info': $info,
+  ),
+  // Backgrounds
+  'backgrounds': (
+    'primary': $bg-primary,
+    'secondary': $bg-secondary,
+    'tertiary': $bg-tertiary,
+    'elevated': $bg-elevated,
+  ),
+  // Text
+  'text': (
+    'primary': $text-primary,
+    'secondary': $text-secondary,
+    'muted': $text-muted,
+    'accent': $text-accent,
+  ),
+  // Spacing
+  'spacing': (
+    'unit': $spacing-unit,
+  ),
+  // Breakpoints
+  'breakpoints': $breakpoints,
+);

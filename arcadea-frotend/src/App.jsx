@@ -22,6 +22,7 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <Header />
+        <Box sx={{ height: '64px' }} /> {/* Toolbar offset for fixed header */}
         <Suspense fallback={<LoadingSpinner />}>
           <Routes>
             <Route path="/" element={<HomePage />} />

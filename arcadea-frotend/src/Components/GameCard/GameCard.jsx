@@ -7,7 +7,7 @@ import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
 import { useNavigate } from 'react-router-dom';
 import gameImg from "../../Assets/1784571.png";
-import "./GameCard.css";
+import "./GameCard.scss";
 
 const GameCard = React.memo(({ game }) => {
     const navigate = useNavigate();

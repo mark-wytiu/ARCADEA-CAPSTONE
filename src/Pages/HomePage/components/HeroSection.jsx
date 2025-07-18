@@ -6,7 +6,6 @@ const HeroSection = () => {
         <Box sx={{
             textAlign: 'center',
             mb: 5,
-            mt: 2,
             position: 'relative',
             zIndex: 1
         }}>

@@ -5,24 +5,34 @@ import {
     Typography,
     CircularProgress,
 } from '@mui/material';
+import { useState, useCallback } from 'react';
 import bgImg from "../../Assets/Images/carl-raw-m3hn2Kn5Bns-unsplash.jpg";
 import "./HomePage.scss";
 
 // Custom Hooks
 import { useGamesData } from "./hooks/useGamesData";
-import { useGameFiltering } from "./hooks/useGameFiltering";
 import { useGamePagination } from "./hooks/useGamePagination";
+import { useSteamImport } from "./hooks/useSteamImport";
 
 // Components
 import HeroSection from "./components/HeroSection";
 import FilterControls from "../../Components/FilterControls/FilterControls";
 import GameResultsStats from "../../Components/GameResultsStats/GameResultsStats";
 import GameGrid from "../../Components/GameGrid/GameGrid";
+import SteamImport from "../../Components/SteamImport/SteamImport";
 
 function HomePage() {
-    const { games, loading, error, genres, platforms } = useGamesData();
-    const { filteredGames, controls } = useGameFiltering(games);
+    const { games, loading, error, genres, platforms, refetchGames } = useGamesData();
+    const [filteredGames, setFilteredGames] = useState([]);
+    const [sortInfo, setSortInfo] = useState({ sortBy: 'title', sortOrder: 'asc' });
     const { page, totalPages, currentPageGames, handlePageChange } = useGamePagination(filteredGames);
+    const steamImport = useSteamImport(refetchGames);
+
+    // Handle filter changes from FilterControls
+    const handleFiltersChange = useCallback((filtered, sortData) => {
+        setFilteredGames(filtered);
+        setSortInfo(sortData);
+    }, []);
 
     const renderContent = () => {
         if (loading) {
@@ -46,15 +56,14 @@ function HomePage() {
                 <GameResultsStats
                     currentPageGames={currentPageGames}
                     totalFilteredGames={filteredGames.length}
-                    sortBy={controls.sortBy}
-                    sortOrder={controls.sortOrder}
+                    sortBy={sortInfo.sortBy}
+                    sortOrder={sortInfo.sortOrder}
                 />
                 <GameGrid
                     games={currentPageGames}
                     page={page}
                     totalPages={totalPages}
                     onPageChange={handlePageChange}
-                    onClearFilters={controls.clearFilters}
                 />
             </>
         );
@@ -69,19 +78,29 @@ function HomePage() {
                 backgroundSize: "cover",
                 backgroundAttachment: "fixed",
                 minHeight: '100vh',
-                paddingY: 4
+                paddingY: 4,
+                paddingTop: '80px'  // Add padding to account for fixed header
             }}
             className="home-page-container"
         >
             <Container maxWidth="xl">
                 <HeroSection />
                 <FilterControls
-                    controls={controls}
+                    games={games}
                     genres={genres}
                     platforms={platforms}
+                    onSteamImportOpen={steamImport.handleSteamImportOpen}
+                    onFiltersChange={handleFiltersChange}
                 />
                 {renderContent()}
             </Container>
+            
+            {/* Steam Import Dialog */}
+            <SteamImport
+                open={steamImport.openSteamImport}
+                onClose={steamImport.handleSteamImportClose}
+                onImportComplete={steamImport.handleSteamImportComplete}
+            />
         </Box>
     );
 }

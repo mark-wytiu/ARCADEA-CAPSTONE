@@ -1,13 +1,6 @@
-// Test basic styling first
-body {
-	background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #2a2a2a 100%);
-	color: #ffffff;
-	min-height: 100vh;
-	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-	margin: 0;
-	padding: 0;
-}
+@import './styles/global.scss';
 
 .App {
 	min-height: 100vh;
+	position: relative;
 }

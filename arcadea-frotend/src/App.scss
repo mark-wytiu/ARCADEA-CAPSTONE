@@ -1,5 +1,26 @@
+@import '../../src/styles/theme/index';
+
 body {
-	background-image: url("./Assets/Images/carl-raw-m3hn2Kn5Bns-unsplash.jpg");
-	background-repeat: no-repeat;
-	background-size: cover;
+  background: $bg-primary;
+  background-image: url("./Assets/Images/carl-raw-m3hn2Kn5Bns-unsplash.jpg"), $gradient-primary;
+  background-blend-mode: overlay;
+  background-size: cover;
+  color: $text-primary;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+/* Ensure all pages have proper top spacing for fixed header */
+.page-container {
+  padding-top: 80px; /* Base padding for fixed header */
+}
+
+.main-content {
+  padding-top: 80px !important; /* Adjust padding to clear the fixed header */
+}
+
+/* Add padding to main App container */
+.App {
+  min-height: 100vh;
 }
