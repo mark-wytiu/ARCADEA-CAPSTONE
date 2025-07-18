@@ -19,13 +19,10 @@ const LoadingSpinner = () => (
 
 function App() {
   return (
-    <div className="App" style={{
-      background: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #2a2a2a 100%)',
-      color: '#ffffff',
-      minHeight: '100vh'
-    }}>
+    <div className="App">
       <BrowserRouter>
         <Header />
+        <Box sx={{ height: '64px' }} /> {/* Toolbar offset for fixed header */}
         <Suspense fallback={<LoadingSpinner />}>
           <Routes>
             <Route path="/" element={<HomePage />} />

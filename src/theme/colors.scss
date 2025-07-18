@@ -1,0 +1,92 @@
+// ARCADEA Color Scheme - Gaming Theme
+// Primary Colors
+$primary-dark: #0d1421;      // Deep navy for main backgrounds
+$primary-medium: #1a2332;    // Medium navy for card backgrounds
+$primary-light: #2a3441;     // Light navy for hover states
+
+// Accent Colors
+$accent-purple: #6c5ce7;     // Primary accent - electric purple
+$accent-blue: #00b9ff;       // Secondary accent - cyan blue
+$accent-green: #00b894;      // Success/positive actions
+$accent-orange: #ff7675;     // Warnings/notifications
+$accent-yellow: #fdcb6e;     // Highlights/ratings
+
+// Text Colors
+$text-primary: #ffffff;      // Primary text - white
+$text-secondary: #b2bac2;    // Secondary text - light gray
+$text-muted: #8e9aaf;        // Muted text - darker gray
+$text-accent: $accent-purple; // Accent text
+
+// Background Colors
+$bg-primary: $primary-dark;   // Main background
+$bg-secondary: $primary-medium; // Card/component backgrounds
+$bg-tertiary: $primary-light;  // Hover/active states
+$bg-overlay: rgba(13, 20, 33, 0.95); // Modal/overlay backgrounds
+
+// Border Colors
+$border-primary: #3a4553;    // Main borders
+$border-secondary: #4a5563;  // Secondary borders
+$border-accent: $accent-purple; // Accent borders
+
+// Shadow Colors
+$shadow-primary: rgba(0, 0, 0, 0.3);
+$shadow-secondary: rgba(0, 0, 0, 0.2);
+$shadow-glow: rgba(108, 92, 231, 0.3); // Purple glow
+
+// Gradient Colors
+$gradient-primary: linear-gradient(135deg, $primary-dark 0%, $primary-medium 100%);
+$gradient-accent: linear-gradient(135deg, $accent-purple 0%, $accent-blue 100%);
+$gradient-card: linear-gradient(135deg, $bg-secondary 0%, $bg-tertiary 100%);
+
+// Game Platform Colors
+$platform-steam: #1b2838;
+$platform-epic: #313131;
+$platform-origin: #f56c2c;
+$platform-uplay: #0078d4;
+$platform-gog: #7d4698;
+
+// Genre Colors (for tags/chips)
+$genre-action: #ff6b6b;
+$genre-adventure: #4ecdc4;
+$genre-rpg: #45b7d1;
+$genre-strategy: #96ceb4;
+$genre-simulation: #feca57;
+$genre-sports: #ff9ff3;
+$genre-racing: #54a0ff;
+$genre-puzzle: #5f27cd;
+$genre-horror: #2f3542;
+$genre-indie: #a55eea;
+
+// Status Colors
+$status-completed: $accent-green;
+$status-playing: $accent-blue;
+$status-backlog: $accent-yellow;
+$status-dropped: $accent-orange;
+$status-wishlist: $accent-purple;
+
+// Common Mixins
+@mixin glass-effect {
+  background: rgba(26, 35, 50, 0.8);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+@mixin card-hover {
+  transition: all 0.3s ease;
+  
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px $shadow-primary, 0 0 20px $shadow-glow;
+  }
+}
+
+@mixin neon-glow($color: $accent-purple) {
+  box-shadow: 0 0 10px rgba($color, 0.5), 0 0 20px rgba($color, 0.3);
+}
+
+@mixin gradient-text($gradient: $gradient-accent) {
+  background: $gradient;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}

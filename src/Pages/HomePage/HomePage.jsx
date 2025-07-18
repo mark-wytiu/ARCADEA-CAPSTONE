@@ -5,7 +5,7 @@ import {
     Typography,
     CircularProgress,
 } from '@mui/material';
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import bgImg from "../../Assets/Images/carl-raw-m3hn2Kn5Bns-unsplash.jpg";
 import "./HomePage.scss";
 
@@ -28,10 +28,23 @@ function HomePage() {
     const { page, totalPages, currentPageGames, handlePageChange } = useGamePagination(filteredGames);
     const steamImport = useSteamImport(refetchGames);
 
+    // Initialize filtered games when games load
+    useEffect(() => {
+        if (games.length > 0 && filteredGames.length === 0) {
+            setFilteredGames(games);
+        }
+    }, [games, filteredGames.length]);
+
     // Handle filter changes from FilterControls
     const handleFiltersChange = useCallback((filtered, sortData) => {
         setFilteredGames(filtered);
         setSortInfo(sortData);
+    }, []);
+
+    // Clear all filters function
+    const clearFilters = useCallback(() => {
+        // Reset URL to clear all filters
+        window.location.href = window.location.pathname;
     }, []);
 
     const renderContent = () => {
@@ -64,6 +77,7 @@ function HomePage() {
                     page={page}
                     totalPages={totalPages}
                     onPageChange={handlePageChange}
+                    onClearFilters={clearFilters}
                 />
             </>
         );
@@ -81,7 +95,7 @@ function HomePage() {
                 paddingY: 4,
                 paddingTop: '80px'  // Add padding to account for fixed header
             }}
-            className="home-page-container"
+            className="home-page-container main-content"
         >
             <Container maxWidth="xl">
                 <HeroSection />

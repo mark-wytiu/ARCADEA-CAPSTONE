@@ -2,6 +2,11 @@
   "name": "arcadea-frotend",
   "version": "0.1.0",
   "private": true,
+  "sideEffects": [
+    "*.css",
+    "*.scss",
+    "src/index.js"
+  ],
   "dependencies": {
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
@@ -23,10 +28,14 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "start": "craco start",
+    "dev": "PORT=3001 BROWSER=none craco start",
+    "start-backend": "cd '../../../ARCADEA-CAPSTONE-backend' && node index.js",
+    "start-all": "npm run start-backend & npm run dev",
+    "build": "craco build",
+    "test": "craco test",
+    "eject": "react-scripts eject",
+    "analyze": "npm run build && npx webpack-bundle-analyzer build/static/js/*.js"
   },
   "eslintConfig": {
     "extends": [
@@ -49,5 +58,9 @@
   "peerDependencies": {
     "react": "^17.0.0 || ^18.0.0",
     "react-dom": "^17.0.0 || ^18.0.0"
+  },
+  "devDependencies": {
+    "@craco/craco": "^7.1.0",
+    "webpack-bundle-analyzer": "^4.10.2"
   }
 }
