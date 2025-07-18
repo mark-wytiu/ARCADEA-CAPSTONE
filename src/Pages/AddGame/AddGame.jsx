@@ -65,7 +65,7 @@ function AddGame() {
     };
 
     return (
-        <Container maxWidth="md" sx={{ mt: 5, mb: 5 }} className="add-game-container">
+        <Container maxWidth="md" sx={{ mt: 10, mb: 5 }} className="add-game-container">
             <StyledPaper>
                 <FormTitle variant="h4" component="h1">
                     Add New Game

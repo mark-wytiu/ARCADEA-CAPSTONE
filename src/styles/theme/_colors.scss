@@ -1,0 +1,199 @@
+// ARCADEA Unified Theme - Color System
+// This file centralizes all color definitions for consistency across the application
+
+// ========================================
+// Base Colors
+// ========================================
+
+// Neutrals (Dark Mode Base)
+$neutral-900: #0a0a0a;    // Darkest
+$neutral-800: #0d1421;    // Very dark
+$neutral-700: #161b22;    // Dark
+$neutral-600: #1a1a1a;    // Medium dark
+$neutral-500: #21262d;    // Medium
+$neutral-400: #2a2a2a;    // Medium light
+$neutral-300: #30363d;    // Light
+$neutral-200: #3a4553;    // Very light
+$neutral-100: #4a5563;    // Lightest
+
+// White & Grays (for text and overlays)
+$white: #ffffff;
+$gray-100: #f8f9fa;
+$gray-200: #e9ecef;
+$gray-300: #dee2e6;
+$gray-400: #ced4da;
+$gray-500: #adb5bd;
+$gray-600: #6c757d;
+$gray-700: #495057;
+$gray-800: #343a40;
+$gray-900: #212529;
+
+// ========================================
+// Brand Colors
+// ========================================
+
+// Primary Accent - Electric Blue/Cyan
+$brand-primary: #00d4ff;
+$brand-primary-dark: #00a8cc;
+$brand-primary-light: #33ddff;
+$brand-primary-soft: rgba(0, 212, 255, 0.1);
+
+// Secondary Accent - Purple
+$brand-secondary: #8b5cf6;
+$brand-secondary-dark: #6c5ce7;
+$brand-secondary-light: #a78bfa;
+$brand-secondary-soft: rgba(139, 92, 246, 0.1);
+
+// Gaming Neon Palette
+$neon-blue: #00d4ff;
+$neon-purple: #8b5cf6;
+$neon-green: #00ff88;
+$neon-pink: #ff0080;
+$neon-orange: #ff6b00;
+$neon-yellow: #ffd700;
+
+// ========================================
+// Semantic Colors
+// ========================================
+
+// Status Colors
+$success: #00ff88;
+$success-dark: #00b894;
+$success-light: #33ff9f;
+$success-soft: rgba(0, 255, 136, 0.1);
+
+$warning: #ff6b00;
+$warning-dark: #ff7675;
+$warning-light: #ff8433;
+$warning-soft: rgba(255, 107, 0, 0.1);
+
+$error: #ff0080;
+$error-dark: #d63031;
+$error-light: #ff3399;
+$error-soft: rgba(255, 0, 128, 0.1);
+
+$info: #00d4ff;
+$info-dark: #00a8cc;
+$info-light: #33ddff;
+$info-soft: rgba(0, 212, 255, 0.1);
+
+// ========================================
+// UI Element Colors
+// ========================================
+
+// Backgrounds
+$bg-primary: $neutral-900;
+$bg-secondary: $neutral-800;
+$bg-tertiary: $neutral-700;
+$bg-elevated: $neutral-600;
+$bg-overlay: rgba($neutral-900, 0.95);
+$bg-backdrop: rgba($neutral-900, 0.8);
+
+// Cards & Surfaces
+$surface-primary: rgba($neutral-600, 0.9);
+$surface-secondary: rgba($neutral-500, 0.9);
+$surface-hover: rgba($neutral-400, 0.9);
+$surface-active: rgba($neutral-300, 0.9);
+
+// Text
+$text-primary: $white;
+$text-secondary: #e6e6e6;
+$text-tertiary: #b2bac2;
+$text-muted: #8e9aaf;
+$text-disabled: #6c757d;
+$text-accent: $brand-primary;
+
+// Borders
+$border-primary: rgba(255, 255, 255, 0.1);
+$border-secondary: rgba(255, 255, 255, 0.05);
+$border-accent: rgba($brand-primary, 0.3);
+$border-hover: rgba($brand-primary, 0.6);
+$border-active: $brand-primary;
+
+// Shadows
+$shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.2);
+$shadow-md: 0 4px 8px rgba(0, 0, 0, 0.3);
+$shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.4);
+$shadow-xl: 0 12px 24px rgba(0, 0, 0, 0.5);
+$shadow-glow: 0 0 20px rgba($brand-primary, 0.3);
+$shadow-glow-lg: 0 0 40px rgba($brand-primary, 0.5);
+
+// ========================================
+// Gradients
+// ========================================
+
+$gradient-primary: linear-gradient(135deg, $neutral-900 0%, $neutral-600 50%, $neutral-400 100%);
+$gradient-secondary: linear-gradient(45deg, $neutral-800 0%, $neutral-500 100%);
+$gradient-accent: linear-gradient(135deg, $brand-primary 0%, $brand-secondary 100%);
+$gradient-gaming: linear-gradient(45deg, $neon-blue 0%, $neon-purple 50%, $neon-pink 100%);
+$gradient-dark: linear-gradient(180deg, rgba($neutral-900, 0) 0%, $neutral-900 100%);
+
+// ========================================
+// Platform Colors
+// ========================================
+
+$platform-steam: #1b2838;
+$platform-epic: #313131;
+$platform-origin: #f56c2c;
+$platform-uplay: #0078d4;
+$platform-gog: #7d4698;
+$platform-xbox: #107c10;
+$platform-playstation: #003791;
+$platform-nintendo: #e60012;
+
+// ========================================
+// Game Genre Colors
+// ========================================
+
+$genre-action: #ff6b6b;
+$genre-adventure: #4ecdc4;
+$genre-rpg: #45b7d1;
+$genre-strategy: #96ceb4;
+$genre-simulation: #feca57;
+$genre-sports: #ff9ff3;
+$genre-racing: #54a0ff;
+$genre-puzzle: #5f27cd;
+$genre-horror: #2f3542;
+$genre-indie: #a55eea;
+$genre-mmo: #00d2d3;
+$genre-fps: #ee5a6f;
+
+// ========================================
+// Game Status Colors
+// ========================================
+
+$status-playing: $neon-blue;
+$status-completed: $neon-green;
+$status-backlog: $neon-yellow;
+$status-dropped: $neon-orange;
+$status-wishlist: $neon-purple;
+$status-paused: $gray-500;
+
+// ========================================
+// Achievement/Trophy Colors
+// ========================================
+
+$trophy-platinum: #e5e4e2;
+$trophy-gold: #ffd700;
+$trophy-silver: #c0c0c0;
+$trophy-bronze: #cd7f32;
+
+// ========================================
+// Rating Colors
+// ========================================
+
+$rating-5: $neon-green;
+$rating-4: #4cd137;
+$rating-3: $neon-yellow;
+$rating-2: $neon-orange;
+$rating-1: $error;
+
+// ========================================
+// Opacity Levels
+// ========================================
+
+$opacity-hover: 0.8;
+$opacity-disabled: 0.5;
+$opacity-overlay: 0.95;
+$opacity-backdrop: 0.8;
+$opacity-subtle: 0.1;

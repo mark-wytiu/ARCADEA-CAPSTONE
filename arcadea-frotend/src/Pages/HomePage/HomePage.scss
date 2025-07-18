@@ -1,74 +1,176 @@
+@import '../../../../src/styles/theme/index';
+
 .home-page-container {
-	.search-section {
-		transition: all 0.3s ease;
+  background: $bg-primary;
+  color: $text-primary;
+  min-height: 100vh;
+  padding: 2rem; /* Regular padding for content */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
-		&:hover {
-			box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-		}
-	}
+  .page-title {
+    @include gradient-text;
+    font-size: 2.5rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 2rem;
+    text-shadow: 0 0 20px $shadow-glow;
+    animation: fadeIn 0.8s ease-in;
+  }
 
-	.MuiPaginationItem-root {
-		font-weight: 500;
-	}
+  .page-subtitle {
+    color: $text-secondary;
+    font-size: 1.1rem;
+    text-align: center;
+    margin-bottom: 3rem;
+    max-width: 600px;
+    line-height: 1.6;
+  }
 
-	.filter-chip {
-		transition: all 0.2s ease;
+  .search-section {
+    @include dark-glass;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: $shadow-lg, $shadow-glow;
+    transition: all 0.3s ease;
+    width: 100%;
+    max-width: 800px;
+    margin-bottom: 2rem;
 
-		&:hover {
-			transform: translateY(-2px);
-		}
-	}
+    &:hover {
+      box-shadow: $shadow-xl, $shadow-glow-lg;
+      transform: translateY(-4px);
+    }
 
-	.game-count {
-		animation: fadeIn 0.5s ease-in;
-	}
+    input {
+      background-color: $bg-tertiary;
+      border: 1px solid $border-primary;
+      color: $text-primary;
+      padding: 0.75rem 1rem;
+      width: 100%;
+      border-radius: 8px;
+      font-size: 1rem;
 
-	@keyframes fadeIn {
-		from {
-			opacity: 0;
-			transform: translateY(10px);
-		}
-		to {
-			opacity: 1;
-			transform: translateY(0);
-		}
-	}
+      &:focus {
+        outline: none;
+        border-color: $brand-secondary;
+        box-shadow: 0 0 0 3px $brand-secondary-soft;
+      }
 
-	.loading-container {
-		min-height: 400px;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-	}
+      &::placeholder {
+        color: $text-muted;
+      }
+    }
+  }
 
-	.sort-icon {
-		transition: transform 0.3s ease;
-	}
+  .MuiPaginationItem-root {
+    color: $text-primary !important;
+    font-weight: 500;
+    transition: all 0.2s ease;
 
-	.add-button {
-		transition: all 0.2s ease;
+    &:hover {
+      background-color: $brand-secondary !important;
+      color: white !important;
+      transform: scale(1.05);
+    }
 
-		&:hover {
-			transform: scale(1.1);
-		}
-	}
+    &.Mui-selected {
+      background: $gradient-accent !important;
+      color: white !important;
+      @include glow($brand-secondary);
+    }
+  }
 
-	/* Custom scrollbar for select dropdowns */
-	.MuiSelect-select::-webkit-scrollbar {
-		width: 8px;
-	}
+  .filter-chip {
+    background: $gradient-accent !important;
+    color: white !important;
+    border-radius: 6px;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin: 0.2rem;
+    transition: all 0.2s ease;
 
-	.MuiSelect-select::-webkit-scrollbar-track {
-		background: #f1f1f1;
-		border-radius: 10px;
-	}
+    &:hover {
+      transform: translateY(-2px) scale(1.05);
+      box-shadow: 0 0 12px $shadow-glow;
+    }
+  }
 
-	.MuiSelect-select::-webkit-scrollbar-thumb {
-		background: #888;
-		border-radius: 10px;
-	}
+  .game-count {
+    color: $neon-yellow;
+    font-weight: bold;
+    font-size: 1.1rem;
+    animation: fadeIn 0.5s ease-in;
+  }
 
-	.MuiSelect-select::-webkit-scrollbar-thumb:hover {
-		background: #555;
-	}
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .loading-container {
+    min-height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .MuiCircularProgress-root {
+      color: $brand-secondary !important;
+    }
+  }
+
+  .sort-icon {
+    color: $brand-secondary;
+    transition: transform 0.3s ease;
+    cursor: pointer;
+
+    &:hover {
+      transform: rotate(180deg);
+      color: $brand-primary;
+    }
+  }
+
+  .add-button {
+    background: $gradient-accent;
+    color: $text-primary;
+    font-weight: 600;
+    border-radius: 8px;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+
+    &:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 15px $shadow-glow;
+    }
+  }
+
+  /* Custom scrollbar for select dropdowns */
+  .MuiSelect-select::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .MuiSelect-select::-webkit-scrollbar-track {
+    background: $bg-secondary;
+    border-radius: 10px;
+  }
+
+  .MuiSelect-select::-webkit-scrollbar-thumb {
+    background: $brand-secondary;
+    border-radius: 10px;
+  }
+
+  .MuiSelect-select::-webkit-scrollbar-thumb:hover {
+    background: $brand-primary;
+  }
 }

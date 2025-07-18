@@ -1,0 +1,134 @@
+@import '../../../../src/styles/theme/index';
+
+.game-card {
+  @include gaming-card;
+  height: 350px !important;
+  margin: 0 !important;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: $gradient-accent;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  
+  &:hover::before {
+    opacity: 1;
+  }
+}
+
+.game-card .MuiCardMedia-root {
+  background-color: $bg-secondary;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px solid $border-primary;
+  position: relative;
+  
+  img {
+    transition: transform 0.3s ease;
+  }
+  
+  &:hover img {
+    transform: scale(1.05);
+  }
+}
+
+.game-card .MuiCardContent-root {
+  padding: 16px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  background: transparent;
+}
+
+.game-card .MuiTypography-root {
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: $text-primary;
+  
+  &.game-title {
+    @include gradient-text(linear-gradient(135deg, $text-primary 0%, $text-secondary 100%));
+    font-size: 1.1rem;
+    margin-bottom: spacing(1);
+  }
+  
+  &.game-description {
+    color: $text-muted;
+    font-size: 0.9rem;
+    line-height: 1.4;
+    @include truncate(3);
+  }
+}
+
+.game-chip {
+  background: $gradient-accent !important;
+  color: $white !important;
+  font-size: 0.7rem !important;
+  font-weight: 600 !important;
+  border-radius: 6px !important;
+  margin: 2px !important;
+  transition: all 0.2s ease !important;
+  
+  &:hover {
+    transform: scale(1.05) !important;
+    @include glow($brand-secondary, 10px, 0.5);
+  }
+}
+
+.platform-chip {
+  background: $surface-primary !important;
+  color: $text-tertiary !important;
+  border: 1px solid $border-primary !important;
+  font-size: 0.7rem !important;
+  margin: 2px !important;
+  
+  &.steam { background: $platform-steam !important; }
+  &.epic { background: $platform-epic !important; }
+  &.origin { background: $platform-origin !important; }
+  &.uplay { background: $platform-uplay !important; }
+  &.gog { background: $platform-gog !important; }
+}
+
+.game-rating {
+  display: flex;
+  align-items: center;
+  gap: spacing(0.5);
+  margin-top: spacing(1);
+  
+  .rating-stars {
+    color: $neon-yellow;
+    font-size: 1rem;
+  }
+  
+  .rating-text {
+    color: $text-tertiary;
+    font-size: 0.8rem;
+  }
+}
+
+.MuiStack-root {
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+// Responsive design
+@include mobile {
+  .game-card {
+    height: auto !important;
+    min-height: 320px;
+  }
+
+  .game-card .MuiCardMedia-root {
+    height: 160px !important;
+  }
+}

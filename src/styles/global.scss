@@ -1,0 +1,310 @@
+// ARCADEA Global Styles
+// This file contains global styles that apply to the entire application
+
+@import './theme/index';
+
+// ========================================
+// CSS Reset & Base Styles
+// ========================================
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+body {
+  background: $bg-primary;
+  color: $text-primary;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+  overflow-x: hidden;
+  @include custom-scrollbar;
+}
+
+// ========================================
+// Typography
+// ========================================
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  font-weight: 700;
+  line-height: 1.2;
+  color: $text-primary;
+}
+
+h1 {
+  @include gaming-heading(2.5rem);
+  margin-bottom: spacing(3);
+}
+
+h2 {
+  @include gaming-heading(2rem);
+  margin-bottom: spacing(2.5);
+}
+
+h3 {
+  font-size: 1.75rem;
+  margin-bottom: spacing(2);
+}
+
+h4 {
+  font-size: 1.5rem;
+  margin-bottom: spacing(1.5);
+}
+
+h5 {
+  font-size: 1.25rem;
+  margin-bottom: spacing(1);
+}
+
+h6 {
+  font-size: 1rem;
+  margin-bottom: spacing(1);
+}
+
+p {
+  margin-bottom: spacing(2);
+  line-height: 1.6;
+}
+
+a {
+  color: $brand-primary;
+  text-decoration: none;
+  transition: color 0.2s ease;
+  
+  &:hover {
+    color: $brand-primary-light;
+    text-decoration: underline;
+  }
+  
+  &:focus-visible {
+    outline: 2px solid $brand-primary;
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+}
+
+// ========================================
+// Form Elements
+// ========================================
+
+input,
+textarea,
+select {
+  @include form-input;
+}
+
+button {
+  @include gaming-button;
+}
+
+// ========================================
+// Utility Classes
+// ========================================
+
+// Spacing utilities
+@for $i from 0 through 10 {
+  .mt-#{$i} { margin-top: spacing($i) !important; }
+  .mb-#{$i} { margin-bottom: spacing($i) !important; }
+  .ml-#{$i} { margin-left: spacing($i) !important; }
+  .mr-#{$i} { margin-right: spacing($i) !important; }
+  .mx-#{$i} { 
+    margin-left: spacing($i) !important; 
+    margin-right: spacing($i) !important; 
+  }
+  .my-#{$i} { 
+    margin-top: spacing($i) !important; 
+    margin-bottom: spacing($i) !important; 
+  }
+  .m-#{$i} { margin: spacing($i) !important; }
+  
+  .pt-#{$i} { padding-top: spacing($i) !important; }
+  .pb-#{$i} { padding-bottom: spacing($i) !important; }
+  .pl-#{$i} { padding-left: spacing($i) !important; }
+  .pr-#{$i} { padding-right: spacing($i) !important; }
+  .px-#{$i} { 
+    padding-left: spacing($i) !important; 
+    padding-right: spacing($i) !important; 
+  }
+  .py-#{$i} { 
+    padding-top: spacing($i) !important; 
+    padding-bottom: spacing($i) !important; 
+  }
+  .p-#{$i} { padding: spacing($i) !important; }
+}
+
+// Text utilities
+.text-center { text-align: center !important; }
+.text-left { text-align: left !important; }
+.text-right { text-align: right !important; }
+
+.text-primary { color: $text-primary !important; }
+.text-secondary { color: $text-secondary !important; }
+.text-muted { color: $text-muted !important; }
+.text-accent { color: $text-accent !important; }
+
+.text-gradient {
+  @include gradient-text;
+}
+
+.text-neon {
+  @include neon-text;
+}
+
+// Background utilities
+.bg-primary { background: $bg-primary !important; }
+.bg-secondary { background: $bg-secondary !important; }
+.bg-tertiary { background: $bg-tertiary !important; }
+.bg-elevated { background: $bg-elevated !important; }
+.bg-gradient { background: $gradient-primary !important; }
+.bg-glass { @include dark-glass; }
+
+// Display utilities
+.d-none { display: none !important; }
+.d-block { display: block !important; }
+.d-inline-block { display: inline-block !important; }
+.d-flex { display: flex !important; }
+.d-inline-flex { display: inline-flex !important; }
+.d-grid { display: grid !important; }
+
+// Flex utilities
+.flex-row { flex-direction: row !important; }
+.flex-column { flex-direction: column !important; }
+.flex-wrap { flex-wrap: wrap !important; }
+.flex-nowrap { flex-wrap: nowrap !important; }
+.justify-start { justify-content: flex-start !important; }
+.justify-center { justify-content: center !important; }
+.justify-end { justify-content: flex-end !important; }
+.justify-between { justify-content: space-between !important; }
+.justify-around { justify-content: space-around !important; }
+.align-start { align-items: flex-start !important; }
+.align-center { align-items: center !important; }
+.align-end { align-items: flex-end !important; }
+.flex-1 { flex: 1 !important; }
+
+// Shadow utilities
+.shadow-sm { box-shadow: $shadow-sm !important; }
+.shadow-md { box-shadow: $shadow-md !important; }
+.shadow-lg { box-shadow: $shadow-lg !important; }
+.shadow-xl { box-shadow: $shadow-xl !important; }
+.shadow-glow { box-shadow: $shadow-glow !important; }
+
+// Border utilities
+.border-0 { border: 0 !important; }
+.border { border: 1px solid $border-primary !important; }
+.border-accent { border: 1px solid $border-accent !important; }
+.rounded { border-radius: 4px !important; }
+.rounded-lg { border-radius: 8px !important; }
+.rounded-xl { border-radius: 12px !important; }
+.rounded-full { border-radius: 9999px !important; }
+
+// ========================================
+// Animations
+// ========================================
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-out;
+}
+
+.animate-slide-in {
+  animation: slideIn 0.5s ease-out;
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.3s ease-out;
+}
+
+// ========================================
+// Material-UI Overrides
+// ========================================
+
+// Override MUI default colors
+.MuiPaper-root {
+  background-color: $surface-primary !important;
+  color: $text-primary !important;
+}
+
+.MuiButton-root {
+  text-transform: none !important;
+  font-weight: 600 !important;
+}
+
+.MuiChip-root {
+  font-weight: 600 !important;
+}
+
+// Override MUI tooltips
+.MuiTooltip-tooltip {
+  background-color: $bg-elevated !important;
+  color: $text-primary !important;
+  border: 1px solid $border-primary !important;
+  font-size: 0.875rem !important;
+}
+
+// Override MUI dialogs
+.MuiDialog-paper {
+  background-color: $bg-secondary !important;
+  border: 1px solid $border-primary !important;
+}
+
+// ========================================
+// Responsive Utilities
+// ========================================
+
+@include mobile {
+  .mobile-hide { display: none !important; }
+  .mobile-show { display: block !important; }
+}
+
+@include tablet {
+  .tablet-hide { display: none !important; }
+  .tablet-show { display: block !important; }
+}
+
+@include desktop {
+  .desktop-hide { display: none !important; }
+  .desktop-show { display: block !important; }
+}

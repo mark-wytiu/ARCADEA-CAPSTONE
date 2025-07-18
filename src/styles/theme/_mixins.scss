@@ -1,0 +1,433 @@
+// ARCADEA Unified Theme - Mixins
+// Reusable mixins for consistent styling patterns
+
+@import './colors';
+
+// ========================================
+// Layout & Spacing
+// ========================================
+
+// Consistent spacing system
+$spacing-unit: 8px;
+@function spacing($multiplier) {
+  @return $spacing-unit * $multiplier;
+}
+
+// Container with max-width
+@mixin container($max-width: 1200px) {
+  width: 100%;
+  max-width: $max-width;
+  margin: 0 auto;
+  padding: 0 spacing(3);
+  
+  @include mobile {
+    padding: 0 spacing(2);
+  }
+}
+
+// ========================================
+// Typography
+// ========================================
+
+// Gaming-style heading
+@mixin gaming-heading($size: 2rem) {
+  font-size: $size;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: $text-primary;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+// Gradient text effect
+@mixin gradient-text($gradient: $gradient-accent) {
+  background: $gradient;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+}
+
+// Neon text glow
+@mixin neon-text($color: $neon-blue, $intensity: 1) {
+  color: $color;
+  text-shadow: 
+    0 0 #{5px * $intensity} $color,
+    0 0 #{10px * $intensity} $color,
+    0 0 #{20px * $intensity} rgba($color, 0.5);
+}
+
+// ========================================
+// Cards & Surfaces
+// ========================================
+
+// Base card style
+@mixin card-base {
+  background: $surface-primary;
+  border: 1px solid $border-primary;
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+  overflow: hidden;
+}
+
+// Gaming card with hover effects
+@mixin gaming-card {
+  @include card-base;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  
+  &:hover {
+    background: $surface-hover;
+    border-color: $border-hover;
+    transform: translateY(-4px);
+    box-shadow: $shadow-xl, $shadow-glow;
+  }
+  
+  &:active {
+    transform: translateY(-2px);
+  }
+}
+
+// Glass morphism effect
+@mixin glass-morphism($opacity: 0.1, $blur: 10px) {
+  background: rgba($white, $opacity);
+  backdrop-filter: blur($blur);
+  -webkit-backdrop-filter: blur($blur);
+  border: 1px solid rgba($white, $opacity * 2);
+}
+
+// Dark glass morphism
+@mixin dark-glass {
+  background: rgba($neutral-700, 0.8);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid $border-primary;
+}
+
+// ========================================
+// Buttons
+// ========================================
+
+// Base button reset
+@mixin button-reset {
+  border: none;
+  background: none;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  outline: none;
+  
+  &:focus-visible {
+    outline: 2px solid $brand-primary;
+    outline-offset: 2px;
+  }
+}
+
+// Primary gaming button
+@mixin gaming-button($color: $brand-primary, $gradient: false) {
+  @include button-reset;
+  position: relative;
+  padding: spacing(1.5) spacing(3);
+  border-radius: 8px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+  
+  @if $gradient {
+    background: linear-gradient(135deg, $color, lighten($color, 10%));
+  } @else {
+    background: $color;
+  }
+  
+  color: $white;
+  
+  // Hover state
+  &:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba($color, 0.3);
+    
+    &::after {
+      transform: translateX(0);
+    }
+  }
+  
+  // Active state
+  &:active:not(:disabled) {
+    transform: translateY(0);
+  }
+  
+  // Disabled state
+  &:disabled {
+    opacity: $opacity-disabled;
+    cursor: not-allowed;
+  }
+  
+  // Shimmer effect on hover
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba($white, 0.2),
+      transparent
+    );
+    transform: translateX(-100%);
+    transition: transform 0.6s;
+  }
+}
+
+// Secondary button
+@mixin secondary-button {
+  @include button-reset;
+  padding: spacing(1.5) spacing(3);
+  border: 2px solid $border-accent;
+  border-radius: 8px;
+  color: $text-primary;
+  background: transparent;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  
+  &:hover:not(:disabled) {
+    background: $brand-primary-soft;
+    border-color: $brand-primary;
+    color: $brand-primary;
+    transform: translateY(-2px);
+    box-shadow: $shadow-glow;
+  }
+  
+  &:disabled {
+    opacity: $opacity-disabled;
+    cursor: not-allowed;
+  }
+}
+
+// Icon button
+@mixin icon-button($size: 40px) {
+  @include button-reset;
+  width: $size;
+  height: $size;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    background: $brand-primary-soft;
+    color: $brand-primary;
+  }
+}
+
+// ========================================
+// Effects & Animations
+// ========================================
+
+// Glow effect
+@mixin glow($color: $brand-primary, $spread: 20px, $intensity: 0.5) {
+  box-shadow: 0 0 $spread rgba($color, $intensity);
+}
+
+// Neon border
+@mixin neon-border($color: $brand-primary, $width: 2px) {
+  border: $width solid $color;
+  box-shadow: 
+    0 0 5px $color,
+    0 0 10px rgba($color, 0.5),
+    inset 0 0 5px rgba($color, 0.3);
+}
+
+// Pulse animation
+@mixin pulse($scale: 1.05) {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  
+  @keyframes pulse {
+    0%, 100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale($scale);
+    }
+  }
+}
+
+// Shimmer loading effect
+@mixin shimmer {
+  position: relative;
+  overflow: hidden;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba($white, 0.1),
+      transparent
+    );
+    animation: shimmer 1.5s infinite;
+  }
+  
+  @keyframes shimmer {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(100%);
+    }
+  }
+}
+
+// ========================================
+// Scrollbar
+// ========================================
+
+@mixin custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: $brand-primary $neutral-700;
+  
+  &::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: $neutral-700;
+    border-radius: 4px;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: $brand-primary;
+    border-radius: 4px;
+    
+    &:hover {
+      background: $brand-primary-light;
+    }
+  }
+}
+
+// ========================================
+// Forms
+// ========================================
+
+@mixin form-input {
+  width: 100%;
+  padding: spacing(1.5) spacing(2);
+  background: $surface-primary;
+  border: 1px solid $border-primary;
+  border-radius: 8px;
+  color: $text-primary;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+  
+  &::placeholder {
+    color: $text-muted;
+  }
+  
+  &:hover {
+    border-color: $border-secondary;
+  }
+  
+  &:focus {
+    outline: none;
+    border-color: $brand-primary;
+    box-shadow: 0 0 0 3px $brand-primary-soft;
+  }
+  
+  &:disabled {
+    opacity: $opacity-disabled;
+    cursor: not-allowed;
+  }
+}
+
+// ========================================
+// Utility Mixins
+// ========================================
+
+// Aspect ratio box
+@mixin aspect-ratio($width, $height) {
+  position: relative;
+  
+  &::before {
+    content: '';
+    display: block;
+    padding-top: percentage($height / $width);
+  }
+  
+  > * {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+// Truncate text
+@mixin truncate($lines: 1) {
+  @if $lines == 1 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  } @else {
+    display: -webkit-box;
+    -webkit-line-clamp: $lines;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
+
+// ========================================
+// Responsive Breakpoints
+// ========================================
+
+$breakpoints: (
+  'mobile': 768px,
+  'tablet': 1024px,
+  'desktop': 1280px,
+  'wide': 1440px
+);
+
+@mixin mobile {
+  @media (max-width: #{map-get($breakpoints, 'mobile')}) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media (max-width: #{map-get($breakpoints, 'tablet')}) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media (min-width: #{map-get($breakpoints, 'desktop')}) {
+    @content;
+  }
+}
+
+@mixin wide {
+  @media (min-width: #{map-get($breakpoints, 'wide')}) {
+    @content;
+  }
+}
+
+// Custom breakpoint
+@mixin breakpoint($size) {
+  @media (max-width: $size) {
+    @content;
+  }
+}

@@ -91,7 +91,9 @@ function HomePage() {
                 backgroundRepeat: "no-repeat",
                 backgroundSize: "cover",
                 backgroundAttachment: "fixed",
-                minHeight: '100vh'
+                minHeight: '100vh',
+                paddingY: 4,
+                paddingTop: '80px'  // Add padding to account for fixed header
             }}
             className="home-page-container main-content"
         >

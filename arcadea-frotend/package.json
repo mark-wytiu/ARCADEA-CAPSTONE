@@ -2,6 +2,11 @@
   "name": "arcadea-frotend",
   "version": "0.1.0",
   "private": true,
+  "sideEffects": [
+    "*.css",
+    "*.scss",
+    "src/index.js"
+  ],
   "dependencies": {
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
@@ -15,16 +20,22 @@
     "react-dom": "^17.0.0 || ^18.0.0",
     "react-responsive-carousel": "^3.2.23",
     "react-router-dom": "^6.22.3",
-    "react-scripts": "^0.0.0",
+    "react-scripts": "5.0.1",
     "react-slick": "^0.30.2",
+    "react-window": "^1.8.11",
+    "react-window-infinite-loader": "^1.0.10",
     "sass": "^1.74.1",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "start": "craco start",
+    "dev": "PORT=3001 BROWSER=none craco start",
+    "start-backend": "cd '../../../ARCADEA-CAPSTONE-backend' && node index.js",
+    "start-all": "npm run start-backend & npm run dev",
+    "build": "craco build",
+    "test": "craco test",
+    "eject": "react-scripts eject",
+    "analyze": "npm run build && npx webpack-bundle-analyzer build/static/js/*.js"
   },
   "eslintConfig": {
     "extends": [
@@ -44,7 +55,12 @@
       "last 1 safari version"
     ]
   },
+  "peerDependencies": {
+    "react": "^17.0.0 || ^18.0.0",
+    "react-dom": "^17.0.0 || ^18.0.0"
+  },
   "devDependencies": {
-    "@babel/plugin-proposal-private-property-in-object": "^7.21.11"
+    "@craco/craco": "^7.1.0",
+    "webpack-bundle-analyzer": "^4.10.2"
   }
 }

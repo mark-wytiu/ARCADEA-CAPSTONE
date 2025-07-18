@@ -1,0 +1,239 @@
+.steam-import-dialog {
+    .MuiDialog-paper {
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    }
+    
+    .steam-player-info {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        padding: 16px;
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.8);
+        margin-bottom: 16px;
+        
+        .player-avatar {
+            border: 2px solid #171a21;
+        }
+        
+        .player-details {
+            flex: 1;
+            
+            .player-name {
+                font-weight: bold;
+                color: #171a21;
+            }
+            
+            .player-stats {
+                color: #666;
+                font-size: 0.875rem;
+            }
+        }
+    }
+    
+    .games-list {
+        max-height: 400px;
+        overflow-y: auto;
+        
+        .game-item {
+            transition: all 0.2s ease;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            
+            &:hover {
+                background-color: rgba(0, 0, 0, 0.04);
+            }
+            
+            &.selected {
+                background-color: rgba(25, 118, 210, 0.08);
+                border: 1px solid rgba(25, 118, 210, 0.2);
+            }
+            
+            .game-avatar {
+                border-radius: 4px;
+            }
+            
+            .game-details {
+                .game-title {
+                    font-weight: 500;
+                    color: #171a21;
+                }
+                
+                .game-meta {
+                    display: flex;
+                    gap: 8px;
+                    margin-top: 4px;
+                    
+                    .MuiChip-root {
+                        height: 20px;
+                        font-size: 0.75rem;
+                    }
+                }
+            }
+        }
+    }
+    
+    .import-progress {
+        .progress-text {
+            text-align: center;
+            margin-bottom: 8px;
+            color: #666;
+        }
+        
+        .MuiLinearProgress-root {
+            border-radius: 4px;
+            height: 6px;
+        }
+    }
+    
+    .success-content {
+        text-align: center;
+        padding: 32px 16px;
+        
+        .success-icon {
+            color: #4caf50;
+            font-size: 64px;
+            margin-bottom: 16px;
+        }
+        
+        .success-title {
+            color: #171a21;
+            margin-bottom: 8px;
+        }
+        
+        .success-subtitle {
+            color: #666;
+        }
+    }
+    
+    .stepper-content {
+        min-height: 300px;
+        
+        .info-alert {
+            .MuiAlert-icon {
+                color: #1976d2;
+            }
+        }
+        
+        .steam-input {
+            .MuiOutlinedInput-root {
+                &:hover .MuiOutlinedInput-notchedOutline {
+                    border-color: #1976d2;
+                }
+                
+                &.Mui-focused .MuiOutlinedInput-notchedOutline {
+                    border-color: #1976d2;
+                }
+            }
+        }
+        
+        .examples-text {
+            font-size: 0.75rem;
+            color: #666;
+            line-height: 1.4;
+        }
+    }
+    
+    .dialog-actions {
+        padding: 16px 24px;
+        
+        .import-button {
+            background: linear-gradient(45deg, #1976d2 30%, #42a5f5 90%);
+            color: white;
+            font-weight: 500;
+            
+            &:hover {
+                background: linear-gradient(45deg, #1565c0 30%, #1976d2 90%);
+            }
+            
+            &:disabled {
+                background: #ccc;
+                color: #999;
+            }
+        }
+    }
+}
+
+// Steam-themed colors and styling
+.steam-themed {
+    .primary-color {
+        color: #1b2838;
+    }
+    
+    .secondary-color {
+        color: #66c0f4;
+    }
+    
+    .accent-color {
+        color: #c7d5e0;
+    }
+    
+    .steam-gradient {
+        background: linear-gradient(135deg, #1b2838 0%, #2a475e 100%);
+    }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+    .steam-import-dialog {
+        .MuiDialog-paper {
+            margin: 16px;
+            width: calc(100% - 32px);
+            height: calc(100% - 64px);
+        }
+        
+        .games-list {
+            max-height: 300px;
+        }
+        
+        .steam-player-info {
+            flex-direction: column;
+            text-align: center;
+            
+            .player-details {
+                text-align: center;
+            }
+        }
+        
+        .game-selection-controls {
+            flex-direction: column;
+            gap: 8px;
+            
+            .MuiButton-root {
+                width: 100%;
+            }
+        }
+    }
+}
+
+// Animation for the stepper
+.MuiStepper-root {
+    .MuiStepIcon-root {
+        transition: all 0.3s ease;
+        
+        &.Mui-active {
+            color: #1976d2;
+            transform: scale(1.1);
+        }
+        
+        &.Mui-completed {
+            color: #4caf50;
+        }
+    }
+}
+
+// Loading states
+.import-loading {
+    .MuiCircularProgress-root {
+        animation: spin 1s linear infinite;
+    }
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}

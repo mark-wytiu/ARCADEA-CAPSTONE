@@ -1,37 +1,25 @@
-import React, { useState } from 'react';
+import * as React from 'react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
-import Grid from '@mui/material/Grid';
 import { useNavigate } from 'react-router-dom';
 import gameImg from "../../Assets/1784571.png";
-import "./GameCard.css";
-import { Rating, Skeleton } from '@mui/material';
+import "./GameCard.scss";
 
-export default function GameCard({ games }) {
+const GameCard = React.memo(({ game }) => {
     const navigate = useNavigate();
-    const [imageLoaded, setImageLoaded] = useState(false);
-
     const displayGamePage = (id) => {
         navigate(`/game/${id}`);
     }
 
-    const handleImageLoad = () => {
-        setImageLoaded(true);
-    }
-
     return (
-        <>
-            {games.map((game) => (
-                <Grid item xs={12} sm={6} md={3} lg={3} key={game.id}>
-                    <Card
+        <Card
                         className="game-card"
                         onClick={() => displayGamePage(game.id)}
                         sx={{
-                            position: 'relative',
                             height: 350,
                             width: '100%',
                             borderRadius: "12px",
@@ -46,23 +34,13 @@ export default function GameCard({ games }) {
                             overflow: "hidden"
                         }}
                     >
-                        {!imageLoaded && (
-                            <Skeleton
-                                variant="rectangular"
-                                width="100%"
-                                height={200}
-                                animation="wave"
-                            />
-                        )}
                         <CardMedia
                             component="img"
                             alt={game.title}
                             height="200"
                             image={game.image || gameImg}
                             loading="lazy"
-                            onLoad={handleImageLoad}
                             sx={{
-                                display: imageLoaded ? 'block' : 'none',
                                 objectFit: "contain",
                                 backgroundColor: '#f5f5f5',
                                 padding: '10px'
@@ -119,27 +97,9 @@ export default function GameCard({ games }) {
                                     }}
                                 />
                             </Stack>
-                            <Rating
-                                value={game.rating || 0}
-                                readOnly
-                                precision={0.5}
-                                size="small"
-                            />
-                            <Typography
-                                variant="body2"
-                                color="text.secondary"
-                                sx={{
-                                    position: 'absolute',
-                                    bottom: 8,
-                                    right: 8
-                                }}
-                            >
-                                {game.price ? `$${game.price}` : 'Free'}
-                            </Typography>
                         </CardContent>
                     </Card>
-                </Grid>
-            ))}
-        </>
     );
-}
+});
+
+export default GameCard;

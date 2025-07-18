@@ -5,6 +5,22 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  
+  /* New gaming theme background - IMPORTANT to override */
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #2a2a2a 100%) !important;
+  background-image: none !important;
+  color: #ffffff !important;
+  min-height: 100vh !important;
+}
+
+/* Override any existing background images */
+* {
+  background-image: none !important;
+}
+
+#root {
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #2a2a2a 100%) !important;
+  min-height: 100vh !important;
 }
 
 code {

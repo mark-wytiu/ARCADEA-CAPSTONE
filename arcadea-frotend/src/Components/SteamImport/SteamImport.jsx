@@ -25,10 +25,8 @@ import {
     Tooltip
 } from '@mui/material';
 import {
-    Info as InfoIcon,
     CheckCircle as CheckCircleIcon,
     SportsEsports as GamesIcon,
-    Person as PersonIcon,
     Close as CloseIcon,
     Help as HelpIcon
 } from '@mui/icons-material';

@@ -4,12 +4,12 @@ import { Box, Typography } from '@mui/material';
 const HeroSection = () => {
     return (
         <Box sx={{
-                textAlign: 'center',
-                mb: 5,
-                mt: 2,
-                position: 'relative',
-                zIndex: 1
-            }}>
+            textAlign: 'center',
+            mb: 5,
+            mt: 2,
+            position: 'relative',
+            zIndex: 1
+        }}>
             <Typography
                 variant="h1"
                 component="h1"
