@@ -25,7 +25,7 @@ const VirtualizedGameGrid = ({ games, containerHeight = 600 }) => {
     const rowHeight = 400; // Height for each game card row
     const rowCount = Math.ceil(games.length / columnCount);
 
-    const Cell = ({ columnIndex, rowIndex, style }) => {
+    const Cell = React.memo(({ columnIndex, rowIndex, style }) => {
         const gameIndex = rowIndex * columnCount + columnIndex;
         const game = games[gameIndex];
 
@@ -38,7 +38,9 @@ const VirtualizedGameGrid = ({ games, containerHeight = 600 }) => {
                 </Box>
             </div>
         );
-    };
+    });
+
+    Cell.displayName = 'VirtualizedCell';
 
     return (
         <Box sx={{ height: containerHeight, width: '100%' }}>

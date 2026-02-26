@@ -99,13 +99,15 @@ function HomePage() {
         >
             <Container maxWidth="xl">
                 <HeroSection />
-                <FilterControls
-                    games={games}
-                    genres={genres}
-                    platforms={platforms}
-                    onSteamImportOpen={steamImport.handleSteamImportOpen}
-                    onFiltersChange={handleFiltersChange}
-                />
+            </Container>
+            <FilterControls
+                games={games}
+                genres={genres}
+                platforms={platforms}
+                onSteamImportOpen={steamImport.handleSteamImportOpen}
+                onFiltersChange={handleFiltersChange}
+            />
+            <Container maxWidth="xl">
                 {renderContent()}
             </Container>
             

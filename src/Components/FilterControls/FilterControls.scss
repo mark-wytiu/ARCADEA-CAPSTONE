@@ -1,0 +1,320 @@
+@import '../../theme/colors.scss';
+
+.filter-controls {
+  &__container {
+    background: rgba(26, 35, 50, 0.9) !important;
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(108, 92, 231, 0.2);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 20px rgba(108, 92, 231, 0.15);
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+    overflow: hidden;
+
+    &:hover {
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5), 0 0 30px rgba(108, 92, 231, 0.25);
+      border-color: rgba(108, 92, 231, 0.4);
+      transform: translateY(-2px);
+    }
+  }
+
+  &__search-field {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    box-sizing: border-box;
+
+    .MuiOutlinedInput-root {
+      background-color: rgba(42, 52, 65, 0.6);
+      border-radius: 12px;
+      transition: all 0.3s ease;
+      color: $text-primary;
+      width: 100%;
+
+      &:hover {
+        background-color: rgba(42, 52, 65, 0.8);
+        border-color: rgba(108, 92, 231, 0.5);
+      }
+
+      &.Mui-focused {
+        background-color: rgba(42, 52, 65, 0.9);
+        border-color: $accent-purple;
+        box-shadow: 0 0 12px rgba(108, 92, 231, 0.3);
+      }
+
+      fieldset {
+        border-color: rgba(255, 255, 255, 0.1);
+        border-width: 1.5px;
+      }
+
+      &:hover fieldset {
+        border-color: rgba(108, 92, 231, 0.4);
+      }
+
+      &.Mui-focused fieldset {
+        border-color: $accent-purple;
+      }
+    }
+
+    .MuiInputBase-input {
+      color: $text-primary;
+      padding: 0.875rem 1rem;
+
+      &::placeholder {
+        color: $text-muted;
+        opacity: 0.7;
+      }
+    }
+
+    .MuiInputAdornment-root {
+      color: $accent-purple;
+      margin-left: 0.5rem;
+    }
+  }
+
+  &__row {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+
+  &__select {
+    min-width: 130px;
+    max-width: 100%;
+    width: 100%;
+    box-sizing: border-box;
+    
+    .MuiFormControl-root {
+      width: 100%;
+      min-width: 0;
+      max-width: 100%;
+    }
+    
+    .MuiOutlinedInput-root {
+      background-color: rgba(42, 52, 65, 0.6);
+      border-radius: 12px;
+      transition: all 0.3s ease;
+      color: $text-primary;
+      width: 100%;
+      min-width: 0;
+
+      &:hover {
+        background-color: rgba(42, 52, 65, 0.8);
+        border-color: rgba(108, 92, 231, 0.5);
+      }
+
+      &.Mui-focused {
+        background-color: rgba(42, 52, 65, 0.9);
+        border-color: $accent-purple;
+        box-shadow: 0 0 12px rgba(108, 92, 231, 0.3);
+      }
+
+      fieldset {
+        border-color: rgba(255, 255, 255, 0.1);
+        border-width: 1.5px;
+      }
+
+      &:hover fieldset {
+        border-color: rgba(108, 92, 231, 0.4);
+      }
+
+      &.Mui-focused fieldset {
+        border-color: $accent-purple;
+      }
+    }
+
+    .MuiSelect-select {
+      color: $text-primary;
+      padding: 0.875rem 1rem;
+      min-width: 0;
+    }
+
+    .MuiInputLabel-root {
+      color: $text-secondary;
+
+      &.Mui-focused {
+        color: $accent-purple;
+      }
+    }
+  }
+
+  &__clear-button {
+    background: transparent !important;
+    border: 2px solid $accent-blue !important;
+    color: $accent-blue !important;
+    border-radius: 10px !important;
+    padding: 0.625rem 1.25rem !important;
+    font-weight: 600 !important;
+    text-transform: none !important;
+    transition: all 0.3s ease !important;
+
+    &:hover {
+      background: rgba(0, 185, 255, 0.1) !important;
+      border-color: $accent-blue !important;
+      color: $accent-blue !important;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 185, 255, 0.3);
+    }
+
+    .MuiSvgIcon-root {
+      color: $accent-blue;
+    }
+  }
+
+  &__add-button {
+    background: $gradient-accent !important;
+    border: none !important;
+    border-radius: 12px !important;
+    min-width: 50px !important;
+    width: 50px !important;
+    height: 50px !important;
+    padding: 0 !important;
+    color: white !important;
+    transition: all 0.3s ease !important;
+    box-shadow: 0 4px 12px rgba(108, 92, 231, 0.3);
+
+    &:hover {
+      transform: scale(1.1) rotate(90deg);
+      box-shadow: 0 6px 20px rgba(108, 92, 231, 0.5);
+      background: linear-gradient(135deg, #8b5cf6 0%, #6c5ce7 100%) !important;
+    }
+
+    .MuiSvgIcon-root {
+      font-size: 1.75rem;
+    }
+  }
+
+  &__steam-button {
+    background: transparent !important;
+    border: 2px solid $accent-purple !important;
+    color: $accent-purple !important;
+    border-radius: 10px !important;
+    padding: 0.625rem 1.25rem !important;
+    font-weight: 600 !important;
+    text-transform: none !important;
+    transition: all 0.3s ease !important;
+    min-width: 100px !important;
+
+    &:hover {
+      background: rgba(108, 92, 231, 0.15) !important;
+      border-color: $accent-purple !important;
+      color: $accent-purple !important;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(108, 92, 231, 0.4);
+    }
+
+    .MuiSvgIcon-root {
+      color: $accent-purple;
+    }
+  }
+
+  &__sort-button {
+    color: $accent-purple !important;
+    transition: all 0.3s ease !important;
+
+    &:hover {
+      color: $accent-blue !important;
+      transform: scale(1.1);
+    }
+  }
+
+  &__chips-container {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  &__chip {
+    background: $gradient-accent !important;
+    color: white !important;
+    border-radius: 8px !important;
+    padding: 0.375rem 0.875rem !important;
+    font-size: 0.8125rem !important;
+    font-weight: 600 !important;
+    margin: 0.25rem !important;
+    transition: all 0.2s ease !important;
+    border: none !important;
+
+    &:hover {
+      transform: translateY(-2px) scale(1.05);
+      box-shadow: 0 4px 12px rgba(108, 92, 231, 0.4);
+    }
+
+    .MuiChip-deleteIcon {
+      color: white !important;
+      opacity: 0.8;
+      transition: all 0.2s ease !important;
+
+      &:hover {
+        opacity: 1;
+        transform: scale(1.2);
+      }
+    }
+  }
+
+  &__filters-label {
+    color: $text-secondary !important;
+    font-weight: 600 !important;
+    margin-right: 0.75rem !important;
+  }
+}
+
+// Material-UI Menu Overrides
+.MuiMenu-paper {
+  background: rgba(26, 35, 50, 0.95) !important;
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(108, 92, 231, 0.2) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 20px rgba(108, 92, 231, 0.15) !important;
+  margin-top: 0.5rem !important;
+}
+
+.MuiMenuItem-root {
+  color: $text-primary !important;
+  padding: 0.75rem 1.25rem !important;
+  transition: all 0.2s ease !important;
+
+  &:hover {
+    background: rgba(108, 92, 231, 0.15) !important;
+    color: $accent-purple !important;
+  }
+
+  &.Mui-selected {
+    background: rgba(108, 92, 231, 0.25) !important;
+    color: $accent-purple !important;
+    font-weight: 600 !important;
+
+    &:hover {
+      background: rgba(108, 92, 231, 0.3) !important;
+    }
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 960px) {
+  .filter-controls {
+    &__container {
+      padding: 1.25rem;
+      border-radius: 12px;
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  .filter-controls {
+    &__container {
+      padding: 1rem;
+    }
+
+    &__add-button,
+    &__steam-button,
+    &__clear-button {
+      font-size: 0.875rem !important;
+      padding: 0.5rem 1rem !important;
+    }
+  }
+}
+
