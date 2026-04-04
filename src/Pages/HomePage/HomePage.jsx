@@ -1,11 +1,14 @@
 import {
     Box,
+    Button,
     Container,
     Paper,
     Typography,
     CircularProgress,
 } from '@mui/material';
+import RefreshIcon from '@mui/icons-material/Refresh';
 import { useState, useCallback, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import bgImg from "../../Assets/Images/carl-raw-m3hn2Kn5Bns-unsplash.jpg";
 import "./HomePage.scss";
 
@@ -25,6 +28,7 @@ function HomePage() {
     const { games, loading, error, genres, platforms, refetchGames } = useGamesData();
     const [filteredGames, setFilteredGames] = useState([]);
     const [sortInfo, setSortInfo] = useState({ sortBy: 'title', sortOrder: 'asc' });
+    const [, setSearchParams] = useSearchParams();
     const { page, totalPages, currentPageGames, handlePageChange } = useGamePagination(filteredGames);
     const steamImport = useSteamImport(refetchGames);
 
@@ -41,11 +45,11 @@ function HomePage() {
         setSortInfo(sortData);
     }, []);
 
-    // Clear all filters function
     const clearFilters = useCallback(() => {
-        // Reset URL to clear all filters
-        window.location.href = window.location.pathname;
-    }, []);
+        setFilteredGames(games);
+        setSortInfo({ sortBy: 'title', sortOrder: 'asc' });
+        setSearchParams(new URLSearchParams());
+    }, [games, setSearchParams]);
 
     const renderContent = () => {
         if (loading) {
@@ -59,7 +63,15 @@ function HomePage() {
         if (error) {
             return (
                 <Paper elevation={3} sx={{ p: 4, textAlign: 'center', borderRadius: 2, backgroundColor: 'rgba(255, 255, 255, 0.95)' }}>
-                    <Typography variant="h5" color="error">{error}</Typography>
+                    <Typography variant="h5" color="error" gutterBottom>{error}</Typography>
+                    <Button
+                        variant="contained"
+                        startIcon={<RefreshIcon />}
+                        onClick={refetchGames}
+                        sx={{ mt: 2 }}
+                    >
+                        Retry
+                    </Button>
                 </Paper>
             );
         }
