@@ -2,15 +2,19 @@
 
 echo "Starting ARCADEA application..."
 
+# Repo root (directory containing this script)
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+BACKEND_DIR="$(cd "$SCRIPT_DIR/../ARCADEA-CAPSTONE-backend" && pwd)"
+
 # Start backend
 echo "Starting backend..."
-cd "/Users/markwytiu/Documents/ School/ARCADEA-CAPSTONE-backend"
+cd "$BACKEND_DIR" || exit 1
 node index.js &
 BACKEND_PID=$!
 
-# Start frontend
+# Start frontend (root package.json + src/)
 echo "Starting frontend..."
-cd "/Users/markwytiu/Documents/ School/ARCADEA-CAPSTONE-frontend/arcadea-frotend"
+cd "$SCRIPT_DIR" || exit 1
 PORT=3001 BROWSER=none npm start &
 FRONTEND_PID=$!
 

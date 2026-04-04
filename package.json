@@ -30,7 +30,7 @@
   "scripts": {
     "start": "craco start",
     "dev": "PORT=3001 BROWSER=none craco start",
-    "start-backend": "cd '../../../ARCADEA-CAPSTONE-backend' && node index.js",
+    "start-backend": "cd '../ARCADEA-CAPSTONE-backend' && node index.js",
     "start-all": "npm run start-backend & npm run dev",
     "build": "craco build",
     "test": "craco test",
