@@ -1,7 +1,10 @@
-import React from 'react';
+import { useId } from 'react';
 import { Box, Typography } from '@mui/material';
 
 const HeroSection = () => {
+    const uid = useId();
+    const gradientId = `arcadea-hero-grad-${uid.replace(/[^a-zA-Z0-9_-]/g, '')}`;
+
     return (
         <Box sx={{
             textAlign: 'center',
@@ -10,24 +13,51 @@ const HeroSection = () => {
             position: 'relative',
             zIndex: 1
         }}>
-            <Typography
-                variant="h1"
+            <Box
                 component="h1"
                 sx={{
-                    background: 'linear-gradient(135deg, #6c5ce7 0%, #00b9ff 100%)',
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                    backgroundClip: 'text',
-                    textShadow: '0 0 20px rgba(108, 92, 231, 0.3)',
-                    fontWeight: 800,
-                    fontSize: { xs: '3rem', sm: '4rem', md: '5rem' },
-                    letterSpacing: '0.05em',
+                    m: 0,
                     mb: 2,
-                    filter: 'drop-shadow(0 0 10px rgba(108, 92, 231, 0.3))'
+                    lineHeight: 0,
                 }}
             >
-                ARCADEA
-            </Typography>
+                <svg
+                    role="img"
+                    aria-label="ARCADEA"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 520 76"
+                    preserveAspectRatio="xMidYMid meet"
+                    style={{
+                        display: 'block',
+                        margin: '0 auto',
+                        width: 'min(92vw, 520px)',
+                        height: 'auto',
+                    }}
+                >
+                    <defs>
+                        <linearGradient id={gradientId} x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stopColor="#6c5ce7" />
+                            <stop offset="100%" stopColor="#00b9ff" />
+                        </linearGradient>
+                    </defs>
+                    <text
+                        x="260"
+                        y="50"
+                        textAnchor="middle"
+                        dominantBaseline="middle"
+                        fill={`url(#${gradientId})`}
+                        style={{
+                            fontSize: 42,
+                            fontWeight: 800,
+                            fontFamily:
+                                'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, sans-serif',
+                            letterSpacing: '0.06em',
+                        }}
+                    >
+                        ARCADEA
+                    </text>
+                </svg>
+            </Box>
             <Typography
                 variant="h5"
                 sx={{
