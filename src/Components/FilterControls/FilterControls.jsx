@@ -206,7 +206,7 @@ const FilterControls = React.memo(({ games, genres, platforms, onSteamImportOpen
     return (
         <Paper 
             elevation={0} 
-            className="filter-controls__container search-section"
+            className="filter-controls__container"
             sx={{ 
                 mb: 4,
                 width: '100%',
@@ -224,10 +224,10 @@ const FilterControls = React.memo(({ games, genres, platforms, onSteamImportOpen
                     display: 'flex', 
                     gap: 2, 
                     alignItems: 'center',
-                    flexWrap: { xs: 'wrap', md: 'nowrap' },
+                    flexWrap: 'wrap',
                     width: '100%',
                     minWidth: 0,
-                    overflow: 'hidden'
+                    overflow: 'visible',
                 }}
             >
                 <TextField
@@ -290,37 +290,44 @@ const FilterControls = React.memo(({ games, genres, platforms, onSteamImportOpen
                     </Select>
                 </FormControl>
 
-                <FormControl className="filter-controls__select" sx={{ 
-                    flex: { xs: '1 1 auto', md: '1 1 0%' }, 
-                    minWidth: { xs: '150px', md: '130px' },
-                    maxWidth: '100%'
-                }}>
-                    <InputLabel id="sort-label">Sort By</InputLabel>
-                    <Select
-                        labelId="sort-label"
-                        value={sortBy}
-                        label="Sort By"
-                        onChange={handleSortChange}
-                        endAdornment={
-                            <InputAdornment position="end">
-                                <IconButton
-                                    onClick={toggleSortOrder}
-                                    edge="end"
-                                    size="small"
-                                    sx={{ mr: 1 }}
-                                    className="filter-controls__sort-button"
-                                >
-                                    <SortIcon sx={{ transform: sortOrder === 'desc' ? 'rotate(180deg)' : 'none', transition: 'transform 0.3s ease' }} />
-                                </IconButton>
-                            </InputAdornment>
-                        }
-                    >
-                        <MenuItem value="title">Title</MenuItem>
-                        <MenuItem value="releaseDate">Release Date</MenuItem>
-                        <MenuItem value="rating">Rating</MenuItem>
-                        <MenuItem value="developer">Developer</MenuItem>
-                    </Select>
-                </FormControl>
+                <Box
+                    className="filter-controls__sort-wrap"
+                    sx={{
+                        display: 'flex',
+                        alignItems: 'flex-end',
+                        gap: 0.5,
+                        flex: { xs: '1 1 100%', sm: '1 1 auto', md: '1 1 0%' },
+                        minWidth: { xs: '100%', sm: 'min(100%, 200px)', md: 'min(100%, 220px)' },
+                        maxWidth: '100%',
+                    }}
+                >
+                    <FormControl className="filter-controls__select" sx={{ flex: '1 1 auto', minWidth: 0, maxWidth: '100%' }}>
+                        <InputLabel id="sort-label">Sort By</InputLabel>
+                        <Select
+                            labelId="sort-label"
+                            value={sortBy}
+                            label="Sort By"
+                            onChange={handleSortChange}
+                        >
+                            <MenuItem value="title">Title</MenuItem>
+                            <MenuItem value="releaseDate">Release Date</MenuItem>
+                            <MenuItem value="rating">Rating</MenuItem>
+                            <MenuItem value="developer">Developer</MenuItem>
+                        </Select>
+                    </FormControl>
+                    <Tooltip title={sortOrder === 'asc' ? 'Ascending — click for descending' : 'Descending — click for ascending'} arrow>
+                        <IconButton
+                            type="button"
+                            onClick={toggleSortOrder}
+                            size="small"
+                            aria-label={`Sort ${sortOrder === 'asc' ? 'ascending' : 'descending'}`}
+                            className="filter-controls__sort-button"
+                            sx={{ mb: 0.5, flexShrink: 0 }}
+                        >
+                            <SortIcon sx={{ transform: sortOrder === 'desc' ? 'rotate(180deg)' : 'none', transition: 'transform 0.3s ease' }} />
+                        </IconButton>
+                    </Tooltip>
+                </Box>
 
                 <Box sx={{ 
                     display: 'flex', 

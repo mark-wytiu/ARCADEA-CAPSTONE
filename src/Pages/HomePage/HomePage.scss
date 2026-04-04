@@ -28,42 +28,6 @@
     line-height: 1.6;
   }
 
-  .search-section {
-    @include glass-effect;
-    border-radius: 12px;
-    padding: 1.5rem;
-    box-shadow: 0 8px 16px $shadow-primary, 0 0 10px $shadow-glow;
-    transition: all 0.3s ease;
-    width: 100%;
-    max-width: 800px;
-    margin-bottom: 2rem;
-
-    &:hover {
-      box-shadow: 0 12px 24px $shadow-primary, 0 0 15px $shadow-glow;
-      transform: translateY(-4px);
-    }
-
-    input {
-      background-color: $bg-tertiary;
-      border: 1px solid $border-primary;
-      color: $text-primary;
-      padding: 0.75rem 1rem;
-      width: 100%;
-      border-radius: 8px;
-      font-size: 1rem;
-
-      &:focus {
-        outline: none;
-        border-color: $accent-purple;
-        box-shadow: 0 0 8px $shadow-glow;
-      }
-
-      &::placeholder {
-        color: $text-muted;
-      }
-    }
-  }
-
   .MuiPaginationItem-root {
     color: $text-primary !important;
     font-weight: 500;
