@@ -11,7 +11,20 @@ root.render(
   </React.StrictMode>
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+function sendWebVital(metric) {
+  if (process.env.NODE_ENV === 'development') {
+    // eslint-disable-next-line no-console -- intentional dev-only Web Vitals output
+    console.log('[Web Vitals]', metric.name, metric);
+  }
+
+  if (typeof window.gtag === 'function') {
+    window.gtag('event', metric.name, {
+      event_category: 'Web Vitals',
+      value: Math.round(metric.name === 'CLS' ? metric.delta * 1000 : metric.delta),
+      event_label: metric.id,
+      non_interaction: true,
+    });
+  }
+}
+
+reportWebVitals(sendWebVital);
