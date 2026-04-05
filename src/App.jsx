@@ -25,7 +25,7 @@ function AppRoutes() {
     <>
       <Header />
       <Box sx={{ height: '64px' }} /> {/* Toolbar offset for fixed header */}
-      <RouteErrorBoundary key={location.pathname}>
+      <RouteErrorBoundary routePath={location.pathname}>
         <Suspense fallback={<LoadingSpinner />}>
           <Routes>
             <Route path="/" element={<HomePage />} />
