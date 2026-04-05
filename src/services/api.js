@@ -43,6 +43,24 @@ const setCache = (key, data) => {
 	});
 };
 
+const canPrefetch = () => {
+	if (typeof window === 'undefined' || typeof navigator === 'undefined') {
+		return false;
+	}
+
+	if (typeof document !== 'undefined' && document.visibilityState === 'hidden') {
+		return false;
+	}
+
+	const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+	if (connection?.saveData) {
+		return false;
+	}
+
+	const effectiveType = connection?.effectiveType;
+	return !['slow-2g', '2g'].includes(effectiveType);
+};
+
 // Clear cache utility (useful for cache invalidation)
 export const clearCache = (pattern = null) => {
 	if (pattern) {
@@ -231,8 +249,42 @@ export const gameAPI = {
 		}
 	}, 300),
 
-	// Prefetch next page for better UX (optimistic loading)
-	prefetchNextPage: async (currentPage, params = {}) => {
+	// Prefetch game details only when network/device conditions are favorable.
+	prefetchGameById: async (gameId) => {
+		if (!gameId || !canPrefetch()) {
+			return null;
+		}
+
+		const cacheKey = getCacheKey(`/games/${gameId}`);
+		const cachedData = getFromCache(cacheKey);
+
+		if (cachedData) {
+			return cachedData;
+		}
+
+		if (pendingRequests.has(cacheKey)) {
+			return pendingRequests.get(cacheKey);
+		}
+
+		const requestPromise = apiClient.get(`/games/${gameId}`).then(response => {
+			setCache(cacheKey, response.data);
+			pendingRequests.delete(cacheKey);
+			return response.data;
+		}).catch(() => {
+			pendingRequests.delete(cacheKey);
+			return null;
+		});
+
+		pendingRequests.set(cacheKey, requestPromise);
+		return requestPromise;
+	},
+
+	// Prefetch next page for better UX only when there is a next page.
+	prefetchNextPage: async (currentPage, totalPages, params = {}) => {
+		if (!canPrefetch() || currentPage >= totalPages) {
+			return;
+		}
+
 		const nextPageParams = { ...params, page: currentPage + 1 };
 		const cacheKey = getCacheKey("/games", nextPageParams);
 		

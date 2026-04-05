@@ -24,6 +24,8 @@ import GameGrid from "../../Components/GameGrid/GameGrid";
 import GameGridSkeleton from "../../Components/GameGrid/GameGridSkeleton";
 import SteamImport from "../../Components/SteamImport/SteamImport";
 
+const VIRTUALIZATION_THRESHOLD = 60;
+
 function HomePage() {
     const { games, loading, error, genres, platforms, refetchGames } = useGamesData();
     const [filteredGames, setFilteredGames] = useState([]);
@@ -31,6 +33,8 @@ function HomePage() {
     const [, setSearchParams] = useSearchParams();
     const { page, totalPages, currentPageGames, handlePageChange } = useGamePagination(filteredGames);
     const steamImport = useSteamImport(refetchGames);
+    const useVirtualization = filteredGames.length > VIRTUALIZATION_THRESHOLD;
+    const gamesToDisplay = useVirtualization ? filteredGames : currentPageGames;
 
     // Initialize filtered games when games load
     useEffect(() => {
@@ -75,17 +79,19 @@ function HomePage() {
         return (
             <>
                 <GameResultsStats
-                    currentPageGames={currentPageGames}
+                    shownGamesCount={gamesToDisplay.length}
                     totalFilteredGames={filteredGames.length}
                     sortBy={sortInfo.sortBy}
                     sortOrder={sortInfo.sortOrder}
+                    isVirtualized={useVirtualization}
                 />
                 <GameGrid
-                    games={currentPageGames}
+                    games={gamesToDisplay}
                     page={page}
                     totalPages={totalPages}
                     onPageChange={handlePageChange}
                     onClearFilters={clearFilters}
+                    useVirtualization={useVirtualization}
                 />
             </>
         );

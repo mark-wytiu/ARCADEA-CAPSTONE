@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useRef, useState, useEffect } from 'react';
 import { FixedSizeGrid as Grid } from 'react-window';
 import { Box, useTheme, useMediaQuery } from '@mui/material';
 import GameCard from '../GameCard/GameCard';
@@ -17,10 +17,36 @@ const VirtualizedGameGrid = ({ games, containerHeight = 600 }) => {
         return 4;
     }, [isXs, isSm, isMd]);
 
+    const containerRef = useRef(null);
+    const [containerWidth, setContainerWidth] = useState(0);
+
+    useEffect(() => {
+        const node = containerRef.current;
+        if (!node) {
+            return undefined;
+        }
+
+        const updateWidth = () => {
+            setContainerWidth(node.clientWidth);
+        };
+
+        updateWidth();
+
+        const resizeObserver = new ResizeObserver(updateWidth);
+        resizeObserver.observe(node);
+
+        return () => {
+            resizeObserver.disconnect();
+        };
+    }, []);
+
     const columnWidth = useMemo(() => {
-        const containerWidth = window.innerWidth * 0.9; // Assuming 90% of screen width
-        return Math.floor(containerWidth / columnCount);
-    }, [columnCount]);
+        if (!containerWidth || !columnCount) {
+            return 300;
+        }
+
+        return Math.max(250, Math.floor(containerWidth / columnCount));
+    }, [containerWidth, columnCount]);
 
     const rowHeight = 400; // Height for each game card row
     const rowCount = Math.ceil(games.length / columnCount);
@@ -42,15 +68,20 @@ const VirtualizedGameGrid = ({ games, containerHeight = 600 }) => {
 
     Cell.displayName = 'VirtualizedCell';
 
+    if (!containerWidth) {
+        return <Box ref={containerRef} sx={{ height: containerHeight, width: '100%' }} />;
+    }
+
     return (
-        <Box sx={{ height: containerHeight, width: '100%' }}>
+        <Box ref={containerRef} sx={{ height: containerHeight, width: '100%' }}>
             <Grid
                 columnCount={columnCount}
                 columnWidth={columnWidth}
                 height={containerHeight}
                 rowCount={rowCount}
                 rowHeight={rowHeight}
-                width="100%"
+                width={containerWidth}
+                overscanRowCount={2}
             >
                 {Cell}
             </Grid>

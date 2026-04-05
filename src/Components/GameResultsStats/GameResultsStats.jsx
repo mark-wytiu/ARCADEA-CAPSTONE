@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, Typography } from '@mui/material';
 
-const GameResultsStats = ({ currentPageGames, totalFilteredGames, sortBy, sortOrder }) => {
+const GameResultsStats = ({ shownGamesCount, totalFilteredGames, sortBy, sortOrder, isVirtualized = false }) => {
     return (
         <Box
             sx={{
@@ -23,7 +23,7 @@ const GameResultsStats = ({ currentPageGames, totalFilteredGames, sortBy, sortOr
                     fontSize: '1rem'
                 }}
             >
-                Showing {currentPageGames.length} of {totalFilteredGames} games
+                Showing {shownGamesCount} of {totalFilteredGames} games{isVirtualized ? ' (virtualized)' : ''}
             </Typography>
             <Typography
                 variant="body2"

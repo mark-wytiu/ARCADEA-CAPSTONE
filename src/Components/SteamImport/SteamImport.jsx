@@ -220,6 +220,7 @@ function SteamImport({ open, onClose, onImportComplete }) {
                                 <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
                                     <Avatar 
                                         src={importData.playerInfo.avatarmedium} 
+                                        imgProps={{ loading: 'lazy', decoding: 'async', width: 48, height: 48 }}
                                         sx={{ width: 48, height: 48, mr: 2 }}
                                     />
                                     <Box>
@@ -263,7 +264,12 @@ function SteamImport({ open, onClose, onImportComplete }) {
                                                 }}
                                             >
                                                 <ListItemAvatar>
-                                                    <Avatar src={game.image} variant="square" />
+                                                    <Avatar
+                                                        src={game.image}
+                                                        variant="square"
+                                                        imgProps={{ loading: 'lazy', decoding: 'async', width: 40, height: 40 }}
+                                                        sx={{ width: 40, height: 40 }}
+                                                    />
                                                 </ListItemAvatar>
                                                 <ListItemText
                                                     primary={game.title}
