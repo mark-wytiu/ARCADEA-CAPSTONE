@@ -1,9 +1,10 @@
 import React, { Suspense } from 'react';
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { CircularProgress, Box } from '@mui/material';
 import "./App.scss";
 import Header from "./Components/Header/Header";
 import Footer from "./Components/Footer/Footer";
+import { RouteErrorBoundary } from "./Components/RouteErrorBoundary/RouteErrorBoundary";
 
 // Lazy load components
 const HomePage = React.lazy(() => import("./Pages/HomePage/HomePage"));
@@ -17,12 +18,14 @@ const LoadingSpinner = () => (
   </Box>
 );
 
-function App() {
+function AppRoutes() {
+  const location = useLocation();
+
   return (
-    <div className="App">
-      <BrowserRouter>
-        <Header />
-        <Box sx={{ height: '64px' }} /> {/* Toolbar offset for fixed header */}
+    <>
+      <Header />
+      <Box sx={{ height: '64px' }} /> {/* Toolbar offset for fixed header */}
+      <RouteErrorBoundary key={location.pathname}>
         <Suspense fallback={<LoadingSpinner />}>
           <Routes>
             <Route path="/" element={<HomePage />} />
@@ -30,7 +33,17 @@ function App() {
             <Route path="/add-game" element={<AddGame />} />
           </Routes>
         </Suspense>
-        <Footer />
+      </RouteErrorBoundary>
+      <Footer />
+    </>
+  );
+}
+
+function App() {
+  return (
+    <div className="App">
+      <BrowserRouter>
+        <AppRoutes />
       </BrowserRouter>
     </div>
   );
