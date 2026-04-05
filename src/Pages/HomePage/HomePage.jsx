@@ -4,7 +4,6 @@ import {
     Container,
     Paper,
     Typography,
-    CircularProgress,
 } from '@mui/material';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import { useState, useCallback, useEffect } from 'react';
@@ -22,6 +21,7 @@ import HeroSection from "./components/HeroSection";
 import FilterControls from "../../Components/FilterControls/FilterControls";
 import GameResultsStats from "../../Components/GameResultsStats/GameResultsStats";
 import GameGrid from "../../Components/GameGrid/GameGrid";
+import GameGridSkeleton from "../../Components/GameGrid/GameGridSkeleton";
 import SteamImport from "../../Components/SteamImport/SteamImport";
 
 function HomePage() {
@@ -53,11 +53,7 @@ function HomePage() {
 
     const renderContent = () => {
         if (loading) {
-            return (
-                <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '50vh' }}>
-                    <CircularProgress />
-                </Box>
-            );
+            return <GameGridSkeleton />;
         }
 
         if (error) {

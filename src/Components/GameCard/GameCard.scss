@@ -1,5 +1,20 @@
 @import '../../theme/colors.scss';
 
+.game-card.game-card--skeleton {
+  pointer-events: none;
+  cursor: default;
+
+  &:hover {
+    transform: none !important;
+    box-shadow: none !important;
+    border-color: #3a4553;
+  }
+
+  &::before {
+    opacity: 0 !important;
+  }
+}
+
 .game-card {
   background: linear-gradient(135deg, #1a2332 0%, #2a3441 100%);
   border: 1px solid #3a4553;

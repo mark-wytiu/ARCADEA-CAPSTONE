@@ -1,6 +1,7 @@
 import React, { useState, useEffect, Suspense } from 'react';
-import { Grid, Box, Pagination, Paper, Typography, Button, CircularProgress } from '@mui/material';
+import { Grid, Box, Pagination, Paper, Typography, Button } from '@mui/material';
 import GameCard from '../GameCard/GameCard';
+import GameGridSkeleton from './GameGridSkeleton';
 
 // Lazy load VirtualizedGameGrid for large lists
 const VirtualizedGameGrid = React.lazy(() => import('../VirtualizedGameGrid/VirtualizedGameGrid'));
@@ -35,11 +36,7 @@ const GameGrid = React.memo(({ games, page, totalPages, onPageChange, onClearFil
     return (
         <>
             {useVirtualization ? (
-                <Suspense fallback={
-                    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '400px' }}>
-                        <CircularProgress />
-                    </Box>
-                }>
+                <Suspense fallback={<GameGridSkeleton />}>
                     <VirtualizedGameGrid games={games} containerHeight={600} />
                 </Suspense>
             ) : (
