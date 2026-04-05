@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom';
-import GamePageDsiplay from '../../Components/GamePageDisplay/GamePageDisplay';
+import GamePageDisplay from '../../Components/GamePageDisplay/GamePageDisplay';
 import GamePageDetails from '../../Components/GamePageDetails/GamePageDetails';
 import { useState, useEffect, useCallback } from "react";
 import { gameAPI } from "../../services/api";
@@ -56,7 +56,7 @@ function GamePage() {
 
     return (
         <div className='GamePage'>
-            <GamePageDsiplay foundGame={selectedGame} />
+            <GamePageDisplay foundGame={selectedGame} />
             <GamePageDetails foundGame={selectedGame} />
         </div>
     );

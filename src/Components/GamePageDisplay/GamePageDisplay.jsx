@@ -2,7 +2,7 @@ import "./GamePageDisplay.scss"
 
 
 
-function GamePageDsiplay ({foundGame}) {
+function GamePageDisplay ({foundGame}) {
 
     return (
         <div className="page-display">
@@ -12,4 +12,4 @@ function GamePageDsiplay ({foundGame}) {
     )
 }
 
-export default GamePageDsiplay;
+export default GamePageDisplay;
