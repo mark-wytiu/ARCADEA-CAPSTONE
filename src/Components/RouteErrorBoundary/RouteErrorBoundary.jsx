@@ -18,6 +18,15 @@ export class RouteErrorBoundary extends React.Component {
         console.error('RouteErrorBoundary caught an error:', error, errorInfo);
     }
 
+    componentDidUpdate(prevProps) {
+        if (
+            prevProps.routePath !== this.props.routePath &&
+            this.state.hasError
+        ) {
+            this.setState({ hasError: false, error: null });
+        }
+    }
+
     handleReload = () => {
         window.location.reload();
     };
