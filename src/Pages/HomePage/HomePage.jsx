@@ -1,11 +1,13 @@
 import {
     Box,
+    Button,
     Container,
     Paper,
     Typography,
-    CircularProgress,
 } from '@mui/material';
+import RefreshIcon from '@mui/icons-material/Refresh';
 import { useState, useCallback, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import bgImg from "../../Assets/Images/carl-raw-m3hn2Kn5Bns-unsplash.jpg";
 import "./HomePage.scss";
 
@@ -19,12 +21,14 @@ import HeroSection from "./components/HeroSection";
 import FilterControls from "../../Components/FilterControls/FilterControls";
 import GameResultsStats from "../../Components/GameResultsStats/GameResultsStats";
 import GameGrid from "../../Components/GameGrid/GameGrid";
+import GameGridSkeleton from "../../Components/GameGrid/GameGridSkeleton";
 import SteamImport from "../../Components/SteamImport/SteamImport";
 
 function HomePage() {
     const { games, loading, error, genres, platforms, refetchGames } = useGamesData();
     const [filteredGames, setFilteredGames] = useState([]);
     const [sortInfo, setSortInfo] = useState({ sortBy: 'title', sortOrder: 'asc' });
+    const [, setSearchParams] = useSearchParams();
     const { page, totalPages, currentPageGames, handlePageChange } = useGamePagination(filteredGames);
     const steamImport = useSteamImport(refetchGames);
 
@@ -41,25 +45,29 @@ function HomePage() {
         setSortInfo(sortData);
     }, []);
 
-    // Clear all filters function
     const clearFilters = useCallback(() => {
-        // Reset URL to clear all filters
-        window.location.href = window.location.pathname;
-    }, []);
+        setFilteredGames(games);
+        setSortInfo({ sortBy: 'title', sortOrder: 'asc' });
+        setSearchParams(new URLSearchParams());
+    }, [games, setSearchParams]);
 
     const renderContent = () => {
         if (loading) {
-            return (
-                <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '50vh' }}>
-                    <CircularProgress />
-                </Box>
-            );
+            return <GameGridSkeleton />;
         }
 
         if (error) {
             return (
                 <Paper elevation={3} sx={{ p: 4, textAlign: 'center', borderRadius: 2, backgroundColor: 'rgba(255, 255, 255, 0.95)' }}>
-                    <Typography variant="h5" color="error">{error}</Typography>
+                    <Typography variant="h5" color="error" gutterBottom>{error}</Typography>
+                    <Button
+                        variant="contained"
+                        startIcon={<RefreshIcon />}
+                        onClick={refetchGames}
+                        sx={{ mt: 2 }}
+                    >
+                        Retry
+                    </Button>
                 </Paper>
             );
         }
@@ -99,6 +107,8 @@ function HomePage() {
         >
             <Container maxWidth="xl">
                 <HeroSection />
+            </Container>
+            <Container maxWidth="xl">
                 <FilterControls
                     games={games}
                     genres={genres}
@@ -106,6 +116,8 @@ function HomePage() {
                     onSteamImportOpen={steamImport.handleSteamImportOpen}
                     onFiltersChange={handleFiltersChange}
                 />
+            </Container>
+            <Container maxWidth="xl">
                 {renderContent()}
             </Container>
             

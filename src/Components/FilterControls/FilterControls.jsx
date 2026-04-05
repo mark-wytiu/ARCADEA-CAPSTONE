@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import {
-    Grid,
     TextField,
     InputAdornment,
     FormControl,
@@ -21,27 +20,29 @@ import FilterListIcon from '@mui/icons-material/FilterList';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import './FilterControls.scss';
+
+// Debounce utility function
+const debounce = (func, delay) => {
+    let timeoutId;
+    return (...args) => {
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(() => func.apply(null, args), delay);
+    };
+};
 
 // Custom hook for local filter state management
 const useLocalFilters = (games, onFiltersChange) => {
     const [searchParams, setSearchParams] = useSearchParams();
     
     const [searchTerm, setSearchTerm] = useState(() => searchParams.get('search') || '');
+    const [debouncedSearchTerm, setDebouncedSearchTerm] = useState(() => searchParams.get('search') || '');
     const [selectedGenre, setSelectedGenre] = useState(() => searchParams.get('genre') || 'All');
     const [selectedPlatform, setSelectedPlatform] = useState(() => searchParams.get('platform') || 'All');
     const [sortBy, setSortBy] = useState(() => searchParams.get('sortBy') || 'title');
     const [sortOrder, setSortOrder] = useState(() => searchParams.get('sortOrder') || 'asc');
-    
-    // Sync filter states with URL parameters
-    useEffect(() => {
-        setSearchTerm(searchParams.get('search') || '');
-        setSelectedGenre(searchParams.get('genre') || 'All');
-        setSelectedPlatform(searchParams.get('platform') || 'All');
-        setSortBy(searchParams.get('sortBy') || 'title');
-        setSortOrder(searchParams.get('sortOrder') || 'asc');
-    }, [searchParams]);
 
-    const updateURLParams = (updates) => {
+    const updateURLParams = useCallback((updates) => {
         const newSearchParams = new URLSearchParams(searchParams);
         Object.entries(updates).forEach(([key, value]) => {
             if (value === '' || value === 'All' || (key === 'page' && value === 1)) {
@@ -51,17 +52,36 @@ const useLocalFilters = (games, onFiltersChange) => {
             }
         });
         setSearchParams(newSearchParams);
-    };
+    }, [searchParams, setSearchParams]);
+    
+    // Debounced search update
+    const debouncedUpdateSearch = useRef(
+        debounce((value) => {
+            setDebouncedSearchTerm(value);
+            updateURLParams({ search: value });
+        }, 300)
+    ).current;
 
-    // Filter and sort games locally
+    // Sync filter states with URL parameters
+    useEffect(() => {
+        const urlSearch = searchParams.get('search') || '';
+        setSearchTerm(urlSearch);
+        setDebouncedSearchTerm(urlSearch);
+        setSelectedGenre(searchParams.get('genre') || 'All');
+        setSelectedPlatform(searchParams.get('platform') || 'All');
+        setSortBy(searchParams.get('sortBy') || 'title');
+        setSortOrder(searchParams.get('sortOrder') || 'asc');
+    }, [searchParams]);
+
+    // Filter and sort games locally (using debounced search term)
     const filteredGames = useMemo(() => {
         let result = [...games];
 
-        if (searchTerm) {
+        if (debouncedSearchTerm) {
             result = result.filter(game =>
-                game.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                game.developer?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                game.description?.toLowerCase().includes(searchTerm.toLowerCase())
+                game.title?.toLowerCase().includes(debouncedSearchTerm.toLowerCase()) ||
+                game.developer?.toLowerCase().includes(debouncedSearchTerm.toLowerCase()) ||
+                game.description?.toLowerCase().includes(debouncedSearchTerm.toLowerCase())
             );
         }
 
@@ -93,7 +113,7 @@ const useLocalFilters = (games, onFiltersChange) => {
         });
 
         return result;
-    }, [games, searchTerm, selectedGenre, selectedPlatform, sortBy, sortOrder]);
+    }, [games, debouncedSearchTerm, selectedGenre, selectedPlatform, sortBy, sortOrder]);
 
     // Notify parent component when filtered games change
     useEffect(() => {
@@ -127,7 +147,8 @@ const useLocalFilters = (games, onFiltersChange) => {
     const handleSearchChange = (event) => {
         const newSearchTerm = event.target.value;
         setSearchTerm(newSearchTerm);
-        updateURLParams({ search: newSearchTerm });
+        // Debounce the URL update and filter calculation
+        debouncedUpdateSearch(newSearchTerm);
     };
 
     const clearFilters = () => {
@@ -158,7 +179,7 @@ const useLocalFilters = (games, onFiltersChange) => {
     };
 };
 
-const FilterControls = ({ games, genres, platforms, onSteamImportOpen, onFiltersChange }) => {
+const FilterControls = React.memo(({ games, genres, platforms, onSteamImportOpen, onFiltersChange }) => {
     const navigate = useNavigate();
     const navigateToAddGame = () => {
         navigate('/add-game');
@@ -183,81 +204,110 @@ const FilterControls = ({ games, genres, platforms, onSteamImportOpen, onFilters
     } = useLocalFilters(games, onFiltersChange);
 
     return (
-        <Paper elevation={3} sx={{ p: 3, mb: 4, borderRadius: 2, backgroundColor: 'rgba(255, 255, 255, 0.95)' }} className="search-section">
-            <Grid container spacing={2} alignItems="center">
-                <Grid item xs={12} md={4}>
-                    <TextField
-                        fullWidth
-                        placeholder="Search games, developers..."
-                        value={searchTerm}
-                        onChange={handleSearchChange}
-                        variant="outlined"
-                        InputProps={{
-                            startAdornment: (
-                                <InputAdornment position="start">
-                                    <SearchIcon />
-                                </InputAdornment>
-                            ),
-                        }}
-                    />
-                </Grid>
+        <Paper 
+            elevation={0} 
+            className="filter-controls__container"
+            sx={{ 
+                mb: 4,
+                width: '100%',
+                maxWidth: '100%',
+                paddingTop: { xs: 2, sm: 2.5, md: 3 },
+                paddingBottom: { xs: 2, sm: 2.5, md: 3 },
+                paddingLeft: { xs: '16px', sm: '24px', md: '24px', lg: '32px', xl: '40px' },
+                paddingRight: { xs: '16px', sm: '24px', md: '24px', lg: '32px', xl: '40px' },
+                boxSizing: 'border-box',
+            }}
+        >
+            <Box 
+                className="filter-controls__row"
+                sx={{ 
+                    display: 'flex', 
+                    gap: 2, 
+                    alignItems: 'center',
+                    flexWrap: 'wrap',
+                    width: '100%',
+                    minWidth: 0,
+                    overflow: 'visible',
+                }}
+            >
+                <TextField
+                    placeholder="Search games, developers..."
+                    value={searchTerm}
+                    onChange={handleSearchChange}
+                    variant="outlined"
+                    className="filter-controls__search-field"
+                    sx={{ 
+                        flex: { xs: '1 1 100%', md: '2 1 0%' }, 
+                        minWidth: { xs: '100%', md: '150px' },
+                        maxWidth: '100%'
+                    }}
+                    InputProps={{
+                        startAdornment: (
+                            <InputAdornment position="start">
+                                <SearchIcon />
+                            </InputAdornment>
+                        ),
+                    }}
+                />
 
-                <Grid item xs={12} sm={6} md={2}>
-                    <FormControl fullWidth>
-                        <InputLabel id="genre-filter-label">Genre</InputLabel>
-                        <Select
-                            labelId="genre-filter-label"
-                            value={selectedGenre}
-                            label="Genre"
-                            onChange={handleGenreChange}
-                        >
-                            {genres.map((genre) => (
-                                <MenuItem key={genre} value={genre}>
-                                    {genre}
-                                </MenuItem>
-                            ))}
-                        </Select>
-                    </FormControl>
-                </Grid>
+                <FormControl className="filter-controls__select" sx={{ 
+                    flex: { xs: '1 1 auto', md: '1 1 0%' }, 
+                    minWidth: { xs: '150px', md: '130px' },
+                    maxWidth: '100%'
+                }}>
+                    <InputLabel id="genre-filter-label">Genre</InputLabel>
+                    <Select
+                        labelId="genre-filter-label"
+                        value={selectedGenre}
+                        label="Genre"
+                        onChange={handleGenreChange}
+                    >
+                        {genres.map((genre) => (
+                            <MenuItem key={genre} value={genre}>
+                                {genre}
+                            </MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
 
-                <Grid item xs={12} sm={6} md={2}>
-                    <FormControl fullWidth>
-                        <InputLabel id="platform-filter-label">Platform</InputLabel>
-                        <Select
-                            labelId="platform-filter-label"
-                            value={selectedPlatform}
-                            label="Platform"
-                            onChange={handlePlatformChange}
-                        >
-                            {platforms.map((platform) => (
-                                <MenuItem key={platform} value={platform}>
-                                    {platform}
-                                </MenuItem>
-                            ))}
-                        </Select>
-                    </FormControl>
-                </Grid>
+                <FormControl className="filter-controls__select" sx={{ 
+                    flex: { xs: '1 1 auto', md: '1 1 0%' }, 
+                    minWidth: { xs: '150px', md: '130px' },
+                    maxWidth: '100%'
+                }}>
+                    <InputLabel id="platform-filter-label">Platform</InputLabel>
+                    <Select
+                        labelId="platform-filter-label"
+                        value={selectedPlatform}
+                        label="Platform"
+                        onChange={handlePlatformChange}
+                    >
+                        {platforms.map((platform) => (
+                            <MenuItem key={platform} value={platform}>
+                                {platform}
+                            </MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
 
-                <Grid item xs={12} sm={6} md={2}>
-                    <FormControl fullWidth>
+                <Box
+                    className="filter-controls__sort-wrap"
+                    sx={{
+                        display: 'flex',
+                        alignItems: 'flex-end',
+                        gap: 0.5,
+                        flex: { xs: '1 1 100%', sm: '1 1 auto', md: '1 1 0%' },
+                        minWidth: { xs: '100%', sm: 'min(100%, 200px)', md: 'min(100%, 220px)' },
+                        maxWidth: '100%',
+                    }}
+                >
+                    <FormControl className="filter-controls__select" sx={{ flex: '1 1 auto', minWidth: 0, maxWidth: '100%' }}>
                         <InputLabel id="sort-label">Sort By</InputLabel>
                         <Select
                             labelId="sort-label"
                             value={sortBy}
                             label="Sort By"
                             onChange={handleSortChange}
-                            endAdornment={
-                                <InputAdornment position="end">
-                                    <IconButton
-                                        onClick={toggleSortOrder}
-                                        edge="end"
-                                        size="small"
-                                        sx={{ mr: 1 }}
-                                    >
-                                        <SortIcon sx={{ transform: sortOrder === 'desc' ? 'rotate(180deg)' : 'none' }} className="sort-icon" />
-                                    </IconButton>
-                                </InputAdornment>
-                            }
                         >
                             <MenuItem value="title">Title</MenuItem>
                             <MenuItem value="releaseDate">Release Date</MenuItem>
@@ -265,45 +315,64 @@ const FilterControls = ({ games, genres, platforms, onSteamImportOpen, onFilters
                             <MenuItem value="developer">Developer</MenuItem>
                         </Select>
                     </FormControl>
-                </Grid>
+                    <Tooltip title={sortOrder === 'asc' ? 'Ascending — click for descending' : 'Descending — click for ascending'} arrow>
+                        <IconButton
+                            type="button"
+                            onClick={toggleSortOrder}
+                            size="small"
+                            aria-label={`Sort ${sortOrder === 'asc' ? 'ascending' : 'descending'}`}
+                            className="filter-controls__sort-button"
+                            sx={{ mb: 0.5, flexShrink: 0 }}
+                        >
+                            <SortIcon sx={{ transform: sortOrder === 'desc' ? 'rotate(180deg)' : 'none', transition: 'transform 0.3s ease' }} />
+                        </IconButton>
+                    </Tooltip>
+                </Box>
 
-                <Grid item xs={12} sm={6} md={3} sx={{ display: 'flex', gap: 1 }}>
+                <Box sx={{ 
+                    display: 'flex', 
+                    gap: 1.5, 
+                    alignItems: 'center', 
+                    flex: { xs: '1 1 100%', md: '0 0 auto' },
+                    flexShrink: 0,
+                    minWidth: 0
+                }}>
                     <Button
                         variant="outlined"
                         startIcon={<FilterListIcon />}
                         onClick={clearFilters}
-                        sx={{ flex: 1 }}
+                        className="filter-controls__clear-button"
+                        sx={{ whiteSpace: 'nowrap', flexShrink: 0 }}
                     >
                         Clear
                     </Button>
-                    <Tooltip title="Add New Game">
+                    <Tooltip title="Add New Game" arrow>
                         <Button
                             variant="contained"
-                            color="primary"
                             onClick={navigateToAddGame}
-                            sx={{ minWidth: '50px', width: '50px' }}
-                            className="add-button"
+                            className="filter-controls__add-button"
+                            sx={{ flexShrink: 0 }}
                         >
                             <AddCircleIcon />
                         </Button>
                     </Tooltip>
-                    <Tooltip title="Import from Steam">
+                    <Tooltip title="Import from Steam" arrow>
                         <Button
                             variant="outlined"
                             startIcon={<CloudDownloadIcon />}
                             onClick={onSteamImportOpen}
-                            sx={{ minWidth: '100px' }}
-                            color="secondary"
+                            className="filter-controls__steam-button"
+                            sx={{ whiteSpace: 'nowrap', flexShrink: 0 }}
                         >
                             Steam
                         </Button>
                     </Tooltip>
-                </Grid>
-            </Grid>
+                </Box>
+            </Box>
 
             {(searchTerm || selectedGenre !== 'All' || selectedPlatform !== 'All') && (
-                <Box sx={{ mt: 2, display: 'flex', flexWrap: 'wrap', gap: 1 }}>
-                    <Typography variant="body2" sx={{ mr: 1, color: 'text.secondary' }}>
+                <Box className="filter-controls__chips-container" sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, alignItems: 'center' }}>
+                    <Typography variant="body2" className="filter-controls__filters-label">
                         Active Filters:
                     </Typography>
                     {searchTerm && (
@@ -314,7 +383,7 @@ const FilterControls = ({ games, genres, platforms, onSteamImportOpen, onFilters
                                 setSearchTerm('');
                                 updateURLParams({ search: '' });
                             }}
-                            className="filter-chip"
+                            className="filter-controls__chip"
                         />
                     )}
                     {selectedGenre !== 'All' && (
@@ -325,7 +394,7 @@ const FilterControls = ({ games, genres, platforms, onSteamImportOpen, onFilters
                                 setSelectedGenre('All');
                                 updateURLParams({ genre: 'All' });
                             }}
-                            className="filter-chip"
+                            className="filter-controls__chip"
                         />
                     )}
                     {selectedPlatform !== 'All' && (
@@ -336,13 +405,15 @@ const FilterControls = ({ games, genres, platforms, onSteamImportOpen, onFilters
                                 setSelectedPlatform('All');
                                 updateURLParams({ platform: 'All' });
                             }}
-                            className="filter-chip"
+                            className="filter-controls__chip"
                         />
                     )}
                 </Box>
             )}
         </Paper>
     );
-};
+});
+
+FilterControls.displayName = 'FilterControls';
 
 export default FilterControls; 
