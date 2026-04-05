@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState } from 'react';
+import { useState, useMemo, useEffect, useCallback } from 'react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
@@ -9,30 +9,59 @@ import Stack from '@mui/material/Stack';
 import Skeleton from '@mui/material/Skeleton';
 import { useNavigate } from 'react-router-dom';
 import gameImg from "../../Assets/1784571.png";
+import { gameAPI } from '../../services/api';
+import { getImageSourceCandidates } from '../../utils/imageSources';
 import "./GameCard.scss";
+
+const prefetchedGameIds = new Set();
 
 const GameCard = React.memo(({ game }) => {
     const navigate = useNavigate();
     const [imageLoaded, setImageLoaded] = useState(false);
-    const [imageError, setImageError] = useState(false);
+    const imageCandidates = useMemo(
+        () => getImageSourceCandidates(game.image, gameImg),
+        [game.image]
+    );
+    const [imageIndex, setImageIndex] = useState(0);
+    const imageSrc = imageCandidates[imageIndex] || gameImg;
 
     const displayGamePage = (id) => {
         navigate(`/game/${id}`);
-    }
+    };
+
+    useEffect(() => {
+        setImageIndex(0);
+        setImageLoaded(false);
+    }, [game.image]);
 
     const handleImageLoad = () => {
         setImageLoaded(true);
     };
 
     const handleImageError = () => {
-        setImageError(true);
-        setImageLoaded(true); // Stop showing skeleton
+        if (imageIndex < imageCandidates.length - 1) {
+            setImageIndex((currentIndex) => currentIndex + 1);
+            return;
+        }
+
+        setImageLoaded(true); // Stop showing skeleton after all fallbacks fail.
     };
+
+    const prefetchGamePage = useCallback(() => {
+        if (!game?.id || prefetchedGameIds.has(game.id)) {
+            return;
+        }
+
+        prefetchedGameIds.add(game.id);
+        gameAPI.prefetchGameById(game.id);
+    }, [game?.id]);
 
     return (
         <Card
             className="game-card"
             onClick={() => displayGamePage(game.id)}
+            onMouseEnter={prefetchGamePage}
+            onFocus={prefetchGamePage}
             sx={{
                 height: 350,
                 width: '100%',
@@ -60,9 +89,12 @@ const GameCard = React.memo(({ game }) => {
             <CardMedia
                 component="img"
                 alt={game.title}
+                width={320}
                 height="200"
-                image={imageError ? gameImg : (game.image || gameImg)}
+                image={imageSrc}
                 loading="lazy"
+                decoding="async"
+                fetchPriority="low"
                 onLoad={handleImageLoad}
                 onError={handleImageError}
                 sx={{

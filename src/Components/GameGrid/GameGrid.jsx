@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Suspense } from 'react';
+import React, { Suspense } from 'react';
 import { Grid, Box, Pagination, Paper, Typography, Button } from '@mui/material';
 import GameCard from '../GameCard/GameCard';
 import GameGridSkeleton from './GameGridSkeleton';
@@ -6,15 +6,7 @@ import GameGridSkeleton from './GameGridSkeleton';
 // Lazy load VirtualizedGameGrid for large lists
 const VirtualizedGameGrid = React.lazy(() => import('../VirtualizedGameGrid/VirtualizedGameGrid'));
 
-const VIRTUALIZATION_THRESHOLD = 20; // Use virtualization when games.length > 20
-
-const GameGrid = React.memo(({ games, page, totalPages, onPageChange, onClearFilters }) => {
-    const [useVirtualization, setUseVirtualization] = useState(false);
-
-    // Determine if we should use virtualization based on total games count
-    useEffect(() => {
-        setUseVirtualization(games.length > VIRTUALIZATION_THRESHOLD);
-    }, [games.length]);
+const GameGrid = React.memo(({ games, page, totalPages, onPageChange, onClearFilters, useVirtualization = false }) => {
 
     if (games.length === 0) {
         return (
@@ -48,7 +40,7 @@ const GameGrid = React.memo(({ games, page, totalPages, onPageChange, onClearFil
                     ))}
                 </Grid>
             )}
-            {totalPages > 1 && (
+            {!useVirtualization && totalPages > 1 && (
                 <Box sx={{ display: 'flex', justifyContent: 'center', mt: 5 }}>
                     <Pagination
                         count={totalPages}
