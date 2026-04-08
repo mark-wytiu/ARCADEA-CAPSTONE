@@ -1,11 +1,7 @@
 import {
     Box,
-    Button,
     Container,
-    Paper,
-    Typography,
 } from '@mui/material';
-import RefreshIcon from '@mui/icons-material/Refresh';
 import { useState, useCallback, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import bgImg from "../../Assets/Images/carl-raw-m3hn2Kn5Bns-unsplash.jpg";
@@ -23,6 +19,7 @@ import GameResultsStats from "../../Components/GameResultsStats/GameResultsStats
 import GameGrid from "../../Components/GameGrid/GameGrid";
 import GameGridSkeleton from "../../Components/GameGrid/GameGridSkeleton";
 import SteamImport from "../../Components/SteamImport/SteamImport";
+import { PageError } from "../../Components/PageStates/PageStates";
 
 const VIRTUALIZATION_THRESHOLD = 60;
 
@@ -61,19 +58,7 @@ function HomePage() {
         }
 
         if (error) {
-            return (
-                <Paper elevation={3} sx={{ p: 4, textAlign: 'center', borderRadius: 2, backgroundColor: 'rgba(255, 255, 255, 0.95)' }}>
-                    <Typography variant="h5" color="error" gutterBottom>{error}</Typography>
-                    <Button
-                        variant="contained"
-                        startIcon={<RefreshIcon />}
-                        onClick={refetchGames}
-                        sx={{ mt: 2 }}
-                    >
-                        Retry
-                    </Button>
-                </Paper>
-            );
+            return <PageError message={error} onRetry={refetchGames} />;
         }
 
         return (

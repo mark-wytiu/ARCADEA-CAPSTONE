@@ -3,7 +3,6 @@ import axios from 'axios';
 const STEAM_API_KEY = process.env.REACT_APP_STEAM_API_KEY;
 const CORS_PROXY = process.env.REACT_APP_CORS_PROXY;
 const BASE_URL = 'https://api.steampowered.com';
-const STORE_API_BASE = 'https://store.steampowered.com';
 
 // Create axios instance for Steam Web API
 const steamAPI = axios.create({
@@ -13,23 +12,9 @@ const steamAPI = axios.create({
     }
 });
 
-// Create axios instance for Steam Store API (doesn't require API key)
-const steamStoreAPI = axios.create({
-    baseURL: STORE_API_BASE,
-    headers: {
-        'Content-Type': 'application/json'
-    }
-});
-
 // Add request interceptor to handle CORS if proxy is configured
 if (CORS_PROXY) {
     steamAPI.interceptors.request.use((config) => {
-        config.url = `${CORS_PROXY}${config.baseURL}${config.url}`;
-        config.baseURL = '';
-        return config;
-    });
-    
-    steamStoreAPI.interceptors.request.use((config) => {
         config.url = `${CORS_PROXY}${config.baseURL}${config.url}`;
         config.baseURL = '';
         return config;
@@ -99,28 +84,6 @@ export const getOwnedGames = async (steamId) => {
         }
     } catch (error) {
         console.error('Error getting owned games:', error);
-        throw error;
-    }
-};
-
-// Get detailed game information from Steam Store API
-export const getGameDetails = async (appId) => {
-    try {
-        const response = await steamStoreAPI.get('/api/appdetails/', {
-            params: {
-                appids: appId,
-                filters: 'basic,genres,categories,release_date,screenshots'
-            }
-        });
-        
-        const gameData = response.data[appId];
-        if (gameData && gameData.success && gameData.data) {
-            return gameData.data;
-        } else {
-            throw new Error(`Game data not found for app ID: ${appId}`);
-        }
-    } catch (error) {
-        console.error(`Error getting game details for ${appId}:`, error);
         throw error;
     }
 };

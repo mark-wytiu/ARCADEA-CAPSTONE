@@ -36,7 +36,7 @@ function GamePageDisplay ({foundGame}) {
                 fetchPriority="high"
                 onError={handleImageError}
             />
-            <h1 className="page-display_title">Title: {foundGame.title}</h1>
+            <h1 className="page-display-title">Title: {foundGame.title}</h1>
         </div>
     )
 }
