@@ -89,7 +89,7 @@ function HomePage() {
                 backgroundImage: `url(${bgImg})`,
                 backgroundRepeat: "no-repeat",
                 backgroundSize: "cover",
-                backgroundAttachment: "fixed",
+                backgroundAttachment: 'scroll',
                 minHeight: '100vh',
                 paddingY: 4,
                 paddingTop: '80px'  // Add padding to account for fixed header

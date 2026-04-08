@@ -25,7 +25,7 @@
     "react-window": "^1.8.11",
     "react-window-infinite-loader": "^1.0.10",
     "sass": "^1.74.1",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^3.5.2"
   },
   "scripts": {
     "start": "craco start",
@@ -35,7 +35,8 @@
     "build": "craco build",
     "test": "craco test",
     "eject": "react-scripts eject",
-    "analyze": "npm run build && npx webpack-bundle-analyzer build/static/js/*.js"
+    "analyze": "npm run build && npx webpack-bundle-analyzer build/static/js/*.js",
+    "perf:lh-print": "node scripts/print-lighthouse-metrics.cjs"
   },
   "eslintConfig": {
     "extends": [

@@ -3,5 +3,5 @@ import App from './App';
 
 test('renders app shell with header', () => {
   render(<App />);
-  expect(screen.getByText('LOGO')).toBeInTheDocument();
+  expect(screen.getByText('Arcadea')).toBeInTheDocument();
 });
