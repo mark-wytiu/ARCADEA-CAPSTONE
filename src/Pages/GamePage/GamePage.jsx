@@ -4,8 +4,7 @@ import GamePageDetails from '../../Components/GamePageDetails/GamePageDetails';
 import { useState, useEffect, useCallback } from "react";
 import { gameAPI } from "../../services/api";
 import "./GamePage.scss";
-import { Box, Button, Typography, CircularProgress } from '@mui/material';
-import RefreshIcon from '@mui/icons-material/Refresh';
+import { PageLoading, PageError } from '../../Components/PageStates/PageStates';
 
 function GamePage() {
     const { id } = useParams();
@@ -32,26 +31,11 @@ function GamePage() {
     }, [fetchGameData]);
 
     if (loading) {
-        return (
-            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '50vh' }}>
-                <CircularProgress />
-            </Box>
-        );
+        return <PageLoading label="Loading game details" />;
     }
 
     if (error) {
-        return (
-            <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '50vh', gap: 2 }}>
-                <Typography variant="h5" color="error">{error}</Typography>
-                <Button
-                    variant="contained"
-                    startIcon={<RefreshIcon />}
-                    onClick={fetchGameData}
-                >
-                    Retry
-                </Button>
-            </Box>
-        );
+        return <PageError message={error} onRetry={fetchGameData} />;
     }
 
     return (
