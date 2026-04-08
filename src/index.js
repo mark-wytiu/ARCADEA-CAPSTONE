@@ -12,15 +12,26 @@ root.render(
 );
 
 function sendWebVital(metric) {
-  if (process.env.NODE_ENV === 'development') {
-    // eslint-disable-next-line no-console -- intentional dev-only Web Vitals output
-    console.log('[Web Vitals]', metric.name, metric);
+  const logVitals =
+    process.env.NODE_ENV === 'development' ||
+    process.env.REACT_APP_LOG_WEB_VITALS === 'true';
+
+  if (logVitals) {
+    // eslint-disable-next-line no-console -- intentional Web Vitals diagnostics
+    console.log('[Web Vitals]', metric.name, {
+      value: metric.value,
+      delta: metric.delta,
+      id: metric.id,
+      rating: metric.rating,
+      navigationType: metric.navigationType,
+    });
   }
 
   if (typeof window.gtag === 'function') {
+    const clsMultiplier = metric.name === 'CLS' ? 1000 : 1;
     window.gtag('event', metric.name, {
       event_category: 'Web Vitals',
-      value: Math.round(metric.name === 'CLS' ? metric.delta * 1000 : metric.delta),
+      value: Math.round(metric.delta * clsMultiplier),
       event_label: metric.id,
       non_interaction: true,
     });

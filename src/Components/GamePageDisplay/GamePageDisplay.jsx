@@ -1,13 +1,13 @@
 import "./GamePageDisplay.scss"
 import { useMemo, useState, useEffect } from 'react';
 import gameImg from "../../Assets/1784571.png";
-import { getImageSourceCandidates } from '../../utils/imageSources';
+import { getGameImageUrlCandidates } from '../../utils/imageSources';
 
 
 
 function GamePageDisplay ({foundGame}) {
     const imageCandidates = useMemo(
-        () => getImageSourceCandidates(foundGame?.image, gameImg),
+        () => getGameImageUrlCandidates(foundGame?.image, gameImg, { cdnWidth: 640 }),
         [foundGame?.image]
     );
     const [imageIndex, setImageIndex] = useState(0);

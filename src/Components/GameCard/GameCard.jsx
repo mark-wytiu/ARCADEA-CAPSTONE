@@ -10,7 +10,7 @@ import Skeleton from '@mui/material/Skeleton';
 import { useNavigate } from 'react-router-dom';
 import gameImg from "../../Assets/1784571.png";
 import { gameAPI } from '../../services/api';
-import { getImageSourceCandidates } from '../../utils/imageSources';
+import { getGameImageUrlCandidates } from '../../utils/imageSources';
 import "./GameCard.scss";
 
 const prefetchedGameIds = new Set();
@@ -19,7 +19,7 @@ const GameCard = React.memo(({ game }) => {
     const navigate = useNavigate();
     const [imageLoaded, setImageLoaded] = useState(false);
     const imageCandidates = useMemo(
-        () => getImageSourceCandidates(game.image, gameImg),
+        () => getGameImageUrlCandidates(game.image, gameImg, { cdnWidth: 320 }),
         [game.image]
     );
     const [imageIndex, setImageIndex] = useState(0);
