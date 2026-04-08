@@ -9,15 +9,6 @@ const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
 // Request deduplication - prevent duplicate concurrent requests
 const pendingRequests = new Map();
 
-// Debounce utility for search operations
-const debounce = (func, delay) => {
-	let timeoutId;
-	return (...args) => {
-		clearTimeout(timeoutId);
-		timeoutId = setTimeout(() => func.apply(null, args), delay);
-	};
-};
-
 // Cache helper functions
 const getCacheKey = (url, params) => {
 	return `${url}?${new URLSearchParams(params || {}).toString()}`;
@@ -189,66 +180,6 @@ export const gameAPI = {
 		}
 	},
 
-	// Update game (invalidates cache)
-	updateGame: async (gameId, gameData) => {
-		try {
-			const response = await apiClient.put(`/games/${gameId}`, gameData);
-			// Invalidate both specific game and games list cache
-			clearCache(`/games/${gameId}`);
-			clearCache("/games");
-			return response.data;
-		} catch (error) {
-			throw error;
-		}
-	},
-
-	// Delete game (invalidates cache)
-	deleteGame: async (gameId) => {
-		try {
-			const response = await apiClient.delete(`/games/${gameId}`);
-			// Invalidate both specific game and games list cache
-			clearCache(`/games/${gameId}`);
-			clearCache("/games");
-			return response.data;
-		} catch (error) {
-			throw error;
-		}
-	},
-
-	// Search games with debouncing for better performance
-	searchGames: debounce(async (query, params = {}) => {
-		const searchParams = { ...params, q: query };
-		const cacheKey = getCacheKey("/games/search", searchParams);
-		const cachedData = getFromCache(cacheKey);
-		
-		if (cachedData) {
-			return cachedData;
-		}
-
-		// Check if there's already a pending request for this key
-		if (pendingRequests.has(cacheKey)) {
-			return pendingRequests.get(cacheKey);
-		}
-
-		try {
-			const requestPromise = apiClient.get("/games/search", { params: searchParams }).then(response => {
-				const results = response.data;
-				setCache(cacheKey, results);
-				pendingRequests.delete(cacheKey);
-				return results;
-			}).catch(error => {
-				pendingRequests.delete(cacheKey);
-				throw error;
-			});
-
-			pendingRequests.set(cacheKey, requestPromise);
-			return requestPromise;
-		} catch (error) {
-			pendingRequests.delete(cacheKey);
-			throw error;
-		}
-	}, 300),
-
 	// Prefetch game details only when network/device conditions are favorable.
 	prefetchGameById: async (gameId) => {
 		if (!gameId || !canPrefetch()) {
@@ -279,42 +210,6 @@ export const gameAPI = {
 		return requestPromise;
 	},
 
-	// Prefetch next page for better UX only when there is a next page.
-	prefetchNextPage: async (currentPage, totalPages, params = {}) => {
-		if (!canPrefetch() || currentPage >= totalPages) {
-			return;
-		}
-
-		const nextPageParams = { ...params, page: currentPage + 1 };
-		const cacheKey = getCacheKey("/games", nextPageParams);
-		
-		// Only prefetch if not already cached
-		if (!getFromCache(cacheKey) && !pendingRequests.has(cacheKey)) {
-			try {
-				const requestPromise = apiClient.get("/games", { params: nextPageParams }).then(response => {
-					setCache(cacheKey, response.data);
-					pendingRequests.delete(cacheKey);
-					if (process.env.NODE_ENV === 'development') {
-						console.log(`Prefetched page ${currentPage + 1}`);
-					}
-					return response.data;
-				}).catch(error => {
-					pendingRequests.delete(cacheKey);
-					// Silently fail for prefetch - don't throw
-					if (process.env.NODE_ENV === 'development') {
-						console.error('Error prefetching next page:', error);
-					}
-				});
-
-				pendingRequests.set(cacheKey, requestPromise);
-			} catch (error) {
-				// Silently fail for prefetch
-				if (process.env.NODE_ENV === 'development') {
-					console.error('Error prefetching next page:', error);
-				}
-			}
-		}
-	},
 };
 
 export default apiClient;

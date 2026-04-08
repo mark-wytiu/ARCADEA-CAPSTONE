@@ -12,15 +12,15 @@ function Footer() {
                 Social
             </section>
             <section className="footer-info">
-                <section className="footer-info_left">
+                <section className="footer-info-left">
                     &copy; ARCADEA
                 </section>
 
-                <section className="footer-info_right">
-                    <img className="footer-info_right_icon" src={fbIcon} alt="" />
-                    <img className="footer-info_right_icon" src={linkedinIcon} alt="" />
-                    <img className="footer-info_right_icon" src={xIcon} alt="" />
-                    <img className="footer-info_right_icon" src={igIcon} alt="" />
+                <section className="footer-info-right">
+                    <img className="footer-info-right-icon" src={fbIcon} alt="Facebook" />
+                    <img className="footer-info-right-icon" src={linkedinIcon} alt="LinkedIn" />
+                    <img className="footer-info-right-icon" src={xIcon} alt="X (Twitter)" />
+                    <img className="footer-info-right-icon" src={igIcon} alt="Instagram" />
                 </section>
 
             </section>

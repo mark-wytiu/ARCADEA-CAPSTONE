@@ -7,15 +7,15 @@
     flex-direction: column;
     justify-content: center;
     font-size: larger;
-    &_genre {
+    &-genre {
         margin-bottom: 1.5rem;
         font-weight: 700;
     }
-    &_platform {
+    &-platform {
         margin-bottom: 1.5rem;
         font-weight: 700;
     }
-    &_description {
+    &-description {
         font-weight: 700;
     }
 }

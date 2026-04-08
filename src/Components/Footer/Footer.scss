@@ -25,13 +25,13 @@
     align-items: center;
     height: 4rem;
     margin: 1rem;
-    &_left {
+    &-left {
         font-weight: 900;
         color: black;
     }
 }
 
-.footer-info_right img {
+.footer-info-right img {
     width: 2rem;
     height: 2rem;
     &:hover {
