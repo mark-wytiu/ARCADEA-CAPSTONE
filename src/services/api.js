@@ -87,10 +87,10 @@ apiClient.interceptors.request.use(
 // Add response interceptor for error handling and performance logging
 apiClient.interceptors.response.use(
 	(response) => {
-		// Log request duration in development
+		// Log request duration in development (warn is allowed by eslint no-console)
 		if (process.env.NODE_ENV === 'development' && response.config.metadata) {
 			const duration = new Date() - response.config.metadata.startTime;
-			console.log(`API Request to ${response.config.url} took ${duration}ms`);
+			console.warn(`API Request to ${response.config.url} took ${duration}ms`);
 		}
 		return response;
 	},

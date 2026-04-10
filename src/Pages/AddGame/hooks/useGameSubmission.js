@@ -2,7 +2,9 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { gameAPI } from '../../../services/api';
 
-export const useGameSubmission = () => {
+// options.onBeforeRedirect runs right before navigate after a successful add (e.g. reset form).
+export const useGameSubmission = (options = {}) => {
+    const { onBeforeRedirect } = options;
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -18,6 +20,7 @@ export const useGameSubmission = () => {
 
             // Navigate to home after successful submission
             setTimeout(() => {
+                onBeforeRedirect?.();
                 navigate('/');
             }, 1500);
 

@@ -13,11 +13,6 @@ body {
   min-height: 100vh !important;
 }
 
-/* Override any existing background images */
-* {
-  background-image: none !important;
-}
-
 #root {
   background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #2a2a2a 100%) !important;
   min-height: 100vh !important;
