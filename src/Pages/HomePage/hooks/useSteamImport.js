@@ -11,13 +11,11 @@ export const useSteamImport = (onImportComplete) => {
         setOpenSteamImport(false);
     };
 
-    const handleSteamImportComplete = async (totalImported) => {
-        console.log(`${totalImported} games imported from Steam`);
-        // Refresh the games list after import
-        if (onImportComplete) {
+    const handleSteamImportComplete = async ({ successCount = 0, failureCount = 0 } = {}) => {
+        console.warn(`Steam import finished: ${successCount} saved, ${failureCount} failed`);
+        if (successCount > 0 && onImportComplete) {
             onImportComplete();
         }
-        handleSteamImportClose();
     };
 
     return {
