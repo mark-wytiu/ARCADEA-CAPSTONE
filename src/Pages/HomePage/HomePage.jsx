@@ -2,14 +2,12 @@ import {
     Box,
     Container,
 } from '@mui/material';
-import { useState, useCallback, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
-import bgImg from "../../Assets/Images/carl-raw-m3hn2Kn5Bns-unsplash.jpg";
 import "./HomePage.scss";
 
 // Custom Hooks
 import { useGamesData } from "./hooks/useGamesData";
 import { useGamePagination } from "./hooks/useGamePagination";
+import { useHomePageFilters } from "./hooks/useHomePageFilters";
 import { useSteamImport } from "./hooks/useSteamImport";
 
 // Components
@@ -21,36 +19,17 @@ import GameGridSkeleton from "../../Components/GameGrid/GameGridSkeleton";
 import SteamImport from "../../Components/SteamImport/SteamImport";
 import { PageError } from "../../Components/PageStates/PageStates";
 
+const HERO_BG_URL = `${process.env.PUBLIC_URL ?? ''}/images/carl-raw-m3hn2Kn5Bns-unsplash.jpg`;
+
 const VIRTUALIZATION_THRESHOLD = 60;
 
 function HomePage() {
     const { games, loading, error, genres, platforms, refetchGames } = useGamesData();
-    const [filteredGames, setFilteredGames] = useState([]);
-    const [sortInfo, setSortInfo] = useState({ sortBy: 'title', sortOrder: 'asc' });
-    const [, setSearchParams] = useSearchParams();
+    const { filteredGames, sortInfo, filterControlsProps } = useHomePageFilters(games);
     const { page, totalPages, currentPageGames, handlePageChange } = useGamePagination(filteredGames);
     const steamImport = useSteamImport(refetchGames);
     const useVirtualization = filteredGames.length > VIRTUALIZATION_THRESHOLD;
     const gamesToDisplay = useVirtualization ? filteredGames : currentPageGames;
-
-    // Initialize filtered games when games load
-    useEffect(() => {
-        if (games.length > 0 && filteredGames.length === 0) {
-            setFilteredGames(games);
-        }
-    }, [games, filteredGames.length]);
-
-    // Handle filter changes from FilterControls
-    const handleFiltersChange = useCallback((filtered, sortData) => {
-        setFilteredGames(filtered);
-        setSortInfo(sortData);
-    }, []);
-
-    const clearFilters = useCallback(() => {
-        setFilteredGames(games);
-        setSortInfo({ sortBy: 'title', sortOrder: 'asc' });
-        setSearchParams(new URLSearchParams());
-    }, [games, setSearchParams]);
 
     const renderContent = () => {
         if (loading) {
@@ -75,7 +54,7 @@ function HomePage() {
                     page={page}
                     totalPages={totalPages}
                     onPageChange={handlePageChange}
-                    onClearFilters={clearFilters}
+                    onClearFilters={filterControlsProps.clearFilters}
                     useVirtualization={useVirtualization}
                 />
             </>
@@ -86,7 +65,7 @@ function HomePage() {
         <Box
             sx={{
                 width: '100%',
-                backgroundImage: `url(${bgImg})`,
+                backgroundImage: `url(${HERO_BG_URL})`,
                 backgroundRepeat: "no-repeat",
                 backgroundSize: "cover",
                 backgroundAttachment: 'scroll',
@@ -101,11 +80,10 @@ function HomePage() {
             </Container>
             <Container maxWidth="xl">
                 <FilterControls
-                    games={games}
                     genres={genres}
                     platforms={platforms}
                     onSteamImportOpen={steamImport.handleSteamImportOpen}
-                    onFiltersChange={handleFiltersChange}
+                    {...filterControlsProps}
                 />
             </Container>
             <Container maxWidth="xl">
