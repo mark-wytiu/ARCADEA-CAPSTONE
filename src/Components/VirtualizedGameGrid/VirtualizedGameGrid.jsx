@@ -3,6 +3,26 @@ import { FixedSizeGrid as Grid } from 'react-window';
 import { Box, useTheme, useMediaQuery } from '@mui/material';
 import GameCard from '../GameCard/GameCard';
 
+const VirtualizedGridCell = React.memo(({ columnIndex, rowIndex, style, data }) => {
+    const { games, columnCount } = data;
+    const gameIndex = rowIndex * columnCount + columnIndex;
+    const game = games[gameIndex];
+
+    if (!game) {
+        return null;
+    }
+
+    return (
+        <div style={style}>
+            <Box sx={{ padding: 1 }}>
+                <GameCard game={game} />
+            </Box>
+        </div>
+    );
+});
+
+VirtualizedGridCell.displayName = 'VirtualizedGridCell';
+
 const VirtualizedGameGrid = ({ games, containerHeight = 600 }) => {
     const theme = useTheme();
     const isXs = useMediaQuery(theme.breakpoints.down('sm'));
@@ -51,22 +71,10 @@ const VirtualizedGameGrid = ({ games, containerHeight = 600 }) => {
     const rowHeight = 400; // Height for each game card row
     const rowCount = Math.ceil(games.length / columnCount);
 
-    const Cell = React.memo(({ columnIndex, rowIndex, style }) => {
-        const gameIndex = rowIndex * columnCount + columnIndex;
-        const game = games[gameIndex];
-
-        if (!game) return null;
-
-        return (
-            <div style={style}>
-                <Box sx={{ padding: 1 }}>
-                    <GameCard game={game} />
-                </Box>
-            </div>
-        );
-    });
-
-    Cell.displayName = 'VirtualizedCell';
+    const itemData = useMemo(
+        () => ({ games, columnCount }),
+        [games, columnCount]
+    );
 
     if (!containerWidth) {
         return <Box ref={containerRef} sx={{ height: containerHeight, width: '100%' }} />;
@@ -82,8 +90,9 @@ const VirtualizedGameGrid = ({ games, containerHeight = 600 }) => {
                 rowHeight={rowHeight}
                 width={containerWidth}
                 overscanRowCount={2}
+                itemData={itemData}
             >
-                {Cell}
+                {VirtualizedGridCell}
             </Grid>
         </Box>
     );

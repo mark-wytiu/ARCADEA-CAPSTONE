@@ -11,12 +11,14 @@ import { useNavigate } from 'react-router-dom';
 import gameImg from "../../Assets/1784571.png";
 import { gameAPI } from '../../services/api';
 import { getGameImageUrlCandidates } from '../../utils/imageSources';
+import { getGameId } from '../../utils/gameId';
 import "./GameCard.scss";
 
 const prefetchedGameIds = new Set();
 
 const GameCard = React.memo(({ game }) => {
     const navigate = useNavigate();
+    const gameId = getGameId(game);
     const [imageLoaded, setImageLoaded] = useState(false);
     const imageCandidates = useMemo(
         () => getGameImageUrlCandidates(game.image, gameImg, { cdnWidth: 320 }),
@@ -48,18 +50,18 @@ const GameCard = React.memo(({ game }) => {
     };
 
     const prefetchGamePage = useCallback(() => {
-        if (!game?.id || prefetchedGameIds.has(game.id)) {
+        if (!gameId || prefetchedGameIds.has(gameId)) {
             return;
         }
 
-        prefetchedGameIds.add(game.id);
-        gameAPI.prefetchGameById(game.id);
-    }, [game?.id]);
+        prefetchedGameIds.add(gameId);
+        gameAPI.prefetchGameById(gameId);
+    }, [gameId]);
 
     return (
         <Card
             className="game-card"
-            onClick={() => displayGamePage(game.id)}
+            onClick={() => gameId && displayGamePage(gameId)}
             onMouseEnter={prefetchGamePage}
             onFocus={prefetchGamePage}
             sx={{

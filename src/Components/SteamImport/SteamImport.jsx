@@ -28,7 +28,9 @@ import {
     CheckCircle as CheckCircleIcon,
     SportsEsports as GamesIcon,
     Close as CloseIcon,
-    Help as HelpIcon
+    Help as HelpIcon,
+    ErrorOutline as ErrorOutlineIcon,
+    WarningAmber as WarningAmberIcon
 } from '@mui/icons-material';
 import { importSteamLibrary, extractSteamIdFromUrl, isValidSteamId } from '../../services/steamService';
 import { gameAPI } from '../../services/api';
@@ -46,6 +48,7 @@ function SteamImport({ open, onClose, onImportComplete }) {
     const [selectedGames, setSelectedGames] = useState([]);
     const [importProgress, setImportProgress] = useState(0);
     const [showSetupGuide, setShowSetupGuide] = useState(false);
+    const [lastImportSummary, setLastImportSummary] = useState({ successCount: 0, failureCount: 0 });
 
     const resetDialog = () => {
         setActiveStep(0);
@@ -55,6 +58,7 @@ function SteamImport({ open, onClose, onImportComplete }) {
         setImportData(null);
         setSelectedGames([]);
         setImportProgress(0);
+        setLastImportSummary({ successCount: 0, failureCount: 0 });
     };
 
     const handleClose = () => {
@@ -140,22 +144,28 @@ function SteamImport({ open, onClose, onImportComplete }) {
             setError(null);
             setImportProgress(0);
             
+            let successCount = 0;
+            let failureCount = 0;
+
             // Save games one by one with progress tracking
             for (let i = 0; i < selectedGames.length; i++) {
                 const game = selectedGames[i];
                 try {
                     await gameAPI.addGame(game);
+                    successCount += 1;
                 } catch (gameError) {
+                    failureCount += 1;
                     console.warn(`Failed to save game: ${game.title}`, gameError);
                 }
                 setImportProgress(((i + 1) / selectedGames.length) * 100);
             }
-            
+
+            const summary = { successCount, failureCount };
+            setLastImportSummary(summary);
             setActiveStep(2);
-            
-            // Notify parent component about successful import
+
             if (onImportComplete) {
-                onImportComplete(selectedGames.length);
+                onImportComplete(summary);
             }
             
             // Auto-close after showing success
@@ -298,18 +308,60 @@ function SteamImport({ open, onClose, onImportComplete }) {
                     </Box>
                 );
                 
-            case 2:
+            case 2: {
+                const { successCount, failureCount } = lastImportSummary;
+                const attempted = successCount + failureCount;
+                const allOk = failureCount === 0 && successCount > 0;
+                const partial = successCount > 0 && failureCount > 0;
+                const allFailed = successCount === 0 && failureCount > 0;
+
                 return (
                     <Box sx={{ textAlign: 'center', py: 4 }}>
-                        <CheckCircleIcon color="success" sx={{ fontSize: 64, mb: 2 }} />
+                        {allOk && (
+                            <CheckCircleIcon color="success" sx={{ fontSize: 64, mb: 2 }} />
+                        )}
+                        {partial && (
+                            <WarningAmberIcon color="warning" sx={{ fontSize: 64, mb: 2 }} />
+                        )}
+                        {allFailed && (
+                            <ErrorOutlineIcon color="error" sx={{ fontSize: 64, mb: 2 }} />
+                        )}
+
                         <Typography variant="h5" sx={{ mb: 2 }}>
-                            Import Successful!
+                            {allOk && 'Import successful'}
+                            {partial && 'Import finished with some errors'}
+                            {allFailed && 'Import could not complete'}
                         </Typography>
-                        <Typography variant="body1" color="text.secondary">
-                            Successfully imported {selectedGames.length} games from your Steam library.
-                        </Typography>
+
+                        {allOk && (
+                            <Typography variant="body1" color="text.secondary">
+                                Successfully imported {successCount} game{successCount === 1 ? '' : 's'} from your Steam
+                                library.
+                            </Typography>
+                        )}
+
+                        {partial && (
+                            <>
+                                <Alert severity="warning" sx={{ mt: 1, mb: 2, textAlign: 'left' }}>
+                                    Imported {successCount} of {attempted} game{attempted === 1 ? '' : 's'}.{' '}
+                                    {failureCount} could not be saved (duplicate title, network error, or server
+                                    issue).
+                                </Alert>
+                                <Typography variant="body2" color="text.secondary">
+                                    You can try importing the remaining titles again later.
+                                </Typography>
+                            </>
+                        )}
+
+                        {allFailed && (
+                            <Alert severity="error" sx={{ mt: 1, textAlign: 'left' }}>
+                                None of the {attempted} selected game{attempted === 1 ? '' : 's'} could be saved. Check
+                                your connection or try again in a few minutes.
+                            </Alert>
+                        )}
                     </Box>
                 );
+            }
                 
             default:
                 return null;

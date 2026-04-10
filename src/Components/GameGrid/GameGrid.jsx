@@ -2,6 +2,7 @@ import React, { Suspense } from 'react';
 import { Grid, Box, Pagination, Paper, Typography, Button } from '@mui/material';
 import GameCard from '../GameCard/GameCard';
 import GameGridSkeleton from './GameGridSkeleton';
+import { getGameId } from '../../utils/gameId';
 
 // Lazy load VirtualizedGameGrid for large lists
 const VirtualizedGameGrid = React.lazy(() => import('../VirtualizedGameGrid/VirtualizedGameGrid'));
@@ -34,7 +35,7 @@ const GameGrid = React.memo(({ games, page, totalPages, onPageChange, onClearFil
             ) : (
                 <Grid container spacing={4}>
                     {games.map((game, index) => (
-                        <Grid item key={game._id || game.id || index} xs={12} sm={6} md={4} lg={3}>
+                        <Grid item key={getGameId(game) ?? index} xs={12} sm={6} md={4} lg={3}>
                             <GameCard game={game} />
                         </Grid>
                     ))}
