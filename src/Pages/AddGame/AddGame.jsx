@@ -43,6 +43,7 @@ function AddGame() {
         handleChange,
         handleRatingChange,
         validateForm,
+        resetForm,
         getFormattedData
     } = useGameForm();
 
@@ -50,8 +51,9 @@ function AddGame() {
         loading,
         error,
         success,
-        submitGame
-    } = useGameSubmission();
+        submitGame,
+        resetStatus
+    } = useGameSubmission({ onBeforeRedirect: resetForm });
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -76,7 +78,7 @@ function AddGame() {
                 </Divider>
 
                 {error && (
-                    <Alert severity="error" sx={{ mb: 3 }}>
+                    <Alert severity="error" sx={{ mb: 3 }} onClose={resetStatus}>
                         {error}
                     </Alert>
                 )}

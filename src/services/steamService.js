@@ -181,7 +181,7 @@ export const importSteamLibrary = async (steamIdOrVanity) => {
     try {
         // Check if we're in demo mode (no API key or demo input)
         if (!STEAM_API_KEY || steamIdOrVanity.toLowerCase() === 'demo' || steamIdOrVanity === 'demo_user') {
-            console.log('Running in demo mode - using sample data');
+            console.warn('Running in demo mode - using sample data');
             return new Promise(resolve => {
                 setTimeout(() => {
                     resolve(getDemoSteamData());
