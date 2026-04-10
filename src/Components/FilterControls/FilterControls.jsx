@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
+import React from 'react';
 import {
     TextField,
     InputAdornment,
@@ -19,148 +19,14 @@ import SortIcon from '@mui/icons-material/Sort';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import './FilterControls.scss';
 
-// Debounce utility function
-const debounce = (func, delay) => {
-    let timeoutId;
-    return (...args) => {
-        clearTimeout(timeoutId);
-        timeoutId = setTimeout(() => func.apply(null, args), delay);
-    };
-};
-
-// Custom hook for local filter state management
-const useLocalFilters = (games, onFiltersChange) => {
-    const [searchParams, setSearchParams] = useSearchParams();
-    
-    const [searchTerm, setSearchTerm] = useState(() => searchParams.get('search') || '');
-    const [debouncedSearchTerm, setDebouncedSearchTerm] = useState(() => searchParams.get('search') || '');
-    const [selectedGenre, setSelectedGenre] = useState(() => searchParams.get('genre') || 'All');
-    const [selectedPlatform, setSelectedPlatform] = useState(() => searchParams.get('platform') || 'All');
-    const [sortBy, setSortBy] = useState(() => searchParams.get('sortBy') || 'title');
-    const [sortOrder, setSortOrder] = useState(() => searchParams.get('sortOrder') || 'asc');
-
-    const updateURLParams = useCallback((updates) => {
-        const newSearchParams = new URLSearchParams(searchParams);
-        Object.entries(updates).forEach(([key, value]) => {
-            if (value === '' || value === 'All' || (key === 'page' && value === 1)) {
-                newSearchParams.delete(key);
-            } else {
-                newSearchParams.set(key, value.toString());
-            }
-        });
-        setSearchParams(newSearchParams);
-    }, [searchParams, setSearchParams]);
-    
-    // Debounced search update
-    const debouncedUpdateSearch = useRef(
-        debounce((value) => {
-            setDebouncedSearchTerm(value);
-            updateURLParams({ search: value });
-        }, 300)
-    ).current;
-
-    // Sync filter states with URL parameters
-    useEffect(() => {
-        const urlSearch = searchParams.get('search') || '';
-        setSearchTerm(urlSearch);
-        setDebouncedSearchTerm(urlSearch);
-        setSelectedGenre(searchParams.get('genre') || 'All');
-        setSelectedPlatform(searchParams.get('platform') || 'All');
-        setSortBy(searchParams.get('sortBy') || 'title');
-        setSortOrder(searchParams.get('sortOrder') || 'asc');
-    }, [searchParams]);
-
-    // Filter and sort games locally (using debounced search term)
-    const filteredGames = useMemo(() => {
-        let result = [...games];
-
-        if (debouncedSearchTerm) {
-            result = result.filter(game =>
-                game.title?.toLowerCase().includes(debouncedSearchTerm.toLowerCase()) ||
-                game.developer?.toLowerCase().includes(debouncedSearchTerm.toLowerCase()) ||
-                game.description?.toLowerCase().includes(debouncedSearchTerm.toLowerCase())
-            );
-        }
-
-        if (selectedGenre !== 'All') {
-            result = result.filter(game => game.genre === selectedGenre);
-        }
-
-        if (selectedPlatform !== 'All') {
-            result = result.filter(game => 
-                (game.platform === selectedPlatform) || 
-                (game.platforms && game.platforms.includes(selectedPlatform))
-            );
-        }
-
-        result.sort((a, b) => {
-            let aValue = a[sortBy] || '';
-            let bValue = b[sortBy] || '';
-
-            if (sortBy === 'rating' || sortBy === 'price') {
-                aValue = Number(aValue) || 0;
-                bValue = Number(bValue) || 0;
-            }
-
-            if (sortOrder === 'asc') {
-                return aValue > bValue ? 1 : -1;
-            } else {
-                return aValue < bValue ? 1 : -1;
-            }
-        });
-
-        return result;
-    }, [games, debouncedSearchTerm, selectedGenre, selectedPlatform, sortBy, sortOrder]);
-
-    // Notify parent component when filtered games change
-    useEffect(() => {
-        onFiltersChange(filteredGames, { sortBy, sortOrder });
-    }, [filteredGames, sortBy, sortOrder, onFiltersChange]);
-
-    const handleSortChange = (event) => {
-        const newSortBy = event.target.value;
-        setSortBy(newSortBy);
-        updateURLParams({ sortBy: newSortBy });
-    };
-
-    const toggleSortOrder = () => {
-        const newOrder = sortOrder === 'asc' ? 'desc' : 'asc';
-        setSortOrder(newOrder);
-        updateURLParams({ sortOrder: newOrder });
-    };
-
-    const handleGenreChange = (event) => {
-        const newGenre = event.target.value;
-        setSelectedGenre(newGenre);
-        updateURLParams({ genre: newGenre });
-    };
-
-    const handlePlatformChange = (event) => {
-        const newPlatform = event.target.value;
-        setSelectedPlatform(newPlatform);
-        updateURLParams({ platform: newPlatform });
-    };
-
-    const handleSearchChange = (event) => {
-        const newSearchTerm = event.target.value;
-        setSearchTerm(newSearchTerm);
-        // Debounce the URL update and filter calculation
-        debouncedUpdateSearch(newSearchTerm);
-    };
-
-    const clearFilters = () => {
-        setSearchTerm('');
-        setSelectedGenre('All');
-        setSelectedPlatform('All');
-        setSortBy('title');
-        setSortOrder('asc');
-        setSearchParams(new URLSearchParams());
-    };
-
-    return {
+const FilterControls = React.memo(
+    ({
+        genres,
+        platforms,
+        onSteamImportOpen,
         searchTerm,
         setSearchTerm,
         selectedGenre,
@@ -175,33 +41,12 @@ const useLocalFilters = (games, onFiltersChange) => {
         handlePlatformChange,
         handleSearchChange,
         clearFilters,
-        updateURLParams
-    };
-};
-
-const FilterControls = React.memo(({ games, genres, platforms, onSteamImportOpen, onFiltersChange }) => {
+        updateURLParams,
+    }) => {
     const navigate = useNavigate();
     const navigateToAddGame = () => {
         navigate('/add-game');
     };
-
-    const {
-        searchTerm,
-        setSearchTerm,
-        selectedGenre,
-        setSelectedGenre,
-        selectedPlatform,
-        setSelectedPlatform,
-        sortBy,
-        sortOrder,
-        handleSortChange,
-        toggleSortOrder,
-        handleGenreChange,
-        handlePlatformChange,
-        handleSearchChange,
-        clearFilters,
-        updateURLParams
-    } = useLocalFilters(games, onFiltersChange);
 
     return (
         <Paper 
@@ -412,7 +257,8 @@ const FilterControls = React.memo(({ games, genres, platforms, onSteamImportOpen
             )}
         </Paper>
     );
-});
+    }
+);
 
 FilterControls.displayName = 'FilterControls';
 
