@@ -8,16 +8,16 @@ const HeroSection = () => {
     return (
         <Box sx={{
             textAlign: 'center',
-            mb: 5,
-            mt: 2,
+            mb: 4,
+            mt: 1.5,
             position: 'relative',
-            zIndex: 1
+            zIndex: 1,
         }}>
             <Box
                 component="h1"
                 sx={{
                     m: 0,
-                    mb: 2,
+                    mb: 1.5,
                     lineHeight: 0,
                 }}
             >
@@ -30,7 +30,7 @@ const HeroSection = () => {
                     style={{
                         display: 'block',
                         margin: '0 auto',
-                        width: 'min(92vw, 520px)',
+                        width: 'min(88vw, 440px)',
                         height: 'auto',
                     }}
                 >
@@ -47,11 +47,11 @@ const HeroSection = () => {
                         dominantBaseline="middle"
                         fill={`url(#${gradientId})`}
                         style={{
-                            fontSize: 42,
+                            fontSize: 34,
                             fontWeight: 800,
                             fontFamily:
                                 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, sans-serif',
-                            letterSpacing: '0.06em',
+                            letterSpacing: '0.045em',
                         }}
                     >
                         ARCADEA
@@ -59,14 +59,19 @@ const HeroSection = () => {
                 </svg>
             </Box>
             <Typography
-                variant="h5"
+                component="p"
+                variant="body1"
                 sx={{
-                    color: '#b2bac2',
-                    textShadow: '1px 1px 4px rgba(0,0,0,0.5)',
-                    mb: 4,
-                    fontSize: { xs: '1.2rem', sm: '1.5rem' },
-                    fontWeight: 300,
-                    letterSpacing: '0.02em'
+                    color: '#c5ced6',
+                    textShadow: '0 1px 2px rgba(0,0,0,0.55)',
+                    mb: 3,
+                    maxWidth: 520,
+                    mx: 'auto',
+                    px: 1,
+                    fontSize: { xs: '0.9375rem', sm: '1.0625rem' },
+                    fontWeight: 400,
+                    lineHeight: 1.45,
+                    letterSpacing: '0.01em',
                 }}
             >
                 Discover Your Next Gaming Adventure

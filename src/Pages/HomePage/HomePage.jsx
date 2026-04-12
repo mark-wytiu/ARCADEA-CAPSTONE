@@ -21,6 +21,10 @@ import { PageError } from "../../Components/PageStates/PageStates";
 
 const HERO_BG_URL = `${process.env.PUBLIC_URL ?? ''}/images/carl-raw-m3hn2Kn5Bns-unsplash.jpg`;
 
+// Darken hero photo for readable type; first layer stacks above the image.
+const HERO_SCRIM =
+    'linear-gradient(180deg, rgba(10, 10, 10, 0.52) 0%, rgba(13, 20, 33, 0.74) 42%, rgba(10, 10, 10, 0.88) 100%), radial-gradient(120% 80% at 50% 0%, rgba(10, 10, 10, 0.35) 0%, transparent 55%)';
+
 const VIRTUALIZATION_THRESHOLD = 60;
 
 function HomePage() {
@@ -65,13 +69,15 @@ function HomePage() {
         <Box
             sx={{
                 width: '100%',
-                backgroundImage: `url(${HERO_BG_URL})`,
-                backgroundRepeat: "no-repeat",
-                backgroundSize: "cover",
+                backgroundColor: '#0a0a0a',
+                backgroundImage: `${HERO_SCRIM}, url(${HERO_BG_URL})`,
+                backgroundRepeat: 'no-repeat, no-repeat, no-repeat',
+                backgroundSize: 'cover, cover, cover',
+                backgroundPosition: 'center, center, center',
                 backgroundAttachment: 'scroll',
                 minHeight: '100vh',
-                paddingY: 4,
-                paddingTop: '80px'  // Add padding to account for fixed header
+                paddingY: 3,
+                paddingTop: '80px', // fixed header offset
             }}
             className="home-page-container main-content"
         >
