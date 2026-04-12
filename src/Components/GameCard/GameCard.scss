@@ -1,5 +1,16 @@
 @import '../../styles/theme/index';
 
+// Card interior layout — keep grid rows visually aligned
+$game-card-media-height: 200px;
+$game-card-media-height-sm: 160px;
+$game-card-title-lines: 2;
+$game-card-title-line-height: 1.5;
+$game-card-title-font-size: 1rem;
+// Two lines at 1rem / 1.5 — snap to 8px grid (matches previous 48px title box)
+$game-card-title-block-height: spacing(6);
+$game-card-content-padding-y: spacing(2);
+$game-card-content-padding-x: spacing(2);
+
 .game-card.game-card--skeleton {
   pointer-events: none;
   cursor: default;
@@ -16,6 +27,8 @@
 }
 
 .game-card {
+  --game-card-media-height: #{$game-card-media-height};
+
   @include app-surface-panel($radius: $radius-xl);
   // MUI `Card` defaults to white in the stock theme — align with shared surfaces
   background: $surface-panel-bg !important;
@@ -53,28 +66,65 @@
 }
 
 .game-card .MuiCardMedia-root {
+  flex-shrink: 0;
+  height: var(--game-card-media-height);
+  min-height: var(--game-card-media-height);
+  max-height: var(--game-card-media-height);
   background-color: $surface-media-bg;
   display: flex;
   align-items: center;
   justify-content: center;
   border-bottom: 1px solid $surface-panel-border;
   position: relative;
-  
+  box-sizing: border-box;
+
   img {
+    max-height: 100%;
+    width: 100%;
+    object-fit: contain;
     transition: transform 0.3s ease;
   }
-  
+
   &:hover img {
     transform: scale(1.05);
   }
 }
 
-.game-card .MuiCardContent-root {
-  padding: 16px;
-  flex-grow: 1;
+// Loading placeholder matches media slot
+.game-card > .MuiSkeleton-root:first-of-type {
+  flex-shrink: 0;
+  height: var(--game-card-media-height) !important;
+  min-height: var(--game-card-media-height);
+  box-sizing: border-box;
+}
+
+.game-card .MuiCardContent-root.game-card__content {
+  padding: $game-card-content-padding-y $game-card-content-padding-x;
+  flex: 1 1 auto;
+  min-height: 0;
   display: flex;
   flex-direction: column;
+  gap: spacing(1.5);
   background: transparent;
+}
+
+.game-card .game-card__title {
+  flex: 0 0 auto;
+  min-height: $game-card-title-block-height;
+  max-height: $game-card-title-block-height;
+  margin: 0;
+  line-height: $game-card-title-line-height;
+  font-size: $game-card-title-font-size;
+  font-weight: 700;
+}
+
+.game-card .game-card__chips {
+  margin-top: auto;
+  gap: spacing(1) !important;
+}
+
+.game-card .game-card__chips .MuiChip-root {
+  margin: 0;
 }
 
 .game-card .MuiTypography-root {
@@ -144,20 +194,17 @@
   }
 }
 
-.MuiStack-root {
-  justify-content: flex-start;
+.game-card .game-card__chips.MuiStack-root {
+  justify-content: flex-end;
   align-items: flex-start;
 }
 
 /* Media query for smaller screens */
 @media (max-width: 600px) {
   .game-card {
+    --game-card-media-height: #{$game-card-media-height-sm};
     height: auto !important;
     min-height: 320px;
-  }
-
-  .game-card .MuiCardMedia-root {
-    height: 160px !important;
   }
 }
 
