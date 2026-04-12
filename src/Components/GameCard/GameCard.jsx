@@ -77,16 +77,18 @@ const GameCard = React.memo(({ game }) => {
                 <Skeleton
                     variant="rectangular"
                     width="100%"
-                    height={200}
                     animation="wave"
-                    sx={{ backgroundColor: 'rgba(22, 27, 34, 0.95)' }}
+                    sx={{
+                        flexShrink: 0,
+                        backgroundColor: 'rgba(22, 27, 34, 0.95)',
+                    }}
                 />
             )}
             <CardMedia
                 component="img"
                 alt={game.title}
                 width={320}
-                height="200"
+                height={200}
                 image={imageSrc}
                 loading="lazy"
                 decoding="async"
@@ -94,52 +96,37 @@ const GameCard = React.memo(({ game }) => {
                 onLoad={handleImageLoad}
                 onError={handleImageError}
                 sx={{
-                    display: imageLoaded ? 'block' : 'none',
+                    display: imageLoaded ? 'flex' : 'none',
                     objectFit: 'contain',
                     backgroundColor: '#0d1421',
                     padding: '10px',
                 }}
             />
-            <CardContent
-                sx={{
-                    flexGrow: 1,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'space-between',
-                    padding: '16px',
-                    backgroundColor: 'transparent',
-                }}
-            >
+            <CardContent className="game-card__content">
                 <Typography
-                    gutterBottom
+                    className="game-card__title"
                     variant="h6"
                     component="div"
                     sx={{
-                        fontWeight: 700,
-                        fontSize: '1rem',
                         overflow: 'hidden',
                         textOverflow: 'ellipsis',
                         display: '-webkit-box',
                         WebkitLineClamp: 2,
                         WebkitBoxOrient: 'vertical',
-                        height: '48px',
-                        marginBottom: 1.5,
                         color: '#ffffff',
                     }}
                 >
                     {game.title}
                 </Typography>
-                <Stack spacing={1} sx={{ marginTop: "auto" }}>
+                <Stack className="game-card__chips" direction="column" spacing={1}>
                     <Chip
                         label={game.genre || "Genre Unknown"}
                         color="primary"
                         size="small"
                         sx={{
-                            borderRadius: "4px",
-                            marginBottom: "8px",
-                            fontWeight: "medium",
-                            textAlign: "center",
-                            width: 'fit-content'
+                            borderRadius: 1,
+                            fontWeight: 600,
+                            width: 'fit-content',
                         }}
                     />
                     <Chip
@@ -147,10 +134,9 @@ const GameCard = React.memo(({ game }) => {
                         color="secondary"
                         size="small"
                         sx={{
-                            borderRadius: "4px",
-                            fontWeight: "medium",
-                            textAlign: "center",
-                            width: 'fit-content'
+                            borderRadius: 1,
+                            fontWeight: 600,
+                            width: 'fit-content',
                         }}
                     />
                 </Stack>

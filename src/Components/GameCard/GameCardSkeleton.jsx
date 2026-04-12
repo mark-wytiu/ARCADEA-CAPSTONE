@@ -20,25 +20,18 @@ const GameCardSkeleton = React.memo(function GameCardSkeleton() {
         >
             <Skeleton
                 variant="rectangular"
-                height={200}
+                width="100%"
                 animation="wave"
-                sx={{ bgcolor: 'rgba(255, 255, 255, 0.08)' }}
-            />
-            <CardContent
                 sx={{
-                    flexGrow: 1,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'space-between',
-                    padding: '16px',
-                    backgroundColor: 'white',
+                    flexShrink: 0,
+                    bgcolor: 'rgba(255, 255, 255, 0.08)',
                 }}
-            >
-                <Skeleton variant="text" height={24} width="88%" sx={{ mb: 0.5 }} />
-                <Skeleton variant="text" height={24} width="62%" sx={{ mb: 1.5 }} />
-                <Stack spacing={1} sx={{ marginTop: 'auto' }}>
-                    <Skeleton variant="rounded" width={100} height={28} />
-                    <Skeleton variant="rounded" width={130} height={28} />
+            />
+            <CardContent className="game-card__content">
+                <Skeleton variant="rounded" height={48} width="92%" sx={{ flexShrink: 0 }} />
+                <Stack className="game-card__chips" direction="column" spacing={1}>
+                    <Skeleton variant="rounded" width={100} height={24} />
+                    <Skeleton variant="rounded" width={130} height={24} />
                 </Stack>
             </CardContent>
         </Card>
