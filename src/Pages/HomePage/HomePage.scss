@@ -1,4 +1,4 @@
-@import '../../theme/colors.scss';
+@import '../../styles/theme/index';
 
 .home-page-container {
   background: $bg-primary;
@@ -15,7 +15,7 @@
     font-weight: 700;
     text-align: center;
     margin-bottom: 2rem;
-    text-shadow: 0 0 20px $shadow-glow;
+    text-shadow: 0 0 20px $color-glow-primary;
     animation: fadeIn 0.8s ease-in;
   }
 
@@ -49,7 +49,7 @@
   .filter-chip {
     background: $gradient-accent !important;
     color: white !important;
-    border-radius: 6px;
+    border-radius: $radius-sm;
     padding: 0.25rem 0.75rem;
     font-size: 0.8rem;
     font-weight: 600;
@@ -58,7 +58,7 @@
 
     &:hover {
       transform: translateY(-2px) scale(1.05);
-      box-shadow: 0 0 12px $shadow-glow;
+      box-shadow: 0 0 12px $color-glow-primary;
     }
   }
 
@@ -106,7 +106,7 @@
     background: $gradient-accent;
     color: $text-primary;
     font-weight: 600;
-    border-radius: 8px;
+    border-radius: $radius-md;
     padding: 0.75rem 1.5rem;
     border: none;
     cursor: pointer;
@@ -115,7 +115,7 @@
 
     &:hover {
       transform: scale(1.1);
-      box-shadow: 0 0 15px $shadow-glow;
+      box-shadow: 0 0 15px $color-glow-primary;
     }
   }
 

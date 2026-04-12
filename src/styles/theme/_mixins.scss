@@ -1,17 +1,11 @@
 // ARCADEA Unified Theme - Mixins
 // Reusable mixins for consistent styling patterns
 
-@import './colors';
+@import './tokens';
 
 // ========================================
 // Layout & Spacing
 // ========================================
-
-// Consistent spacing system
-$spacing-unit: 8px;
-@function spacing($multiplier) {
-  @return $spacing-unit * $multiplier;
-}
 
 // Container with max-width
 @mixin container($max-width: 1200px) {
@@ -65,7 +59,7 @@ $spacing-unit: 8px;
 @mixin card-base {
   background: $surface-primary;
   border: 1px solid $border-primary;
-  border-radius: 12px;
+  border-radius: $radius-xl;
   backdrop-filter: blur(10px);
   overflow: hidden;
 }
@@ -129,7 +123,7 @@ $spacing-unit: 8px;
   @include button-reset;
   position: relative;
   padding: spacing(1.5) spacing(3);
-  border-radius: 8px;
+  border-radius: $radius-md;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -189,7 +183,7 @@ $spacing-unit: 8px;
   @include button-reset;
   padding: spacing(1.5) spacing(3);
   border: 2px solid $border-accent;
-  border-radius: 8px;
+  border-radius: $radius-md;
   color: $text-primary;
   background: transparent;
   font-weight: 600;
@@ -235,6 +229,11 @@ $spacing-unit: 8px;
 // Glow effect
 @mixin glow($color: $brand-primary, $spread: 20px, $intensity: 0.5) {
   box-shadow: 0 0 $spread rgba($color, $intensity);
+}
+
+// Strong accent glow (nav active, chips)
+@mixin neon-glow($color: $brand-secondary-dark) {
+  box-shadow: 0 0 10px rgba($color, 0.5), 0 0 20px rgba($color, 0.3);
 }
 
 // Neon border
@@ -306,12 +305,12 @@ $spacing-unit: 8px;
   
   &::-webkit-scrollbar-track {
     background: $neutral-700;
-    border-radius: 4px;
+    border-radius: $radius-xs;
   }
   
   &::-webkit-scrollbar-thumb {
     background: $brand-primary;
-    border-radius: 4px;
+    border-radius: $radius-xs;
     
     &:hover {
       background: $brand-primary-light;
@@ -328,7 +327,7 @@ $spacing-unit: 8px;
   padding: spacing(1.5) spacing(2);
   background: $surface-primary;
   border: 1px solid $border-primary;
-  border-radius: 8px;
+  border-radius: $radius-md;
   color: $text-primary;
   font-size: 1rem;
   transition: all 0.2s ease;
@@ -393,13 +392,6 @@ $spacing-unit: 8px;
 // ========================================
 // Responsive Breakpoints
 // ========================================
-
-$breakpoints: (
-  'mobile': 768px,
-  'tablet': 1024px,
-  'desktop': 1280px,
-  'wide': 1440px
-);
 
 @mixin mobile {
   @media (max-width: #{map-get($breakpoints, 'mobile')}) {
