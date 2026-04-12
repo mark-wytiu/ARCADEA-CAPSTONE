@@ -2,18 +2,18 @@
 
 .filter-controls {
   &__container {
-    background: rgba(26, 35, 50, 0.9) !important;
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(108, 92, 231, 0.2);
-    border-radius: 16px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 20px rgba(108, 92, 231, 0.15);
-    transition: all 0.3s ease;
+    @include app-surface-panel;
+    // MUI `Paper` defaults to theme paper color — force shared app surface
+    background: $surface-panel-bg !important;
+    border: 1px solid $surface-panel-border !important;
+    box-shadow: $surface-panel-shadow !important;
+    transition: box-shadow 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
     box-sizing: border-box;
     overflow: visible;
 
     &:hover {
-      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5), 0 0 30px rgba(108, 92, 231, 0.25);
-      border-color: rgba(108, 92, 231, 0.4);
+      box-shadow: $surface-panel-shadow-hover !important;
+      border-color: $surface-panel-border-strong !important;
       transform: translateY(-2px);
     }
   }
@@ -264,11 +264,12 @@
 
 // Material-UI Menu Overrides
 .MuiMenu-paper {
-  background: rgba(26, 35, 50, 0.95) !important;
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(108, 92, 231, 0.2) !important;
-  border-radius: 12px !important;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 20px rgba(108, 92, 231, 0.15) !important;
+  background: $surface-panel-bg !important;
+  backdrop-filter: blur($surface-panel-blur);
+  -webkit-backdrop-filter: blur($surface-panel-blur);
+  border: 1px solid $surface-panel-border !important;
+  border-radius: $radius-xl !important;
+  box-shadow: $surface-panel-shadow !important;
   margin-top: 0.5rem !important;
 }
 

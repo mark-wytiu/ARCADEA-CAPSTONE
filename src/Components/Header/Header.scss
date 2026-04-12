@@ -1,24 +1,28 @@
 @import '../../styles/theme/index';
 
 .header-container {
-  background-color: $bg-secondary !important;
-  border-bottom: 1px solid $border-primary;
-  box-shadow: 0 4px 12px $shadow-primary;
-  transition: all 0.3s ease;
+  @include app-surface-chrome;
+  // Default MUI `AppBar` primary color wins without `!important`
+  background-color: $surface-panel-bg-solid !important;
+  box-shadow: 0 4px 12px $shadow-primary, 0 0 18px rgba($brand-secondary-dark, 0.12) !important;
+  border-bottom: 1px solid $surface-panel-border;
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
   z-index: 1100 !important;
-  
+
   .MuiAppBar-root {
-    background-color: $bg-secondary !important;
+    background-color: transparent !important;
+    background-image: none !important;
     color: $text-primary !important;
+    box-shadow: none !important;
   }
-  
+
   .MuiToolbar-root {
     padding: 0.5rem 1rem;
-    background-color: $bg-secondary !important;
+    background-color: transparent !important;
   }
-  
+
   .MuiContainer-root {
-    background-color: $bg-secondary !important;
+    background-color: transparent !important;
   }
 }
 

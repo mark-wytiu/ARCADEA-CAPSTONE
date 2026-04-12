@@ -67,16 +67,10 @@ const GameCard = React.memo(({ game }) => {
             sx={{
                 height: 350,
                 width: '100%',
-                borderRadius: "12px",
-                transition: "transform 0.3s ease, box-shadow 0.3s ease",
-                "&:hover": {
-                    transform: "translateY(-8px)",
-                    boxShadow: "0 12px 25px rgba(0, 0, 0, 0.2)"
-                },
-                cursor: "pointer",
-                display: "flex",
-                flexDirection: "column",
-                overflow: "hidden"
+                cursor: 'pointer',
+                display: 'flex',
+                flexDirection: 'column',
+                overflow: 'hidden',
             }}
         >
             {!imageLoaded && (
@@ -85,7 +79,7 @@ const GameCard = React.memo(({ game }) => {
                     width="100%"
                     height={200}
                     animation="wave"
-                    sx={{ backgroundColor: '#f5f5f5' }}
+                    sx={{ backgroundColor: 'rgba(22, 27, 34, 0.95)' }}
                 />
             )}
             <CardMedia
@@ -101,33 +95,36 @@ const GameCard = React.memo(({ game }) => {
                 onError={handleImageError}
                 sx={{
                     display: imageLoaded ? 'block' : 'none',
-                    objectFit: "contain",
-                    backgroundColor: '#f5f5f5',
-                    padding: '10px'
+                    objectFit: 'contain',
+                    backgroundColor: '#0d1421',
+                    padding: '10px',
                 }}
             />
-            <CardContent sx={{
-                flexGrow: 1,
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "space-between",
-                padding: "16px",
-                backgroundColor: 'white'
-            }}>
+            <CardContent
+                sx={{
+                    flexGrow: 1,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'space-between',
+                    padding: '16px',
+                    backgroundColor: 'transparent',
+                }}
+            >
                 <Typography
                     gutterBottom
                     variant="h6"
                     component="div"
                     sx={{
-                        fontWeight: "bold",
-                        fontSize: "1rem",
-                        overflow: "hidden",
-                        textOverflow: "ellipsis",
-                        display: "-webkit-box",
+                        fontWeight: 700,
+                        fontSize: '1rem',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        display: '-webkit-box',
                         WebkitLineClamp: 2,
-                        WebkitBoxOrient: "vertical",
-                        height: "48px",
-                        marginBottom: 1.5
+                        WebkitBoxOrient: 'vertical',
+                        height: '48px',
+                        marginBottom: 1.5,
+                        color: '#ffffff',
                     }}
                 >
                     {game.title}

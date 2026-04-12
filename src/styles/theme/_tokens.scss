@@ -189,6 +189,17 @@ $radius-xl: 12px;
 $radius-2xl: 16px;
 $radius-full: 9999px;
 
+// Shared “glass” panels (filters, cards, footer) and solid chrome (header)
+$surface-panel-bg: rgba(26, 35, 50, 0.9);
+$surface-panel-bg-solid: rgba(26, 35, 50, 0.98);
+$surface-panel-border: rgba($brand-secondary-dark, 0.22);
+$surface-panel-border-strong: rgba($brand-secondary-dark, 0.4);
+$surface-panel-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 20px rgba($brand-secondary-dark, 0.15);
+$surface-panel-shadow-hover: 0 12px 40px rgba(0, 0, 0, 0.5), 0 0 30px rgba($brand-secondary-dark, 0.25);
+$surface-panel-blur: 12px;
+$surface-panel-radius: $radius-2xl;
+$surface-media-bg: $neutral-800;
+
 // =============================================================================
 // Breakpoints (used by layout mixins)
 // =============================================================================
