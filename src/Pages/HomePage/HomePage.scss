@@ -1,7 +1,8 @@
 @import '../../styles/theme/index';
 
 .home-page-container {
-  background: $bg-primary;
+  // Use background-color only so `background-image` from inline styles (hero photo + overlay) is not reset.
+  background-color: $bg-primary;
   color: $text-primary;
   min-height: 100vh;
   padding: 2rem; /* Regular padding for content */
