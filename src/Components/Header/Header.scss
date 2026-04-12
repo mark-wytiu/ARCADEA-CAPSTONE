@@ -1,4 +1,4 @@
-@import '../../theme/colors.scss';
+@import '../../styles/theme/index';
 
 .header-container {
   background-color: $bg-secondary !important;
@@ -24,7 +24,7 @@
 
 .cap-logo {
   height: 50px;
-  filter: drop-shadow(0 0 10px $shadow-glow);
+  filter: drop-shadow(0 0 10px $color-glow-primary);
   transition: all 0.3s ease;
   
   &:hover {
@@ -37,7 +37,7 @@
   font-weight: 600 !important;
   text-transform: none !important;
   margin: 0 0.5rem !important;
-  border-radius: 8px !important;
+  border-radius: $radius-md !important;
   transition: all 0.3s ease !important;
   
   &:hover {
@@ -58,5 +58,5 @@
   font-weight: 700;
   font-size: 1.5rem;
   margin-left: 1rem;
-  text-shadow: 0 0 10px $shadow-glow;
+  text-shadow: 0 0 10px $color-glow-primary;
 }

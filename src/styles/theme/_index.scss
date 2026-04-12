@@ -1,7 +1,7 @@
 // ARCADEA Theme Index
-// Single import point for all theme files
+// Single import point for tokens + mixins
 
-@import './colors';
+@import './tokens';
 @import './mixins';
 
 // Export a theme map for use in JavaScript if needed
