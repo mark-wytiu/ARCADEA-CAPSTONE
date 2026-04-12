@@ -6,8 +6,8 @@
 
   &:hover {
     transform: none !important;
-    box-shadow: none !important;
-    border-color: #3a4553;
+    box-shadow: $surface-panel-shadow !important;
+    border-color: $surface-panel-border !important;
   }
 
   &::before {
@@ -16,23 +16,25 @@
 }
 
 .game-card {
-  background: linear-gradient(135deg, #1a2332 0%, #2a3441 100%);
-  border: 1px solid #3a4553;
-  border-radius: 12px;
+  @include app-surface-panel($radius: $radius-xl);
+  // MUI `Card` defaults to white in the stock theme — align with shared surfaces
+  background: $surface-panel-bg !important;
+  border: 1px solid $surface-panel-border !important;
+  box-shadow: $surface-panel-shadow !important;
   height: 350px !important;
   margin: 0 !important;
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  transition: all 0.3s ease;
+  transition: box-shadow 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
   position: relative;
-  
+
   &:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3), 0 0 20px rgba(108, 92, 231, 0.3);
-    border-color: #6c5ce7;
+    transform: translateY(-6px);
+    box-shadow: $surface-panel-shadow-hover !important;
+    border-color: $surface-panel-border-strong !important;
   }
-  
+
   &::before {
     content: '';
     position: absolute;
@@ -40,22 +42,22 @@
     left: 0;
     right: 0;
     height: 2px;
-    background: linear-gradient(90deg, #6c5ce7, #00b9ff);
+    background: linear-gradient(90deg, $brand-secondary-dark, $brand-primary);
     opacity: 0;
     transition: opacity 0.3s ease;
   }
-  
+
   &:hover::before {
     opacity: 1;
   }
 }
 
 .game-card .MuiCardMedia-root {
-  background-color: #0d1421;
+  background-color: $surface-media-bg;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-bottom: 1px solid #3a4553;
+  border-bottom: 1px solid $surface-panel-border;
   position: relative;
   
   img {

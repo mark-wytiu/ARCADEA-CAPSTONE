@@ -55,6 +55,23 @@
 // Cards & Surfaces
 // ========================================
 
+// Primary app surface — filters, cards, footer, dialogs
+@mixin app-surface-panel($radius: $surface-panel-radius) {
+  background: $surface-panel-bg;
+  backdrop-filter: blur($surface-panel-blur);
+  -webkit-backdrop-filter: blur($surface-panel-blur);
+  border: 1px solid $surface-panel-border;
+  border-radius: $radius;
+  box-shadow: $surface-panel-shadow;
+}
+
+// Fixed header / toolbar — same palette, no blur (cheaper + clearer over content)
+@mixin app-surface-chrome {
+  background-color: $surface-panel-bg-solid;
+  border-color: $surface-panel-border;
+  box-shadow: 0 4px 12px $shadow-primary, 0 0 18px rgba($brand-secondary-dark, 0.12);
+}
+
 // Base card style
 @mixin card-base {
   background: $surface-primary;

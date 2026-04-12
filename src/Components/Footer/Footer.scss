@@ -1,40 +1,56 @@
+@import '../../styles/theme/index';
+
 .footer {
-    width: 100vw;
-    height: 8rem;
-    background-color: #a2d2ff;
+    width: 100%;
+    min-height: 8rem;
+    margin-top: spacing(3);
+    padding: spacing(3) spacing(2) spacing(2);
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    gap: spacing(1);
+    @include app-surface-panel($radius: $radius-xl);
+    border-top: 1px solid $surface-panel-border-strong;
+    box-shadow: $surface-panel-shadow-hover;
+
     &-p {
-        // border-bottom: 4px solid #fffffc;
-        width: 100vw;
+        width: 100%;
         text-align: center;
-        font-weight: 900;
-        font-size: x-large;
-        color: black;
+        font-weight: 700;
+        font-size: 1.125rem;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        color: $text-tertiary;
     }
 }
 
 .footer-info {
-    width: 98vw;
-    height: 4rem;
-    // color: black;
+    width: 100%;
+    max-width: 1200px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 4rem;
-    margin: 1rem;
+    flex-wrap: wrap;
+    gap: spacing(2);
+    margin: 0;
+    padding: spacing(1) 0 0;
+
     &-left {
-        font-weight: 900;
-        color: black;
+        font-weight: 600;
+        color: $text-secondary;
     }
 }
 
 .footer-info-right img {
     width: 2rem;
     height: 2rem;
+    opacity: 0.85;
+    transition: transform 0.2s ease, opacity 0.2s ease, filter 0.2s ease;
+    filter: drop-shadow(0 0 6px rgba($brand-secondary-dark, 0.35));
+
     &:hover {
-        transform: scale(1.3);
+        opacity: 1;
+        transform: translateY(-2px);
     }
 }

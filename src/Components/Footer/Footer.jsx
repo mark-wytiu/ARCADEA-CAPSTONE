@@ -7,7 +7,6 @@ import "./Footer.scss"
 function Footer() {
     return (
         <section className="footer">
-            <hr />
             <section className="footer-p">
                 Social
             </section>
